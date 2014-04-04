@@ -11,16 +11,22 @@ function Game()
 	gameDiv.appendChild(this.renderer.domElement)
 	
 	this.scene = new THREE.Scene()
+
+	this.board= new Board();
+
+	this.scene.add(this.board.scene)
 	
-	this.camera = new THREE.PerspectiveCamera(90.0, 16.0 / 9.0, 0.1, 1000.0)
+	this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
 	this.scene.add(this.camera)
-	this.camera.position.set(0, 5, 20)
+	this.camera.position.set(this.board.boardWidth/2, 7, 1)
+	this.camera.lookAt(new THREE.Vector3( this.board.boardWidth/2, 0, -this.board.boardHeight/2 ))
+
+
 	
-	this.plane = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshLambertMaterial())
-	this.scene.add(this.plane)
-	this.plane.rotation.x = -Math.PI * 0.5
-	this.plane.castShadow = true
-	this.plane.receiveShadow = true
+
+
+
+
 	
 	this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
 	this.hemiLight.color.setHSL(0.6, 1, 0.6)
@@ -33,6 +39,7 @@ function Game()
 	this.dirLight.position.set(-1, 1.75, 1)
 	this.dirLight.position.multiplyScalar(50)
 	this.dirLight.castShadow = true
+	this.dirLight.shadowCameraVisible = true
 	var shadowSize = 20
 	this.dirLight.shadowCameraLeft = -shadowSize;
 	this.dirLight.shadowCameraRight = shadowSize;

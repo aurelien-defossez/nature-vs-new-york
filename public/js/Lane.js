@@ -1,0 +1,28 @@
+function Lane()
+{
+
+
+	this.scene = new THREE.Object3D()
+	this.cells = [];
+	laneWidth = Game.config.lane.cellNumber
+
+	laneHeight = 1
+	//this.laneCube = new THREE.Mesh( new THREE.CubeGeometry(laneWidth,0.1,laneHeight),  new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
+	//this.laneCube.position.x = laneWidth/2
+	//this.laneCube.position.z = -1/2
+	//this.scene.add(this.laneCube)
+
+
+	//this.position = position
+	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
+		var cell = new Cell();
+		cell.scene.translateX( i )
+		this.cells.push(cell)
+		this.scene.add(cell.scene)
+	}
+	//this.cell = new Cell();
+	//this.cell.scene.translateX( Game.config.lane.marginLeft )
+	//this.cell.scene.translateZ(- (Game.config.lane.marginBottom))
+	//this.scene.add(this.cell.scene)
+	//this.cell2 = new Cell(scene, position, 1);
+}
