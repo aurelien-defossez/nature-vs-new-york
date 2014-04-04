@@ -1,0 +1,8 @@
+{
+  "name": "nature-vs-new-york",
+  "version": "0.0.1-1",
+  "author": "nature-vs-new-york-dream-team",
+  "dependencies": {
+    "express": "*"
+  }
+}
