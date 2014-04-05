@@ -33,6 +33,80 @@ Game.config = {
     	manaPerSecond: 2,
     	captureSpeed: 0
 	},
+	units: {
+		// Porteur de sève
+		sapCarrier: {
+			attack: 0,
+			buildingAttack: 0,
+			hp: 5,
+			speed: 0.2,
+			cost: 10,
+			time: 10
+		},
+		// Loup
+		wolf: {
+			attack: 3,
+			buildingAttack: 2,
+			hp: 15,
+			speed: 1.0,
+			cost: 4,
+			time: 4
+		},
+		// Ours
+		bear: {
+			attack: 5,
+			buildingAttack: 5,
+			hp: 5,
+			speed: 0.4,
+			cost: 8,
+			time: 6
+		},
+		// Ent
+		Ent: {
+			attack: 10,
+			buildingAttack: 10,
+			hp: 50,
+			speed: 0.2,
+			cost: 20,
+			time: 20
+		},
+		// Constructeur
+		builder: {
+			attack: 0,
+			buildingAttack: 0,
+			hp: 5,
+			speed: 0.,
+			cost: 20,
+			time: 20
+		},
+		// Bûcheron
+		lumberjack: {
+			attack: 2,
+			buildingAttack: 10,
+			hp: 15,
+			speed: 0.4,
+			cost: 5,
+			time: 5
+		},
+		// Policier
+		policeman: {
+			attack: 2,
+			buildingAttack: 1,
+			hp: 10,
+			speed: 0.5,
+			cost: 2,
+			time: 2
+		},
+		// Mécha
+		Mecha: {
+			attack: 10,
+			buildingAttack: 10,
+			hp: 50,
+			speed: 0.25,
+			cost: 20,
+			time: 20
+		}
+	},
 	objectMapping : {
 		"stupid" : {
 			file : "data/root.js"
