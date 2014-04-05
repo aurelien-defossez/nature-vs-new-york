@@ -30,6 +30,12 @@ Game.config = {
 	    		'input1' : 'protectorTree',
 	    		'input2' : 'rootTree',
 	    		'input3' : 'bramble'
+	    	},
+	    	units: {
+	    		'input0' : 'sapCarrier',
+	    		'input1' : 'wolf',
+	    		'input2' : 'bear',
+	    		'input3' : 'ent'
 	    	}
     	},
     	buildings : {
@@ -54,6 +60,12 @@ Game.config = {
 	    		'input1' : 'policeStation',
 	    		'input2' : 'workShop',
 	    		'input3' : 'armedConcrete'
+	    	},
+	    	units: {
+	    		'input0' : 'builder',
+	    		'input1' : 'lumberjack',
+	    		'input2' : 'policeman',
+	    		'input3' : 'mecha'
 	    	}
     	},
     	buildings : {
@@ -95,7 +107,7 @@ Game.config = {
 			time: 6
 		},
 		// Ent
-		Ent: {
+		ent: {
 			attack: 10,
 			buildingAttack: 10,
 			hp: 50,
@@ -132,7 +144,7 @@ Game.config = {
 			time: 2
 		},
 		// Mécha
-		Mecha: {
+		mecha: {
 			attack: 10,
 			buildingAttack: 10,
 			hp: 50,
