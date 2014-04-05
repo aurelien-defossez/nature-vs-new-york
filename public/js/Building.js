@@ -1,10 +1,14 @@
-function Building(scene, loader, button, player){
+function Building(scene, loader, button, player, hq, laneIndex){
     this.player = player
     this.parentScene = scene
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
+	this.type = buildingType
+	this.hq = hq
+	this.laneIndex = laneIndex
 	this.builtTime = Game.config.buildings[buildingType].time
 	this.buildingProgress = 0
+	this.built = false
 	this.maxHP = Game.config.buildings[buildingType].hp
 	this.currentHP = this.maxHP * 0.2
 	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
@@ -70,20 +74,37 @@ Building.prototype.changeAnimation = function(nextAnimation)
 	}
 }
 
-Building.prototype.progressBuilding = function(build)
+Building.prototype.applyEffect = function()
 {
-	if (build){
+	switch(this.type) {
+		// Mana ++
+		case 'manaTree':
+		case 'bank':
+			this.hq.manaPerSecond += Game.config.buildings[this.type].manaPerSecond
+		break
 
-	}else{
+		// Capture ++
+		case 'rootTree':
+			this.hq.captureSpeed[this.laneIndex] += Game.config.buildings[this.type].captureSpeed
+		break
 
+		case 'protectorTree':
+			// Nothing to do
+		break
 	}
 }
 
 Building.prototype.update = function(time, dt){
-	if (this.buildingProgress < 1)
+	if (!this.built)
 	{
 		this.buildingProgress = this.buildingProgress + this.BuildRate * dt;
 		this.currentHP = this.currentHP + this.HpGainRate * dt;
+
+		if (this.buildingProgress >= 1) {
+			this.built = true
+			this.buildingProgress = 1
+			this.applyEffect()
+		}
 	}
 	this.healthBar.scale.x = this.currentHP / this.maxHP;
 	this.healthBar.position.x = this.currentHP / this.maxHP * 0.6 * 0.5 + 0.4 * 0.5
@@ -101,9 +122,8 @@ Building.prototype.update = function(time, dt){
 	if (this.currentAnimation != null)
 	{
 		//debugger;
-		this.currentTime = (Math.abs(this.buildingProgress))
 		this.currentAnimation.reset()
-		this.currentAnimation.currentTime = this.currentTime;
+		this.currentAnimation.currentTime = this.buildingProgress
 		this.currentAnimation.update(0)
 	}
 }

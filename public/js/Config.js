@@ -146,7 +146,7 @@ Game.config = {
 	buildings: {
 		// Arbre Mana
 		manaTree: {
-			hp: 100,
+			hp: 50,
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
@@ -174,7 +174,7 @@ Game.config = {
 		},
 		// Banque
 		bank: {
-			hp: 100,
+			hp: 50,
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
@@ -227,6 +227,16 @@ Game.config = {
 			'Y' : 'input3'
 		},
         keyboard1 :{
+        	38: 'up',		// W
+        	40: 'down',		// S
+        	76: 'input0',	// L
+        	79: 'input1',	// O
+        	75: 'input2',	// K
+        	73: 'input3',	// I
+        	57: 'shoulder',	// 9
+        	48: 'bumper'	// 0
+		},
+        keyboard2 :{
         	87: 'up',		// W
         	90: 'up',		// Z
         	83: 'down',		// S
@@ -237,16 +247,6 @@ Game.config = {
         	65: 'shoulder',	// A
         	81: 'shoulder',	// Q
         	69: 'bumper'	// E
-		},
-        keyboard2 :{
-        	38: 'up',		// W
-        	40: 'down',		// S
-        	76: 'input0',	// L
-        	79: 'input1',	// O
-        	75: 'input2',	// K
-        	73: 'input3',	// I
-        	57: 'shoulder',	// 9
-        	48: 'bumper'	// 0
 		}
 	}
 }

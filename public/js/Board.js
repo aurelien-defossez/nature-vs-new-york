@@ -39,7 +39,7 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	} else {
 		for (var i = lane.cells.length -1 ; i >= 0; i--){
 			if (lane.cells[i].building == null && lane.cells[i].owner == playerName){
-				lane.cells[i].build(button, playerName)
+				lane.cells[i].build(button, playerName, hq)
 				hasEmptyCell = true;
 				break;
 			}
@@ -51,7 +51,7 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 		var building = hq.buyBuilding(lane.scene, playerName, button);
 
 		if (building) {
-			lane.popBuilding(button, playerName)
+			lane.popBuilding(button, playerName, this.hqs[playerName])
 		} else {
 	    	console.log("Not enough mana")
 	    }
@@ -95,7 +95,7 @@ Board.prototype.loadHQs = function(hud){
 Board.prototype.loadLanes = function(loader){
 	this.lanes = []
 	for (var i = 0; i < 3; i++) {
-		var lane = new Lane(this, loader)
+		var lane = new Lane(i, this, loader)
 		lane.scene.translateX( Game.config.lane.marginLeft )
 		lane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing * i))
 		this.lanes[i] = lane
