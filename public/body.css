@@ -26,6 +26,14 @@ body{
   height:100%;
 }
 
+#hud {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  margin: 0px auto;
+  margin-top: -720px
+}
+
 #hud .mana,
 #hud .dollars {
   position: absolute;
@@ -35,10 +43,11 @@ body{
 }
 
 #hud .mana {
-  left: 100px;
+  left: 60px;
+  text-align: left;
 }
 
 #hud .dollars {
-  left: 1220px;
+  left: 1180px;
   text-align: right;
 }
