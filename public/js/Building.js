@@ -65,9 +65,6 @@ Building.prototype.progressBuilding = function(build)
 }
 
 Building.prototype.update = function(time, dt){
-	if (this.building/buildingProgress)
-	this.building.buildingProgress = 1/this.builtTime * dt
-			this.lanes[i].capture(this.type, this.captureSpeed[i] * dt)
 
 	if (this.currentAnimation != null)
 	{
