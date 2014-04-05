@@ -39,7 +39,8 @@ Game.config = {
 		}
 	},
     unit : {
-		speed : 1
+		speed : 1,
+		buildTime : 3 //in seconds
 	}
 }
 

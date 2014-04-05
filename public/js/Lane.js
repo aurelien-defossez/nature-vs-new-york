@@ -6,6 +6,7 @@ function Lane(scene, loader)
 	scene.add(this.scene)
 	this.cells = [];
     this.units = [];
+	this.unitsCreationQueue = [];
 	laneWidth = Game.config.lane.cellNumber
 
 	laneHeight = 1
@@ -33,8 +34,38 @@ function Lane(scene, loader)
 	//this.scene.add(this.cell.scene)
 	//this.cell2 = new Cell(scene, position, 1);
 
+	
+}
 
+Lane.prototype.buildNextUnit = function(){
+	if (this.unitsCreationQueue.length > 0) {
+		this.unitsCreationQueue[0].startBuild();
+		console.log("Start building next unit...")
+	}
+}
 
+Lane.prototype.runUnit = function(unit){
+	this.units.push(unit);
+	this.unitsCreationQueue.splice(0,1)
+	console.log("Unit ready!")
+}
+
+Lane.prototype.addUnitInQueue = function(unit){
+	this.unitsCreationQueue.push(unit)
+	if (this.unitsCreationQueue.length==1) {
+		unit.startBuild()
+	}
+}
+
+Lane.prototype.processCreationQueue = function(time, dt){
+	for (var i = 0; i < this.unitsCreationQueue.length; i++){
+		var unit = this.unitsCreationQueue[i]
+		unit.update(time, dt)
+		if (i==0 && unit.isBuilt()){
+			this.runUnit(unit)
+			this.buildNextUnit()
+		}
+	}
 }
 
 
@@ -45,4 +76,6 @@ Lane.prototype.update = function(time, dt){
     for (var i = 0; i < this.units.length; i++){
 		this.units[i].update(time, dt);
 	}
+	
+	this.processCreationQueue(time, dt)
 }

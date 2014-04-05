@@ -6,14 +6,14 @@ function Player(name, board, controller) {
 
     // Time in ms between two actions
     this.timeBetweenActions = 200;
-
+	
 }
 
 Player.prototype.createUnit = function(button, laneIndex) {
-    var lane = this.board.lanes[laneIndex],
-        unit = new Unit(lane.scene, this.name, button);
-
-    lane.units.push(unit);
+	var lane = this.board.lanes[laneIndex]
+	var unit = new Unit(lane.scene, this.name, button)
+	
+	lane.addUnitInQueue(unit)
 }
 
 Player.prototype.controlAction = function() {
