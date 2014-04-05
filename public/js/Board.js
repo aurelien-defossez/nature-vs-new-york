@@ -1,9 +1,9 @@
-function Board(scene, loader)
+function Board(scene, loader, hud)
 {
 
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
-
+	
 	this.boardWidth = Game.config.lane.marginLeft + Game.config.lane.cellNumber + Game.config.lane.marginRight
 	this.boardHeight = Game.config.lane.marginTop + 2 * Game.config.lane.spacing + 3 + Game.config.lane.marginBottom
 	planeGeom = new THREE.PlaneGeometry(this.boardHeight, this.boardWidth);
@@ -17,7 +17,7 @@ function Board(scene, loader)
 	this.plane.castShadow = false
 	this.plane.receiveShadow = true
 
-	this.loadHQs(loader)
+	this.loadHQs(loader, hud)
 	this.loadLanes(loader)
 
 
@@ -33,14 +33,14 @@ Board.prototype.update =  function(time, dt){
 	this.uperLane.update(time, dt)
 }
 
-Board.prototype.loadHQs = function(loader){
+Board.prototype.loadHQs = function(loader, hud){
 	// Create Nature HQ
-	this.leftHQ = new HQ(this.scene, HQ.typesEnum.NATURE);
+	this.leftHQ = new HQ(this.scene, HQ.typesEnum.NATURE, hud);
 	this.leftHQ.scene.translateZ(- (Game.config.lane.marginBottom))
 	
 
 	// Create New York HQ
-	this.rightHQ = new HQ(this.scene, HQ.typesEnum.NEW_YORK);
+	this.rightHQ = new HQ(this.scene, HQ.typesEnum.NEW_YORK, hud);
 	this.rightHQ.scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
 	this.rightHQ.scene.translateZ(- (Game.config.lane.marginBottom))
 }

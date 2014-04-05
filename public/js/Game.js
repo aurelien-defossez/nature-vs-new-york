@@ -14,14 +14,15 @@ function Game()
 	
 	this.scene = new THREE.Scene()
 
-	this.board= new Board(this.scene, this.loader);
+	
+	this.HUD = new HUD()
+	this.HUD.scene.position.set( 0, 0, -1);
+	this.board= new Board(this.scene, this.loader, this.HUD);
 	
 	this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
 	this.scene.add(this.camera)
 	this.camera.position.set(this.board.boardWidth/2, 7, 2)
 	this.camera.lookAt(new THREE.Vector3( this.board.boardWidth/2, 0, -this.board.boardHeight/2 ))
-	this.HUD = new HUD()
-	this.HUD.scene.position.set( 0, 0, -1);
 	this.camera.add(this.HUD.scene);
 	
 	this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
