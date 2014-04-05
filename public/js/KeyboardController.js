@@ -1,24 +1,4 @@
-/**
- * Actions on Keyboard:
- *
- * Player 1
- * Button A: Q
- * Button B: S
- * Button X: A
- * Button Y: Z
- * Cursor Up: D
- * Cursor Down: X
- * Button R: F
- *
- * Player 2
- * Button A: J
- * Button B: K
- * Button X: U
- * Button Y: I
- * Cursor Up: O
- * Cursor Down: L
- * Button R: M
- */
+
 function KeyboardController(player) {
     this.player = player;
 
@@ -56,13 +36,13 @@ KeyboardController.prototype.updateKey = function(key, value) {
         case 'input3':
             this.buttons.y = value;
             break;
-        case 'input4':
+        case 'up':
             this.buttons.up = value;
             break;
-        case 'input5':
+        case 'down':
             this.buttons.down = value;
             break;
-        case 'input6' :
+        case 'shoulder' :
             this.buttons.r = value;
             break;
     }
