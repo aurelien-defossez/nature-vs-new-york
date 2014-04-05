@@ -30,8 +30,8 @@ function Cell(scene, loader)
 	this.building = null;
 	scene.add(this.scene)
 	this.loader = loader
-	this.scene.add(this.cube)
-	this.scene.add(this.captureCube)
+	//this.scene.add(this.cube)
+	//this.scene.add(this.captureCube)
 }
 
 Cell.prototype.setOwner = function(player)

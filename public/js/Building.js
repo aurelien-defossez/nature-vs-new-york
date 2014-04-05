@@ -2,12 +2,18 @@ function Building(scene, loader, button, player){
     this.player = player
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
+	this.builtTime = Game.config.buildings[buildingType].time
+	this.maxHP = Game.config.buildings[buildingType].hp
+	this.currentHP = this.maxHP * 0.2
+	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
 
     console.log('Player ' + player + ' is building a ' + buildingType);
     
 	this.parentScene = scene
 	this.animations = {}
 	this.currentAnimation = null
+	this.animationTime = 5;
+	this.buildingProgress = 0
 	var self = this
 
 	loader.load(fileName, function(geometry, materials)
@@ -32,8 +38,9 @@ function Building(scene, loader, button, player){
 		}
 		
 		self.animations.create = new THREE.Animation(self.mesh, buildingType+"_create", THREE.AnimationHandler.CATMULLROM)
-		self.animations.create.loop = true
+		self.animations.create.loop = false
 		self.currentAnimation = self.animations.create
+		self.animationTime = self.currentAnimation.data.length;
 		self.currentAnimation.play()
 	})
 }
@@ -48,20 +55,26 @@ Building.prototype.changeAnimation = function(nextAnimation)
 	}
 }
 
+Building.prototype.progressBuilding = function(build)
+{
+	if (build){
+
+	}else{
+
+	}
+}
+
 Building.prototype.update = function(time, dt){
+	if (this.building/buildingProgress)
+	this.building.buildingProgress = 1/this.builtTime * dt
+			this.lanes[i].capture(this.type, this.captureSpeed[i] * dt)
+
 	if (this.currentAnimation != null)
 	{
-		if (this.currentAnimation.isPlaying){
-
-			this.currentAnimation.update(dt)
-		}
-		else{
-			if (this.currentAnimation.data.name == "destroy"){
-				this.changeAnimation("create");
-			}else{
-				this.changeAnimation("destroy");
-			}
-		}
+		this.currentTime = (Math.abs(this.captureProgress)) * this.animationTime
+		this.currentAnimation.reset()
+		this.currentAnimation.currentTime = this.currentTime;
+		this.currentAnimation.update(0)
 	}
 }
 
