@@ -34,6 +34,9 @@ Game.config = {
 		"stupid" : {
 			file : "data/root.js"
 		}
+	},
+    unit : {
+		speed : 1
 	}
 }
 
