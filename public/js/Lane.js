@@ -130,6 +130,21 @@ Lane.prototype.capture = function(type, value){
 		}
 	}
 }
+Lane.prototype.engageUnitsFight = function(unit1, unit2, time){
+	unit1.engageFight(unit2, time)
+	unit2.engageFight(unit1, time)
+	console.log("Fight!!!")
+} 
+
+Lane.prototype.unitCollides = function(unit){
+	for (i = 0; i < this.units.length; i++){
+		var target = this.units[i]
+		if(target.target==null && unit.collides(target)){
+			console.log("collides")
+			return this.units[i]
+		}
+	}
+}
 
 Lane.prototype.update = function(time, dt){
 	var i,
@@ -142,21 +157,32 @@ Lane.prototype.update = function(time, dt){
     for (i = 0; i < this.units.length; i++){
 		unit = this.units[i];
         unit.update(time, dt);
+		var unitCollided
+		if (unit.target==null) {
+			unitCollided = this.unitCollides(unit)
+		}
         
-        if(unit.player === HQ.typesEnum.NATURE) {
-            if(unit.xPosition > Game.config.lane.cellNumber) {
-                this.board.hitEnemy(unit.player);
-                unit.destroy();
-                unitToRemove.push(i);
-            }
-        } else if(unit.player === HQ.typesEnum.NEW_YORK) {
-            if(unit.xPosition < 0) {
-                this.board.hitEnemy(unit.player);
-                unit.destroy();
-                unitToRemove.push(i);
-            }
-        }
-        
+		if (unitCollided) {
+			this.engageUnitsFight(unit, unitCollided, time);
+		} else {
+			if(unit.player === HQ.typesEnum.NATURE) {
+				if(unit.xPosition > Game.config.lane.cellNumber) {
+					this.board.hitEnemy(unit.player);
+					unit.destroy();
+					unitToRemove.push(i);
+				}
+			} else if(unit.player === HQ.typesEnum.NEW_YORK) {
+				if(unit.xPosition < 0) {
+					this.board.hitEnemy(unit.player);
+					unit.destroy();
+					unitToRemove.push(i);
+				}
+			}
+		}
+		if (!unit.isAlive()) {
+			unitToRemove.push(i);
+		}
+		
 	}
 	
 	this.processCreationQueue(time, dt)

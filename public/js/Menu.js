@@ -34,14 +34,12 @@ function Menu(){
 }
 
 Menu.prototype.show = function(screenNb) {
-    console.log("show")
     this.setScreen(screenNb)
     this.container.appendChild(this.domElement)
     this.shown = true
 }
 
 Menu.prototype.hide = function() {
-    console.log("hide")
     this.container.removeChild(this.domElement)
     this.shown = false
 }
