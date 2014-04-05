@@ -40,14 +40,6 @@ Game.config = {
 	    		'input2' : 'bear',
 	    		'input3' : 'ent'
 	    	}
-    	},
-    	buildings : {
-    		'natureCell' : {
-    			modelFile : "data/root.js"
-    		},
-    		'manaTree' : {
-    			modelFile : "data/stupid.js"
-    		}
     	}
 	},
 	newYork : {
@@ -70,14 +62,6 @@ Game.config = {
 	    		'input2' : 'policeman',
 	    		'input3' : 'mecha'
 	    	}
-    	},
-    	buildings : {
-    		'buildingCell' : {
-    			modelFile : "data/rails.js"
-    		},
-    		'bank' : {
-    			modelFile : "data/stupid.js"
-    		}
     	}
 	},
 	units: {
@@ -162,7 +146,8 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 1.0
+			manaPerSecond: 1.0,
+			modelFile : "data/stupid.js"
 		},
 		// Arbre Protecteur
 		protectorTree: {
@@ -189,7 +174,8 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 1.0
+			manaPerSecond: 1.0,
+			modelFile : "data/stupid.js"
 		},
 		// Station de Police
 		policeStation: {
@@ -210,7 +196,15 @@ Game.config = {
 			hp: 50,
 			cost: 10,
 			time: 10
-		}
+		},
+		// Case nature
+		natureCell : {
+    			modelFile : "data/root.js"
+		},
+		// Case newYork
+		newYorkCell : {
+    			modelFile : "data/rails.js"
+		},
 	},
 	objectMapping : {
 		"stupid" : {

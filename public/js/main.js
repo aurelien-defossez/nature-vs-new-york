@@ -15,7 +15,7 @@ function update(timestamp)
 		game.isStartup = false
 	}
 	if (!menu.isShown()) {
-      game.update(timestamp)
+      game.update(timestamp * 0.001)
     }
 	requestAnimationFrame(update)
     
