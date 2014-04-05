@@ -189,7 +189,7 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			policemansPerSecond: 0.2
+			policemansDelay: 10
 		},
 		// Atelier
 		workshop: {

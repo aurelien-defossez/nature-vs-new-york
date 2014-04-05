@@ -1,11 +1,12 @@
-function Building(scene, loader, button, player, hq, laneIndex){
+function Building(scene, loader, button, player, hq, lane, cell){
     this.player = player
     this.parentScene = scene
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
 	this.type = buildingType
 	this.hq = hq
-	this.laneIndex = laneIndex
+	this.lane = lane
+	this.cell = cell
 	this.builtTime = Game.config.buildings[buildingType].time
 	this.buildingProgress = 0
 	this.destroyScaffoldingProgress = 0
@@ -20,6 +21,7 @@ function Building(scene, loader, button, player, hq, laneIndex){
 	this.lowLifeColor = 0xaa0000;
 	this.middleLifeColor = 0xff8928;
 	this.highLifeColor = 0x00aa00;
+	this.time = 0
 
 	this.healthBarBackground = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.03,0.03),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
 	this.healthBarBackground.position.x = 1 * 0.5
@@ -102,10 +104,11 @@ Building.prototype.applyEffect = function()
 
 		// Capture ++
 		case 'rootTree':
-			this.hq.captureSpeed[this.laneIndex] += Game.config.buildings[this.type].captureSpeed
+			this.hq.captureSpeed[this.lane.id] += Game.config.buildings[this.type].captureSpeed
 		break
 
 		case 'protectorTree':
+		case 'policeStation':
 			// Nothing to do
 		break
 	}
@@ -129,7 +132,15 @@ Building.prototype.update = function(time, dt){
 			
 		}
 		this.animationTimerSetter = this.buildingProgress;
+	} else {
+		this.time += dt
+		if (this.type == "policeStation" && this.time >= Game.config.buildings.policeStation.policemansDelay) {
+			this.time -= Game.config.buildings.policeStation.policemansDelay
+			this.lane.createUnit("newYork", "policeman", this.cell.id + .5)
+		}
 	} 
+
+
 	if (!this.ScaffoldingDestroyed)
 	{
 		this.destroyScaffoldingProgress = this.destroyScaffoldingProgress + this.BuildRate * dt * 10;
