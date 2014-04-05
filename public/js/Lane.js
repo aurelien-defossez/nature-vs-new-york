@@ -143,18 +143,14 @@ Lane.prototype.update = function(time, dt){
 		unit = this.units[i];
         unit.update(time, dt);
         
-        if(unit.player === HQ.typesEnum.NATURE) {
-            if(unit.xPosition > Game.config.lane.cellNumber) {
-                this.board.hitEnemy(unit.player);
-                unit.destroy();
-                unitToRemove.push(i);
-            }
-        } else if(unit.player === HQ.typesEnum.NEW_YORK) {
-            if(unit.xPosition < 0) {
-                this.board.hitEnemy(unit.player);
-                unit.destroy();
-                unitToRemove.push(i);
-            }
+        if(unit.player === HQ.typesEnum.NATURE && unit.xPosition > Game.config.lane.cellNumber) {
+            this.board.hitEnemy(unit.player);
+            unit.destroy();
+            unitToRemove.push(i);
+        } else if(unit.player === HQ.typesEnum.NEW_YORK && unit.xPosition < 0) {
+            this.board.hitEnemy(unit.player);
+            unit.destroy();
+            unitToRemove.push(i);
         }
         
 	}
