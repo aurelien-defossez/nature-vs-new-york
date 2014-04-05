@@ -63,10 +63,6 @@ HQ.prototype.isAlive = function(){
   	return this.health > 0
 }
 
-HQ.prototype.canCreateUnit = function(cost){
-	return this.mana >= cost
-}
-
 HQ.prototype.buyUnit = function(scene, player, type){
 	var unitType = Game.config[player].mapping.units[type]
 	var cost = Game.config.units[unitType].cost
