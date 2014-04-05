@@ -38,28 +38,20 @@ Board.prototype.loadHQs = function(hud){
 }
 
 Board.prototype.loadLanes = function(loader){
-	// Create Lower Lane
-	this.lowerLane = new Lane(this.scene, loader)
-	this.lowerLane.scene.translateX( Game.config.lane.marginLeft )
-	this.lowerLane.scene.translateZ(- (Game.config.lane.marginBottom))
-	
-	// Create Middle Lane
-	this.middleLane = new Lane(this.scene, loader);
-	this.middleLane.scene.translateX( Game.config.lane.marginLeft )
-	this.middleLane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing + 1 ))
-
-	// Create Upper Lane
-	this.uperLane = new Lane(this.scene, loader);
-	this.uperLane.scene.translateX( Game.config.lane.marginLeft )
-	this.uperLane.scene.translateZ(- (Game.config.lane.marginBottom + 2* (Game.config.lane.spacing + 1)))
+	this.lanes = []
+	for (var i = 0; i < 3; i++) {
+		var lane = new Lane(this.scene, loader)
+		lane.scene.translateX( Game.config.lane.marginLeft )
+		lane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing * i))
+		this.lanes[i] = lane
+	}
 }
 
 Board.prototype.update = function(time, dt) {
 	for (var i = 0; i < 2; i++) {
 		this.hqs[i].update(time, dt)
 	}
-
-	this.lowerLane.update(time, dt)
-	this.middleLane.update(time, dt)
-	this.uperLane.update(time, dt)
+	for (var i = 0; i < 3; i++) {
+		this.lanes[i].update(time, dt)
+	}
 }
