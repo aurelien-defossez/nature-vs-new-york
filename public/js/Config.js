@@ -18,10 +18,12 @@ Game.config = {
         }     
     },
     nature : {
-		initOwnedCells : 1
+		initOwnedCells : 1,
+		health : 10
 	},
 	newYork : {
-		initOwnedCells : 2
+		initOwnedCells : 2,
+		health : 10
 	},
 	objectMapping : {
 		"stupid" : {

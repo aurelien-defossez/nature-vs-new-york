@@ -5,6 +5,7 @@ function Lane(scene, loader)
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
 	this.cells = [];
+    this.units = [];
 	laneWidth = Game.config.lane.cellNumber
 
 	laneHeight = 1
