@@ -26,3 +26,17 @@ function Lane()
 	//this.scene.add(this.cell.scene)
 	//this.cell2 = new Cell(scene, position, 1);
 }
+
+Lane.prototype.setPlayerPosition = function(player, position){
+	var firstCell = 0
+	var lastCell = this.cells.length -1
+	if (player == "nature"){
+		lastCell = position - 1
+	}else if (player == "newYork"){
+		firstCell = this.cells.length - position 
+	}
+	for (var i = firstCell; i <= lastCell; i++)
+	{
+		this.cells[i].setOwner(player);
+	}
+}

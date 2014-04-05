@@ -31,7 +31,7 @@ function Game()
 	this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
 	this.hemiLight.color.setHSL(0.6, 1, 0.6)
 	this.hemiLight.groundColor.setHSL(0.095, 1, 0.75)
-	this.hemiLight.position.set(0, 10, 0)
+	this.hemiLight.position.set(0, 100, 0)
 	this.scene.add(this.hemiLight)
 	
 	this.dirLight = new THREE.DirectionalLight(0xffffff, 1)
@@ -48,6 +48,7 @@ function Game()
 	this.dirLight.shadowCameraBottom = -shadowSize;
 	this.dirLight.shadowCameraNear = 30;
 	this.dirLight.shadowCameraFar = 60;
+	this.dirLight.shadowBias = -0.00092
 	//this.dirLight.shadowCameraVisible = true
 	//this.dirLight.shadowMapBias = -10;
 	this.dirLight.shadowMapWidth = this.dirLight.shadowMapHeight = 1024;
