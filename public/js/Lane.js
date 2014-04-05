@@ -7,7 +7,8 @@ function Lane(scene, loader)
 	this.cells = [];
     this.units = [];
 	laneWidth = Game.config.lane.cellNumber
-
+	this.naturePosition = Game.config.nature.initOwnedCells;
+	this.newYorkPosition = Game.config.newYork.initOwnedCells;
 	laneHeight = 1
 	//this.laneCube = new THREE.Mesh( new THREE.CubeGeometry(laneWidth,0.1,laneHeight),  new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
 	//this.laneCube.position.x = laneWidth/2
@@ -21,9 +22,9 @@ function Lane(scene, loader)
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
-		if (i < Game.config.nature.initOwnedCells) {
+		if (i < this.naturePosition) {
 			cell.setOwner("nature")
-		} else if (i >= Game.config.lane.cellNumber - Game.config.newYork.initOwnedCells) {
+		} else if (i >= Game.config.lane.cellNumber - this.newYorkPosition) {
 			cell.setOwner("newYork")
 		}
 	}
@@ -35,6 +36,22 @@ function Lane(scene, loader)
 
 
 
+}
+
+Lane.prototype.popBuilding = function(button, playerName){
+	if (playerName == "nature"){
+		for (var i = 0; i <= this.naturePosition; i++){
+			if (this.cells[i].building == null){
+				this.cells[i].build(button, playerName)
+			}
+		}
+	}else if (playerName == "newYork"){
+		for (var i = this.cells.length -1 ; i >= this.cells.length - this.newYorkPosition ; i--){
+			if (this.cells[i].building == null){
+				this.cells[i].build(button, playerName)
+			}
+		}
+	}
 }
 
 

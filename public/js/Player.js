@@ -3,6 +3,7 @@ function Player(name, board, controller) {
     this.name = name;
     this.board = board;
     this.controller = controller;
+    this.controllerType = "gamepad";
 
     // Time in ms between two actions
     this.timeBetweenActions = 200;
@@ -10,11 +11,14 @@ function Player(name, board, controller) {
 }
 
 Player.prototype.createUnit = function(button, laneIndex) {
-    var lane = this.board.lanes[laneIndex],
-        unit = new Unit(lane.scene, this.name, button);
-
-    lane.units.push(unit);
+    this.board.popMonster(Game.config.controls[this.controllerType][button], laneIndex, this.name)
 }
+
+Player.prototype.createBuilding = function(button, laneIndex) {
+    this.board.popBuilding(Game.config.controls[this.controllerType][button], laneIndex, this.name)
+}
+
+
 
 Player.prototype.controlAction = function() {
     var time = new Date(),

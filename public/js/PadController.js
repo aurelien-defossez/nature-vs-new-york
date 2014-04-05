@@ -21,14 +21,16 @@ PadController.prototype.checkAction = function(player) {
         pads = Gamepad.getStates();
         pad = pads[this.padNumber];
         if(pad) {
+
+            buildingMode = (pad.leftShoulder1 > 0.3)||(pad.rightShoulder1 > 0.3)
             if(pad.faceButton0) {
-                arrowAction(player, pad, 'A')
+                arrowAction(player, pad, 'A', buildingMode)
             } else if(pad.faceButton1) {
-                arrowAction(player, pad, 'B')
+                arrowAction(player, pad, 'B', buildingMode)
             } else if(pad.faceButton2) {
-                arrowAction(player, pad, 'X')
+                arrowAction(player, pad, 'X', buildingMode)
             } else if(pad.faceButton3) {
-                arrowAction(player, pad, 'Y')
+                arrowAction(player, pad, 'Y', buildingMode)
             }
         }
     }else{
@@ -36,7 +38,7 @@ PadController.prototype.checkAction = function(player) {
     }
 }
 
-function arrowAction(player, pad, button) {
+function arrowAction(player, pad, button, buildingMode) {
     var lane;
     if( pad.dpadUp ) {
         lane = 2;
@@ -45,5 +47,11 @@ function arrowAction(player, pad, button) {
     } else {
         lane = 1;
     }
-    player.createUnit(button, lane);
+    if (buildingMode)
+    {
+        player.createBuilding(button, lane);
+    }else{
+        player.createUnit(button, lane);
+    }
+    
 }

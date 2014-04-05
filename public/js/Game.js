@@ -22,7 +22,7 @@ function Game()
 
     this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
     this.scene.add(this.camera)
-    this.camera.position.set(this.board.boardWidth/2, 10, 2)
+    this.camera.position.set(this.board.boardWidth/2, 7, 4)
     this.camera.lookAt(new THREE.Vector3( this.board.boardWidth/2, 0, -this.board.boardHeight/2 ))
     this.camera.add(this.hud.scene);
 
@@ -58,8 +58,8 @@ function Game()
     this.musicManager = new MusicManager()
 
     this.players = {
-        left: new Player('nature', this.board, new PadController(0)),
-        right: new Player('newYork', this.board, new PadController(1))
+        left: new Player('nature', this.board, new PadController(1)),
+        right: new Player('newYork', this.board, new PadController(0))
     }
 }
 

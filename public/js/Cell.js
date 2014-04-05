@@ -26,12 +26,12 @@ Cell.prototype.setOwner = function(player)
 	}
 }
 
-Cell.prototype.build = function(buildingName){
+Cell.prototype.build = function(button, player){
 	if (this.building)
 	{
 		this.building.destroy()
 	}
-	this.building = new Building(this.scene, this.loader, buildingName);
+	this.building = new Building(this.scene, this.loader, button, player);
 }
 
 

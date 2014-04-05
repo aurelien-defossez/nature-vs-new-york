@@ -23,7 +23,18 @@ Game.config = {
     	hp: 500,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.05
+    	captureSpeed: 0.05,
+    	actions : {
+    		'input0' : 'manaTree',
+    		'input1' : 'protectorTree',
+    		'input2' : 'rootTree',
+    		'input3' : 'bramble'
+    	},
+    	buildings : {
+    		'manaTree' : {
+    			modelFile : "data/root.js"
+    		}
+    	}
 	},
 	newYork : {
 		initOwnedCells : 1,
@@ -31,7 +42,18 @@ Game.config = {
     	hp: 500,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0
+    	captureSpeed: 0,
+    	actions : {
+    		'input0' : 'bank',
+    		'input1' : 'policeStation',
+    		'input2' : 'workShop',
+    		'input3' : 'armedConcrete'
+    	},
+    	buildings : {
+    		'bank' : {
+    			modelFile : "data/rails.js"
+    		}
+    	}
 	},
 	objectMapping : {
 		"stupid" : {
@@ -40,6 +62,14 @@ Game.config = {
 	},
     unit : {
 		speed : 1
+	},
+	controls : {
+		'gamepad' :{
+			'A' : 'input0',
+			'B' : 'input1',
+			'X' : 'input2',
+			'Y' : 'input3'
+		}
 	}
 }
 
