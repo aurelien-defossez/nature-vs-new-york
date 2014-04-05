@@ -58,8 +58,8 @@ function Game()
     this.musicManager = new MusicManager()
 
     this.players = {
-        left: new Player('nature', this.board, new PadController(1)),
-        right: new Player('newYork', this.board, new PadController(2))
+        left: new Player('nature', this.board, new PadController(0)),
+        right: new Player('newYork', this.board, new PadController(1))
     }
 }
 
