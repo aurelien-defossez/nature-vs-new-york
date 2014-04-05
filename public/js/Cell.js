@@ -31,13 +31,6 @@ function Cell(scene, loader)
 	this.loader = loader
 	this.scene.add(this.cube)
 	this.scene.add(this.captureCube)
-
-	console.log("captureCube", this.captureCube)
-
-
-
-
-
 }
 
 Cell.prototype.setOwner = function(player)

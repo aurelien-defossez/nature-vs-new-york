@@ -1,14 +1,24 @@
 function Unit(scene, player, type) {
+    type = "wolf"
     console.log('Player ' + player + ' is creating a ' + type);
 
+    var unitConfig = Game.config.units[type]
+    
     this.scene = scene;
     this.player = player;
+    this.type = type;
+    this.direction = (this.player === HQ.typesEnum.NATURE) ? 1 : -1;
+    this.hp = unitConfig.hp;
+    this.speed = unitConfig.speed;
+    this.attack = unitConfig.attack;
+    this.attackBuilding = unitConfig.attackBuilding;
 
     if(this.player === HQ.typesEnum.NATURE) {
         this.xPosition = 0.3/2;
     } else if(this.player === HQ.typesEnum.NEW_YORK) {
         this.xPosition = Game.config.lane.cellNumber - 0.3/2;
     }
+    
     this.buildTime = Game.config.unit.buildTime * 1000
     this.built = false
     this.pending = true
@@ -40,14 +50,7 @@ Unit.prototype.building = function(time){
 
 Unit.prototype.update = function(time, dt) {
     if (this.isBuilt()){
-        var newPositionX;
-        if(this.player === HQ.typesEnum.NATURE) {
-            newPositionX = dt * Game.config.unit.speed;
-        } else if(this.player === HQ.typesEnum.NEW_YORK) {
-            newPositionX = - dt * Game.config.unit.speed;
-        }
-
-        this.unit.translateX(newPositionX);
+        this.unit.translateX(this.speed * this.direction * dt);
         this.xPosition = this.unit.position.x;
     } else {
         this.building(time)
