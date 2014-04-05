@@ -5,7 +5,7 @@ function HUD(player)
 
 	natureTexture = THREE.ImageUtils.loadTexture('data/natureHUD.png')
 	natureMaterial = new THREE.MeshLambertMaterial( { map: natureTexture } );
-	natureGeometry = new THREE.PlaneGeometry(0.5, 0.2),
+	natureGeometry = new THREE.PlaneGeometry(0.6, 0.25),
 	this.natureHUD = new THREE.Mesh( natureGeometry,  natureMaterial )
 	this.natureHUD.translateX(-0.7)
 	this.natureHUD.translateY(0.42)
