@@ -3,6 +3,7 @@ Game.config = {
       height: 720,
       width:1280
     },
+	antialiasing : true,
 	lane : {
 		cellNumber : 8,
 		spacing : 1,
@@ -14,11 +15,13 @@ Game.config = {
     hotKeys : {
         keyboard : {
           start : "U+0050"
-        },
-        gamepad : {
-      
-        }      
-    }
+        }     
+    },
+    nature : {
+		initOwnedCells : 1
+	},
+	newYork : {
+		initOwnedCells : 2
+	}
 }
-
 
