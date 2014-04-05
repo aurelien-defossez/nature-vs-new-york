@@ -200,7 +200,8 @@ Game.config = {
 	},
     unit : {
 		speed : 1,
-		buildTime : 3 //in seconds
+		time : 3, //in seconds
+		cost : 10
 	},
 	controls : {
 		'gamepad' :{

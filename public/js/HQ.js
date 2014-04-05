@@ -63,6 +63,16 @@ HQ.prototype.isAlive = function(){
   	return this.health > 0
 }
 
+HQ.prototype.canCreateUnit = function(cost){
+	return this.mana >= cost
+}
+
+HQ.prototype.buyUnit = function(scene, player, type){
+	var unit = new Unit(scene, player, type)
+	this.mana -= unit.cost
+	return unit
+}
+
 HQ.prototype.updateHealthBar = function(){
 	var widthOld = this.healthBar.scale.x * this.healthBar.geometry.width
 	switch(this.type){

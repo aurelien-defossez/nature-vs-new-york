@@ -39,6 +39,7 @@ Lane.prototype.buildNextUnit = function(){
 Lane.prototype.runUnit = function(unit){
 	this.units.push(unit);
 	this.unitsCreationQueue.splice(0,1)
+	unit.runUnit();
 	console.log("Unit ready!")
 }
 

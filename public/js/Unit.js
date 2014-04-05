@@ -9,17 +9,10 @@ function Unit(scene, player, type) {
     } else if(this.player === 'newYork') {
         this.xPosition = Game.config.lane.cellNumber - 0.3/2;
     }
-	this.buildTime = Game.config.unit.buildTime * 1000
+	this.buildTime = Game.config.unit.time * 1000
 	this.built = false
 	this.pending = true
-	
-    this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
-    this.unit.position.x = this.xPosition;
-    this.unit.position.y = 0.3/2;
-    this.unit.position.z = -0.3/2;
-    this.unit.castShadow = true;
-    this.unit.receiveShadow = true;
-    this.scene.add(this.unit);
+	this.cost = Game.config.unit.cost
 }
 
 Unit.prototype.isBuilt = function(){
@@ -36,6 +29,15 @@ Unit.prototype.building = function(time){
 		}
 		this.built = time - this.createTime >= this.buildTime
 	}
+}
+Unit.prototype.runUnit = function(){
+	this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
+    this.unit.position.x = this.xPosition;
+    this.unit.position.y = 0.3/2;
+    this.unit.position.z = -0.3/2;
+    this.unit.castShadow = true;
+    this.unit.receiveShadow = true;
+    this.scene.add(this.unit);
 }
 
 Unit.prototype.update = function(time, dt) {

@@ -29,8 +29,22 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
-    var unit = new Unit(lane.scene, playerName, button)
+	var hq = this.getHQByPlayerName(playerName)
+	var unit = hq.buyUnit(lane.scene, playerName, button);
     lane.addUnitInQueue(unit)
+}
+Board.prototype.canCreateUnit = function(playerName){
+	var hq = this.getHQByPlayerName(playerName)
+	return hq.canCreateUnit(Game.config.unit.cost)
+}
+Board.prototype.getHQByPlayerName = function(playerName){
+	var hq = null
+	if ( playerName=="nature" ) {
+		hq = this.hqs[0]
+	} else if (playerName == "newYork"){
+		hq = this.hqs[1]
+	}
+	return hq
 }
 
 Board.prototype.loadHQs = function(hud){
