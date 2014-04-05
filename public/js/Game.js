@@ -1,6 +1,5 @@
 function Game()
 {
-
     this.currentTime = null
 
     var gameDiv = document.getElementById("game")
@@ -18,11 +17,12 @@ function Game()
     this.hud = new HUD()
     this.hud.scene.position.set( 0, 0, -1);
 
-    this.board= new Board(this.scene, this.loader, this.hud);
+    this.board = new Board(this.scene, this.loader, this.hud);
+
 
     this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
     this.scene.add(this.camera)
-    this.camera.position.set(this.board.boardWidth/2, 7, 2)
+    this.camera.position.set(this.board.boardWidth/2, 10, 2)
     this.camera.lookAt(new THREE.Vector3( this.board.boardWidth/2, 0, -this.board.boardHeight/2 ))
     this.camera.add(this.hud.scene);
 
@@ -58,8 +58,8 @@ function Game()
     this.musicManager = new MusicManager()
 
     this.players = {
-        left: new Player('nature', this.board, new PadController(1)),
-        right: new Player('newYork', this.board, new PadController(2))
+        left: new Player('nature', this.board, new PadController(0)),
+        right: new Player('newYork', this.board, new PadController(1))
     }
 }
 
@@ -67,7 +67,7 @@ Game.prototype.update = function(time)
 {
     var dt = 0
     if (this.currentTime != null) {
-        dt = Math.min(time - this.currentTime,  1000 / 25)
+        dt = Math.min(time - this.currentTime,  1000 / 25)/1000
     }
     this.currentTime = time
 

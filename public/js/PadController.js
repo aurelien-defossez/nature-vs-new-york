@@ -20,7 +20,6 @@ PadController.prototype.checkAction = function(player) {
     if(Gamepad.supported) {
         pads = Gamepad.getStates();
         pad = pads[this.padNumber];
-
         if(pad) {
             if(pad.faceButton0) {
                 arrowAction(player, pad, 'A')
@@ -32,17 +31,19 @@ PadController.prototype.checkAction = function(player) {
                 arrowAction(player, pad, 'Y')
             }
         }
+    }else{
+        console.log("Gamepad Not supported")
     }
 }
 
 function arrowAction(player, pad, button) {
     var lane;
     if( pad.dpadUp ) {
-        lane = 'upperLane';
+        lane = 2;
     } else if ( pad.dpadDown ) {
-        lane = 'lowerLane';
+        lane = 0;
     } else {
-        lane = 'middleLane';
+        lane = 1;
     }
     player.createUnit(button, lane);
 }

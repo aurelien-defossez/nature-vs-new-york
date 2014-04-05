@@ -38,6 +38,7 @@ body{
 #hud #dollars {
   position: absolute;
   top: 200px;
+  width: 50px;
   font-size: 24px;
   text-shadow: 1px 1px white;
 }
@@ -48,6 +49,6 @@ body{
 }
 
 #hud #dollars {
-  left: 1195px;
+  left: 1170px;
   text-align: right;
 }
