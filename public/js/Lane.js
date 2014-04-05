@@ -19,7 +19,7 @@ function Lane(id, board, loader) {
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
-		var cell = new Cell(this.scene, loader, this.id);
+		var cell = new Cell(this.scene, loader, this, i);
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
@@ -45,6 +45,14 @@ Lane.prototype.runUnit = function(unit){
 	this.unitsCreationQueues[unit.type].splice(0,1)
 	unit.runUnit();
 	console.log("Unit ready!")
+}
+
+Lane.prototype.createUnit = function(player, type, position){
+	var unit = new Unit(this.scene, player, type)
+	unit.runUnit();
+	unit.setPosition(position)
+	unit.activate()
+	this.units.push(unit)
 }
 
 Lane.prototype.addUnitInQueue = function(unit){

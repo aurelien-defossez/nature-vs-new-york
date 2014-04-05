@@ -46,6 +46,11 @@ Unit.prototype.startBuild = function(){
 Unit.prototype.isBuilt = function(time){
     return this.buildDelay <= 0
 }
+
+Unit.prototype.activate = function(){
+    return this.buildDelay = 0
+}
+
 Unit.prototype.runUnit = function(){
 	this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
     this.unit.position.x = this.xPosition;
@@ -56,15 +61,20 @@ Unit.prototype.runUnit = function(){
     this.scene.add(this.unit);
 }
 
+Unit.prototype.setPosition = function(x) {
+    this.unit.position.x = x
+    this.xPosition = x
+}
+
 Unit.prototype.update = function(time, dt) {
     if (this.isBuilt()){
-		if (this.target!=null){
-			this.attackTarget(time)
-		} else {
-			this.unit.translateX(this.speed * this.direction * dt)
-			this.xPosition = this.unit.position.x
-			this.unit.geometry.computeBoundingBox()
-		}
+        if (this.target!=null){
+            this.attackTarget(time)
+        } else {
+            this.unit.translateX(this.speed * this.direction * dt)
+            this.xPosition = this.unit.position.x
+            this.unit.geometry.computeBoundingBox()
+        }
     } else if (!this.pending) {
         this.buildDelay -= dt
     }
