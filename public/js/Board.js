@@ -28,14 +28,14 @@ function Board()
 
 Board.prototype.loadHQs = function(){
 	// Create Nature HQ
-	this.leftHQ = new HQ("nature");
+	this.leftHQ = new HQ(HQ.typesEnum.NATURE);
 	this.leftHQ.scene.translateZ(- (Game.config.lane.marginBottom))
 	this.scene.add(this.leftHQ.scene)
 
 
 
 	// Create New York HQ
-	this.rightHQ = new HQ("newYork");
+	this.rightHQ = new HQ(HQ.typesEnum.NEW_YORK);
 	this.scene.add(this.rightHQ.scene)
 	this.rightHQ.scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
 	this.rightHQ.scene.translateZ(- (Game.config.lane.marginBottom))
