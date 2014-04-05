@@ -74,13 +74,17 @@ Lane.prototype.processCreationQueue = function(time, dt){
 	}
 }
 
-Lane.prototype.sayNotEnoughMana = function(){
+Lane.prototype.sayNotEnoughMana = function(playerName){
 	var alertTexture = THREE.ImageUtils.loadTexture('data/NotEnoughMana.png')
 	var alert = new THREE.Mesh( new THREE.PlaneGeometry(1, 1), new THREE.MeshLambertMaterial( { map: alertTexture } ) )
 	this.alerts.push( alert );
-    alert.position.x = 0.8;
-    alert.position.y = 0.5;
-    alert.position.z = -0.3/2;
+	if(playerName === HQ.typesEnum.NATURE) {
+		alert.position.x = 0.8;
+	} else if(playerName === HQ.typesEnum.NEW_YORK) {
+		alert.position.x = Game.config.lane.cellNumber - 0.8;
+	}
+	alert.position.y = 0.5;
+	alert.position.z = -0.3/2;
     alert.castShadow = true;
     alert.receiveShadow = true;
 	alert.createDate = new Date()

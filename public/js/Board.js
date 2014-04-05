@@ -45,7 +45,7 @@ Board.prototype.popMonster = function(button, laneIndex, playerName){
     	lane.addUnitInQueue(unit)
     } else {
     	console.log("Not enough mana")
-		lane.sayNotEnoughMana()
+		lane.sayNotEnoughMana(playerName)
     }
 }
 /*Board.prototype.sayNotEnoughMana = function(lane){
