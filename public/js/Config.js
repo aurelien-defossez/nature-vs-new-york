@@ -69,6 +69,7 @@ Game.config = {
 		sapCarrier: {
 			attack: 0,
 			buildingAttack: 0,
+			cooldown: 1,
 			hp: 5,
 			speed: 0.2,
 			cost: 10,
@@ -77,8 +78,9 @@ Game.config = {
 		},
 		// Loup
 		wolf: {
-			attack: 3,
-			buildingAttack: 2,
+			attack: 1.5,
+			buildingAttack: 1,
+			cooldown: 0.5,
 			hp: 15,
 			speed: 1.0,
 			cost: 4,
@@ -88,6 +90,7 @@ Game.config = {
 		bear: {
 			attack: 5,
 			buildingAttack: 5,
+			cooldown: 1,
 			hp: 5,
 			speed: 0.4,
 			cost: 8,
@@ -95,8 +98,9 @@ Game.config = {
 		},
 		// Ent
 		ent: {
-			attack: 10,
-			buildingAttack: 10,
+			attack: 20,
+			buildingAttack: 20,
+			cooldown: 2,
 			hp: 50,
 			speed: 0.2,
 			cost: 20,
@@ -106,6 +110,7 @@ Game.config = {
 		builder: {
 			attack: 0,
 			buildingAttack: 0,
+			cooldown: 1,
 			hp: 5,
 			speed: 0.2,
 			cost: 20,
@@ -116,6 +121,7 @@ Game.config = {
 		lumberjack: {
 			attack: 2,
 			buildingAttack: 10,
+			cooldown: 1,
 			hp: 15,
 			speed: 0.4,
 			cost: 5,
@@ -125,6 +131,7 @@ Game.config = {
 		policeman: {
 			attack: 2,
 			buildingAttack: 1,
+			cooldown: 1,
 			hp: 10,
 			speed: 0.5,
 			cost: 2,
@@ -134,6 +141,7 @@ Game.config = {
 		mecha: {
 			attack: 10,
 			buildingAttack: 10,
+			cooldown: 1,
 			hp: 50,
 			speed: 0.25,
 			cost: 20,
