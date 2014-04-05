@@ -113,41 +113,56 @@ Game.config = {
 		// Arbre Mana
 		manaTree: {
 			hp: 100,
+			cost: 20,
+			time: 20,
 			manaPerSecond: 1.0
 		},
 		// Arbre Protecteur
 		protectorTree: {
 			hp: 100,
+			cost: 20,
+			time: 20,
 			attack: 9
 		},
 		// Arbre à Racines
 		rootTree: {
 			hp: 100,
+			cost: 20,
+			time: 20,
 			captureSpeed: 0.05
 		},
 		// Ronces
 		brambles: {
+			cost: 10,
+			time: 10,
 			attack: 2
 		},
 		// Banque
 		bank: {
 			hp: 100,
+			cost: 20,
+			time: 20,
 			manaPerSecond: 1.0
 		},
 		// Station de Police
 		policeStation: {
 			hp: 100,
+			cost: 20,
+			time: 20,
 			policemansPerSecond: 0.2
 		},
 		// Atelier
 		workshop: {
 			hp: 100,
+			cost: 20,
+			time: 20,
 			productionBonus: 0.2
 		},
 		// Béton Armé
 		armedConcrete: {
-			hp: 100,
-			hp: 50
+			hp: 50,
+			cost: 10,
+			time: 10
 		}
 	},
 	objectMapping : {
