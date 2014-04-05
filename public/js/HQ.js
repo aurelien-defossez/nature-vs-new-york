@@ -77,6 +77,10 @@ HQ.prototype.updateHealthBar = function(){
 			this.healthBar.position.x -= (widthOld - this.healthBar.geometry.width * scaleX)/2
 			break;
 	}
+    
+    if(this.health <= 0) {
+        menu.show(100);
+    }
 }
 
 HQ.prototype.update = function(time, dt) {
