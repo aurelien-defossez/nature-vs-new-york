@@ -41,7 +41,8 @@ Game.config = {
 			hp: 5,
 			speed: 0.2,
 			cost: 10,
-			time: 10
+			time: 10,
+			repairSpeed: 2
 		},
 		// Loup
 		wolf: {
@@ -75,9 +76,10 @@ Game.config = {
 			attack: 0,
 			buildingAttack: 0,
 			hp: 5,
-			speed: 0.,
+			speed: 0.2,
 			cost: 20,
-			time: 20
+			time: 20,
+			captureSpeed: 0.1
 		},
 		// Bûcheron
 		lumberjack: {
@@ -105,6 +107,47 @@ Game.config = {
 			speed: 0.25,
 			cost: 20,
 			time: 20
+		}
+	},
+	buildings: {
+		// Arbre Mana
+		manaTree: {
+			hp: 100,
+			manaPerSecond: 1.0
+		},
+		// Arbre Protecteur
+		protectorTree: {
+			hp: 100,
+			attack: 9
+		},
+		// Arbre à Racines
+		rootTree: {
+			hp: 100,
+			captureSpeed: 0.05
+		},
+		// Ronces
+		brambles: {
+			attack: 2
+		},
+		// Banque
+		bank: {
+			hp: 100,
+			manaPerSecond: 1.0
+		},
+		// Station de Police
+		policeStation: {
+			hp: 100,
+			policemansPerSecond: 0.2
+		},
+		// Atelier
+		workshop: {
+			hp: 100,
+			productionBonus: 0.2
+		},
+		// Béton Armé
+		armedConcrete: {
+			hp: 100,
+			hp: 50
 		}
 	},
 	objectMapping : {
