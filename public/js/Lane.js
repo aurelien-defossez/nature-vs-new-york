@@ -81,14 +81,14 @@ Lane.prototype.popBuilding = function(button, playerName){
 Lane.prototype.capture = function(type, value){
 	if (type == HQ.typesEnum.NATURE) {
 		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
-			if (this.cells[i].owner == null) {
-				this.cells[i].capture(value)
+			var cell = this.cells[i]
+			if (cell.owner == null || cell.owner != "nature" && cell.building == null) {
+				cell.capture(value)
 				break
 			}
 		}
 	}
 }
-
 
 Lane.prototype.update = function(time, dt){
 	var i,
