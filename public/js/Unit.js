@@ -1,8 +1,12 @@
 var colors = {
-    sapCarrier: 0x65F255,
-    wolf: 0x909090,
-    bear: 0x75450D,
-    ent: 0x006106
+    sapCarrier: 0x65F255,   // Light green
+    wolf: 0x909090,         // Grey
+    bear: 0x75450D,         // Brown
+    ent: 0x006106,          // Dark green
+    builder: 0xF5B507,      // Orange
+    lumberjack: 0xAB1F91,   // Purple
+    policeman: 0x2626AB,    // Dark blue
+    mecha: 0xB81D1D         // Red
 }
 
 function Unit(scene, player, type) {
