@@ -74,6 +74,16 @@ HQ.prototype.buyUnit = function(scene, player, type){
 	}
 }
 
+HQ.prototype.buyBuilding = function(scene, player, type){
+	var buildingType = Game.config[player].mapping.buildings[type]
+	var cost = Game.config.buildings[buildingType].cost
+
+	if (this.mana >= cost) {
+		this.mana -= cost
+		return true
+	}
+}
+
 HQ.prototype.updateHealthBar = function(){
 	var widthOld = this.healthBar.scale.x * this.healthBar.geometry.width
 	switch(this.type){

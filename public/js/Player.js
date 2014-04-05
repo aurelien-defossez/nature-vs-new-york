@@ -13,8 +13,6 @@ Player.prototype.createUnit = function(button, laneIndex) {
 
 Player.prototype.createBuilding = function(button, laneIndex) {
     this.board.popBuilding(Game.config.controls[this.controllerType][button], laneIndex, this.name)
-	// Time in ms between two actions
-    this.timeBetweenActions = 200;
 }
 
 Player.prototype.controlAction = function() {
