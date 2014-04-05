@@ -87,6 +87,10 @@ HQ.prototype.updateHealthBar = function(){
 			this.healthBar.position.x -= (widthOld - this.healthBar.geometry.width * scaleX)/2
 			break;
 	}
+    
+    if(this.health <= 0) {
+        menu.show(100);
+    }
 }
 
 HQ.prototype.update = function(time, dt) {
@@ -99,6 +103,11 @@ HQ.prototype.update = function(time, dt) {
 			this.lanes[i].capture(this.type, this.captureSpeed[i] * dt)
 		}
 	}
+}
+
+HQ.prototype.removeHealth = function(value) {
+	this.health -= value
+	this.updateHealthBar()
 }
 
 HQ.prototype.addMana = function(value) {
