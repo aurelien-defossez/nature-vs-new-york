@@ -1,6 +1,7 @@
 function Game()
 {
     this.currentTime = null
+	this.isStartup = true
 
     var gameDiv = document.getElementById("game")
 
