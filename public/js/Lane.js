@@ -105,15 +105,17 @@ Lane.prototype.purgeAlerts = function(){
 
 Lane.prototype.popBuilding = function(button, playerName){
 	if (playerName == HQ.typesEnum.NATURE){
-		for (var i = 0; i <= this.naturePosition; i++){
-			if (this.cells[i].building == null){
+		for (var i = 0; i <= this.cells.length -1; i++){
+			if (this.cells[i].building == null && this.cells[i].owner == playerName){
 				this.cells[i].build(button, playerName)
+				break;
 			}
 		}
 	} else {
-		for (var i = this.cells.length -1 ; i >= this.cells.length - this.newYorkPosition ; i--){
-			if (this.cells[i].building == null){
+		for (var i = this.cells.length -1 ; i >= 0; i--){
+			if (this.cells[i].building == null && this.cells[i].owner == playerName){
 				this.cells[i].build(button, playerName)
+				break;
 			}
 		}
 	}

@@ -3,17 +3,18 @@ function Building(scene, loader, button, player){
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
 	this.builtTime = Game.config.buildings[buildingType].time
+	this.buildingProgress = 0
 	this.maxHP = Game.config.buildings[buildingType].hp
 	this.currentHP = this.maxHP * 0.2
 	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
+	this.BuildRate = 1/this.builtTime;
+	this.animationTime = 1;
 
     console.log('Player ' + player + ' is building a ' + buildingType);
     
 	this.parentScene = scene
 	this.animations = {}
 	this.currentAnimation = null
-	this.animationTime = 5;
-	this.buildingProgress = 0
 	var self = this
 
 	loader.load(fileName, function(geometry, materials)
@@ -21,9 +22,6 @@ function Building(scene, loader, button, player){
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
 		self.parentScene.add(self.mesh)
-		
-		//self.mesh.position.set(0.5, 0.5, -0.5)
-		//self.mesh.rotation.set(0, Math.PI/2, 0)
 		
 		var materials = self.mesh.material.materials
 		for (var k in materials)
@@ -65,10 +63,16 @@ Building.prototype.progressBuilding = function(build)
 }
 
 Building.prototype.update = function(time, dt){
+	if (this.buildingProgress < 1)
+	{
+		this.buildingProgress = this.buildingProgress + this.BuildRate * dt;
+		this.currentHP = this.currentHP + this.HpGainRate * dt;
+	}
 
 	if (this.currentAnimation != null)
 	{
-		this.currentTime = (Math.abs(this.captureProgress)) * this.animationTime
+		//debugger;
+		this.currentTime = (Math.abs(this.buildingProgress))
 		this.currentAnimation.reset()
 		this.currentAnimation.currentTime = this.currentTime;
 		this.currentAnimation.update(0)
