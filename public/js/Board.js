@@ -105,5 +105,5 @@ Board.prototype.update = function(time, dt) {
 }
 
 Board.prototype.hitEnemy = function(player) {
-	this.hqs[player] .removeHealth(1);
+	this.hqs[player == "nature" ? "newYork" : "nature"].removeHealth(1);
 }
