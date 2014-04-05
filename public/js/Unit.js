@@ -14,6 +14,7 @@ function Unit(scene, player, type) {
 
     var unitConfig = Game.config.units[type]
     
+    this.phase = "walk"
     this.scene = scene;
     this.player = player;
     this.type = type;
@@ -37,9 +38,23 @@ Unit.prototype.startBuild = function(){
     this.pending = false
 }
 
+Unit.prototype.activate = function(){
+    return this.buildDelay = 0
+}
+
+Unit.prototype.setPosition = function(x) {
+    this.unit.position.x = x
+    this.xPosition = x
+}
+
 Unit.prototype.isBuilt = function(time){
     return this.buildDelay <= 0
 }
+
+Unit.prototype.hide = function(time){
+    return this.unit.visible = true
+}
+
 Unit.prototype.runUnit = function(){
 	this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
     this.unit.position.x = this.xPosition;
@@ -52,8 +67,10 @@ Unit.prototype.runUnit = function(){
 
 Unit.prototype.update = function(time, dt) {
     if (this.isBuilt()){
-        this.unit.translateX(this.speed * this.direction * dt);
-        this.xPosition = this.unit.position.x;
+        if (this.phase == "walk") {
+            this.unit.translateX(this.speed * this.direction * dt)
+            this.xPosition = this.unit.position.x
+        }
     } else if (!this.pending) {
         this.buildDelay -= dt
     }

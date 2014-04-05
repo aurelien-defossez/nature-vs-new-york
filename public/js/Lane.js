@@ -5,6 +5,7 @@ function Lane(id, board, loader) {
 	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
+    this.waitingLine = [];
 
 	this.unitsCreationQueues = {
 	    sapCarrier: [],
@@ -130,24 +131,56 @@ Lane.prototype.update = function(time, dt){
 	var i,
         unit,
         unitToRemove = [];
-    
-    for (i = 0; i < this.cells.length; i++){
+   
+   	// Define targets for units
+   	var natureTarget
+   	var newYorkTarget
+    for (i = this.cells.length - 1; i >= 0; --i) {
+    	var cell = this.cells[i]
+
+    	// Find first neutral or enemy empty cell
+    	if (!cell.owner || cell.owner == "newYork" && !cell.building) {
+    		for (j = (i + 1) * 3 - 1; j >= 0; --j) {
+				if (!this.waitingLine[j]) {
+					natureTarget = {
+						index: j,
+						position: j / 3 + 1 / 6
+					}
+					break
+				}
+			}
+
+			break
+    	}
+	}
+
+	if (this.id == 1 && natureTarget)
+		document.getElementById("debug").innerHTML = natureTarget.index + " / " + Math.floor(natureTarget.position * 10) / 10
+
+    for (i = 0; i < this.cells.length; i++) {
 		this.cells[i].update(time, dt);
 	}
-    for (i = 0; i < this.units.length; i++){
+
+    for (i = 0; i < this.units.length; i++) {
 		unit = this.units[i];
+
+		if (unit.phase == "walk") {
+	        if (unit.player == "nature"
+	        && (!natureTarget || natureTarget.index < 0 || unit.xPosition > natureTarget.position)) {
+	        	if (natureTarget) {
+	        		unit.setPosition(natureTarget.position)
+	        		this.waitingLine[natureTarget.index] = unit
+		        	natureTarget.index --
+		        	natureTarget.position -= 1 / 3
+	        	} else {
+	        		unit.hide()
+	        	}
+
+	        	unit.phase = "wait"
+	        }
+	    }
+
         unit.update(time, dt);
-        
-        if(unit.player === HQ.typesEnum.NATURE && unit.xPosition > Game.config.lane.cellNumber) {
-            this.board.hitEnemy(unit.player);
-            unit.destroy();
-            unitToRemove.push(i);
-        } else if(unit.player === HQ.typesEnum.NEW_YORK && unit.xPosition < 0) {
-            this.board.hitEnemy(unit.player);
-            unit.destroy();
-            unitToRemove.push(i);
-        }
-        
 	}
 	
 	this.processCreationQueue(time, dt)
