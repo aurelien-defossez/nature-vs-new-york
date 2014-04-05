@@ -24,27 +24,26 @@ function Board(scene, loader, hud)
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	var lane = this.lanes[laneIndex]
-    lane.popBuilding(button, playerName)
+	var hq = this.hqs[playerName]
+	var building = hq.buyBuilding(lane.scene, playerName, button);
+
+	if (building) {
+		lane.popBuilding(button, playerName)
+	} else {
+    	console.log("Not enough mana")
+    }
 }
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
-	var hq = this.getHQByPlayerName(playerName)
+	var hq = this.hqs[playerName]
 	var unit = hq.buyUnit(lane.scene, playerName, button);
-    lane.addUnitInQueue(unit)
-}
-Board.prototype.canCreateUnit = function(playerName){
-	var hq = this.getHQByPlayerName(playerName)
-	return hq.canCreateUnit(Game.config.unit.cost)
-}
-Board.prototype.getHQByPlayerName = function(playerName){
-	var hq = null
-	if ( playerName==HQ.typesEnum.NATURE ) {
-		hq = this.hqs[0]
-	} else if (playerName == HQ.typesEnum.NEW_YORK){
-		hq = this.hqs[1]
-	}
-	return hq
+
+	if (unit) {
+    	lane.addUnitInQueue(unit)
+    } else {
+    	console.log("Not enough mana")
+    }
 }
 
 Board.prototype.loadHQs = function(hud){

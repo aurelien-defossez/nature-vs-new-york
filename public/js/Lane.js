@@ -13,7 +13,16 @@ function Lane(board, loader) {
 	//this.laneCube.position.z = -1/2
 	//this.scene.add(this.laneCube)
 
-	this.unitsCreationQueue = [];
+	this.unitsCreationQueues = {
+	    sapCarrier: [],
+	    wolf: [],
+	    bear: [],
+	    ent: [],
+	    builder: [],
+	    lumberjack: [],
+	    policeman: [],
+	    mecha: []
+	};
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
@@ -30,34 +39,36 @@ function Lane(board, loader) {
 	
 }
 
-Lane.prototype.buildNextUnit = function(){
-	if (this.unitsCreationQueue.length > 0) {
-		this.unitsCreationQueue[0].startBuild();
-		console.log("Start building next unit...")
+Lane.prototype.buildNextUnit = function(type){
+	if (this.unitsCreationQueues[type].length > 0) {
+		this.unitsCreationQueues[type][0].startBuild();
+		console.log("Start building next "+type+"...")
 	}
 }
 
 Lane.prototype.runUnit = function(unit){
 	this.units.push(unit);
-	this.unitsCreationQueue.splice(0,1)
+	this.unitsCreationQueues[unit.type].splice(0,1)
 	unit.runUnit();
 	console.log("Unit ready!")
 }
 
 Lane.prototype.addUnitInQueue = function(unit){
-	this.unitsCreationQueue.push(unit)
-	if (this.unitsCreationQueue.length==1) {
-		this.buildNextUnit()
+	this.unitsCreationQueues[unit.type].push(unit)
+	if (this.unitsCreationQueues[unit.type].length==1) {
+		this.buildNextUnit(unit.type)
 	}
 }
 
 Lane.prototype.processCreationQueue = function(time, dt){
-	for (var i = 0; i < this.unitsCreationQueue.length; i++){
-		var unit = this.unitsCreationQueue[i]
-		unit.update(time, dt)
-		if (i==0 && unit.isBuilt()){
-			this.runUnit(unit)
-			this.buildNextUnit()
+	for (var type in this.unitsCreationQueues) {
+		for (var i = 0; i < this.unitsCreationQueues[type].length; i++){
+			var unit = this.unitsCreationQueues[type][i]
+			unit.update(time, dt)
+			if (i==0 && unit.isBuilt()){
+				this.runUnit(unit)
+				this.buildNextUnit(unit.type)
+			}
 		}
 	}
 }
@@ -94,7 +105,6 @@ Lane.prototype.capture = function(type, value){
 Lane.prototype.update = function(time, dt){
 	var i,
         unit,
-        unitPositionX,
         unitToRemove = [];
     
     for (i = 0; i < this.cells.length; i++){
@@ -102,19 +112,16 @@ Lane.prototype.update = function(time, dt){
 	}
     for (i = 0; i < this.units.length; i++){
 		unit = this.units[i];
-        unitPositionX = unit.xPosition;
         unit.update(time, dt);
         
         if(unit.player === HQ.typesEnum.NATURE) {
-            if(unitPositionX > Game.config.lane.cellNumber) {
-                console.log('Nature hit NYC');
+            if(unit.xPosition > Game.config.lane.cellNumber) {
                 this.board.hitEnemy(unit.player);
                 unit.destroy();
                 unitToRemove.push(i);
             }
         } else if(unit.player === HQ.typesEnum.NEW_YORK) {
-            if(unitPositionX < 0) {
-                console.log('NYC hit Nature');
+            if(unit.xPosition < 0) {
                 this.board.hitEnemy(unit.player);
                 unit.destroy();
                 unitToRemove.push(i);
@@ -125,6 +132,6 @@ Lane.prototype.update = function(time, dt){
 	
 	this.processCreationQueue(time, dt)
     for(i = unitToRemove.length - 1; i >= 0; i--) {
-        this.units.splice(i, 1);
+        this.units.splice(unitToRemove[i], 1);
     }
 }
