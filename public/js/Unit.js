@@ -41,14 +41,15 @@ function Unit(scene, player, type, loader) {
     this.currentAnimation = null
     var self = this
 
-    fileName = "data/builder.js"
+    if (type == "builder")
+    {
+         fileName = "data/builder.js"
     loader.load(fileName, function(geometry, materials)
     {
         self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
         self.mesh.castShadow = true
         self.mesh.receiveShadow = true
-        //self.parentScene.add(self.mesh)
-        
+
         var materials = self.mesh.material.materials
         for (var k in materials)
         {
@@ -68,6 +69,12 @@ function Unit(scene, player, type, loader) {
         self.currentAnimation = self.animations.walk
         self.currentAnimation.play()
     })
+    }else{
+        this.mesh = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
+        this.mesh.castShadow = true;
+        this.mesh.receiveShadow = true;
+    }
+   
 
 }
 
@@ -111,17 +118,23 @@ Unit.prototype.runUnit = function(){
     this.scene.add(this.unit);*/
 }
 
-Unit.prototype.swtichAnimation = function(phase){
+Unit.prototype.switchAnimation = function(phase){
     this.phase = phase
     if (phase == "walk"){
+        if (this.currentAnimation)
+        {
+            this.currentAnimation.stop()
+            this.currentAnimation = this.animations.walk
+            this.currentAnimation.play()
+        }
 
-        this.currentAnimation.stop()
-        this.currentAnimation = this.animations.walk
-        this.currentAnimation.play()
     } else if ( phase == "wait"){
-        this.currentAnimation.stop()
-        this.currentAnimation = this.animations.idle
-        this.currentAnimation.play()
+        if (this.currentAnimation)
+        {
+            this.currentAnimation.stop()
+            this.currentAnimation = this.animations.idle
+            this.currentAnimation.play()
+        }
     }
 }
 

@@ -204,7 +204,7 @@ Lane.prototype.update = function(time, dt){
 	        	}
 
 	        	
-	        	unit.swtichAnimation("wait")
+	        	unit.switchAnimation("wait")
 	        }
 
 	        if (unit.player == "newYork"
@@ -218,7 +218,7 @@ Lane.prototype.update = function(time, dt){
 	        		unit.hide()
 	        	}
 
-	        	unit.swtichAnimation("wait")
+	        	unit.switchAnimation("wait")
 	        }
 	    }
 
