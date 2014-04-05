@@ -3,11 +3,12 @@ HQ.typesEnum = {
   NEW_YORK : 2
 }
 
-function HQ(type)
+function HQ(scene, type)
 {
 	this.natureHQColor = 0x00ff00
 	this.newYorkHQColor = 0x0000ff
 	this.scene = new THREE.Object3D()
+	scene.add(this.scene)
 	var color
 	if (type == HQ.typesEnum.NATURE){
 		color = this.natureHQColor

@@ -9,12 +9,12 @@ function Game()
 	this.renderer.shadowMapEnabled = true
 	this.renderer.setClearColor(0xddefff, 1)
 	gameDiv.appendChild(this.renderer.domElement)
+
+	this.loader = new THREE.JSONLoader()
 	
 	this.scene = new THREE.Scene()
 
-	this.board= new Board();
-
-	this.scene.add(this.board.scene)
+	this.board= new Board(this.scene, this.loader);
 	
 	this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
 	this.scene.add(this.camera)
@@ -53,8 +53,6 @@ function Game()
 	//var light = new THREE.PointLight(0xffffff, 2, 0)
 	//this.scene.add(light)
 	
-	this.loader = new THREE.JSONLoader()
-	
 	this.musicManager = new MusicManager()
 
 
@@ -70,6 +68,8 @@ Game.prototype.update = function(time)
 	if (this.currentTime != null)
 		dt = Math.min(time - this.currentTime,  1000 / 25)
 	this.currentTime = time
+
+	this.board.update(time, dt)
 	
 	this.musicManager.update(time, dt, 0)
 	
