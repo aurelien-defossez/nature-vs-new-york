@@ -42,4 +42,7 @@ Lane.prototype.update = function(time, dt){
 	for (var i = 0; i < this.cells.length; i++){
 		this.cells[i].update(time, dt);
 	}
+    for (var i = 0; i < this.units.length; i++){
+		this.units[i].update(time, dt);
+	}
 }

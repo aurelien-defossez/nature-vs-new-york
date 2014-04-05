@@ -38,11 +38,11 @@ PadController.prototype.checkAction = function(player) {
 function arrowAction(player, pad, button) {
     var lane;
     if( pad.dpadUp ) {
-        lane = 'upperLane';
+        lane = 2;
     } else if ( pad.dpadDown ) {
-        lane = 'lowerLane';
+        lane = 0;
     } else {
-        lane = 'middleLane';
+        lane = 1;
     }
     player.createUnit(button, lane);
 }
