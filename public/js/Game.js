@@ -4,7 +4,7 @@ function Game()
 	
 	var gameDiv = document.getElementById("game")
 	
-	this.renderer = new THREE.WebGLRenderer()
+	this.renderer = new THREE.WebGLRenderer({ antialias: Game.config.antialiasing })
 	this.renderer.setSize(1280, 720)
 	this.renderer.shadowMapEnabled = true
 	this.renderer.setClearColor(0xddefff, 1)
@@ -31,7 +31,7 @@ function Game()
 	this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
 	this.hemiLight.color.setHSL(0.6, 1, 0.6)
 	this.hemiLight.groundColor.setHSL(0.095, 1, 0.75)
-	this.hemiLight.position.set(0, 20, 0)
+	this.hemiLight.position.set(0, 10, 0)
 	this.scene.add(this.hemiLight)
 	
 	this.dirLight = new THREE.DirectionalLight(0xffffff, 1)

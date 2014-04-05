@@ -1,4 +1,5 @@
 Game.config = {
+	antialiasing : false,
 	lane : {
 		cellNumber : 8,
 		spacing : 1,
