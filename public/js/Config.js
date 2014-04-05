@@ -229,7 +229,8 @@ Game.config = {
 			'U+0041' : 'input2', // Letter A
 			'U+005A' : 'input3', // Letter Z
             'U+0044' : 'input4', // Letter D
-			'U+0058' : 'input5' // Letter X
+			'U+0058' : 'input5', // Letter X
+            'U+0046' : 'input6' // Letter F
 		},
         keyboard2 :{
 			'U+004A' : 'input0', // Letter J
@@ -237,7 +238,8 @@ Game.config = {
 			'U+0055' : 'input2', // Letter U
 			'U+0049' : 'input3', // Letter I
             'U+004F' : 'input4', // Letter O
-			'U+004C' : 'input5' // Letter L
+			'U+004C' : 'input5', // Letter L
+            'U+004D' : 'input6' // Letter M
 		}
 	}
 }

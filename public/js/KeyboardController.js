@@ -1,4 +1,24 @@
-
+/**
+ * Actions on Keyboard:
+ *
+ * Player 1
+ * Button A: Q
+ * Button B: S
+ * Button X: A
+ * Button Y: Z
+ * Cursor Up: D
+ * Cursor Down: X
+ * Button R: F
+ *
+ * Player 2
+ * Button A: J
+ * Button B: K
+ * Button X: U
+ * Button Y: I
+ * Cursor Up: O
+ * Cursor Down: L
+ * Button R: M
+ */
 function KeyboardController(player) {
     this.player = player;
 
@@ -8,7 +28,8 @@ function KeyboardController(player) {
         x: 0,
         y: 0,
         up: 0,
-        down: 0
+        down: 0,
+        r: 0
     }
 }
 
@@ -41,24 +62,27 @@ KeyboardController.prototype.updateKey = function(key, value) {
         case 'input5':
             this.buttons.down = value;
             break;
+        case 'input6' :
+            this.buttons.r = value;
+            break;
     }
 }
 
 KeyboardController.prototype.performAction = function() {
 
     if(this.buttons.a) {
-        this.arrowAction('A', false)
+        this.arrowAction('A')
     } else if(this.buttons.b) {
-        this.arrowAction('B', false)
+        this.arrowAction('B')
     } else if(this.buttons.x) {
-        this.arrowAction('X', false)
+        this.arrowAction('X')
     } else if(this.buttons.y) {
-        this.arrowAction('Y', false)
+        this.arrowAction('Y')
     }
 
 }
 
-KeyboardController.prototype.arrowAction = function(button, buildingMode) {
+KeyboardController.prototype.arrowAction = function(button) {
     var lane;
     if( this.buttons.up ) {
         lane = 2;
@@ -67,7 +91,8 @@ KeyboardController.prototype.arrowAction = function(button, buildingMode) {
     } else {
         lane = 1;
     }
-    if (buildingMode) {
+    // Building mode
+    if (this.buttons.r) {
         this.player.createBuilding(button, lane);
     } else {
         this.player.createUnit(button, lane);

@@ -64,12 +64,10 @@ function onDocumentKeyUp( event ) {
 
     keyboardAction = Game.config.controls.keyboard1[event.keyIdentifier];
     if(keyboardAction) {
-        console.log('Player 1 is doing ' + keyboardAction);
         game.players.left.keyboardController.releaseKey(keyboardAction);
     } else {
         keyboardAction = Game.config.controls.keyboard2[event.keyIdentifier];
         if(keyboardAction) {
-            console.log('Player 2 is doing ' + keyboardAction);
             game.players.right.keyboardController.releaseKey(keyboardAction);
         }
     }
