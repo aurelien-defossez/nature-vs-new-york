@@ -1,6 +1,6 @@
 HQ.typesEnum = {
-  NATURE : 0,
-  NEW_YORK : 1
+  NATURE : "nature",
+  NEW_YORK : "newYork"
 }
 
 function HQ(scene, hud, lanes, type)
@@ -63,6 +63,16 @@ HQ.prototype.isAlive = function(){
   	return this.health > 0
 }
 
+HQ.prototype.canCreateUnit = function(cost){
+	return this.mana >= cost
+}
+
+HQ.prototype.buyUnit = function(scene, player, type){
+	var unit = new Unit(scene, player, type)
+	this.mana -= unit.cost
+	return unit
+}
+
 HQ.prototype.updateHealthBar = function(){
 	var widthOld = this.healthBar.scale.x * this.healthBar.geometry.width
 	switch(this.type){
@@ -77,6 +87,10 @@ HQ.prototype.updateHealthBar = function(){
 			this.healthBar.position.x -= (widthOld - this.healthBar.geometry.width * scaleX)/2
 			break;
 	}
+    
+    if(this.health <= 0) {
+        menu.show(100);
+    }
 }
 
 HQ.prototype.update = function(time, dt) {
@@ -89,6 +103,11 @@ HQ.prototype.update = function(time, dt) {
 			this.lanes[i].capture(this.type, this.captureSpeed[i] * dt)
 		}
 	}
+}
+
+HQ.prototype.removeHealth = function(value) {
+	this.health -= value
+	this.updateHealthBar()
 }
 
 HQ.prototype.addMana = function(value) {

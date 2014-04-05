@@ -24,11 +24,13 @@ Game.config = {
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0.05,
-    	actions : {
-    		'input0' : 'manaTree',
-    		'input1' : 'protectorTree',
-    		'input2' : 'rootTree',
-    		'input3' : 'bramble'
+    	mapping : {
+    		buildings: {
+	    		'input0' : 'manaTree',
+	    		'input1' : 'protectorTree',
+	    		'input2' : 'rootTree',
+	    		'input3' : 'bramble'
+	    	}
     	},
     	buildings : {
     		'natureCell' : {
@@ -46,11 +48,13 @@ Game.config = {
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0,
-    	actions : {
-    		'input0' : 'bank',
-    		'input1' : 'policeStation',
-    		'input2' : 'workShop',
-    		'input3' : 'armedConcrete'
+    	mapping : {
+    		buildings: {
+	    		'input0' : 'bank',
+	    		'input1' : 'policeStation',
+	    		'input2' : 'workShop',
+	    		'input3' : 'armedConcrete'
+	    	}
     	},
     	buildings : {
     		'buildingCell' : {
@@ -200,7 +204,8 @@ Game.config = {
 	},
     unit : {
 		speed : 1,
-		buildTime : 3 //in seconds
+		time : 3, //in seconds
+		cost : 10
 	},
 	controls : {
 		'gamepad' :{

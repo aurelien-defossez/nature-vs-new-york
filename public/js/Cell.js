@@ -22,7 +22,6 @@ function Cell(scene, loader)
 	this.captureCube.receiveShadow = false
 	this.captureCube.visible = false
 
-
 	this.animations = {}
 	this.currentAnimation = null
 	this.animationTime = 20;
@@ -33,13 +32,6 @@ function Cell(scene, loader)
 	this.loader = loader
 	this.scene.add(this.cube)
 	this.scene.add(this.captureCube)
-
-	console.log("captureCube", this.captureCube)
-
-
-
-
-
 }
 
 Cell.prototype.setOwner = function(player)
@@ -48,13 +40,23 @@ Cell.prototype.setOwner = function(player)
 
 	if (player == "nature"){
 		this.cube.material.color = new THREE.Color(this.natureColor)
+		this.captureProgress = 1
 	}else if (player == "newYork"){
 		this.cube.material.color = new THREE.Color(this.newYorkColor)
+		this.captureProgress = -1
 	}
 }
 
 Cell.prototype.capture = function(value){
-	if (value > 0 && this.captureProgress <= 0) {
+	if (this.captureProgress == 1 && value < 0) {
+		this.captureCube.material.color = new THREE.Color(this.natureColor)
+		this.cube.material.color = new THREE.Color(this.neutralColor)
+	} else if (this.captureProgress == -1 && value > 0) {
+		this.captureCube.material.color = new THREE.Color(this.newYorkColor)
+		this.cube.material.color = new THREE.Color(this.neutralColor)
+	}
+
+	if (value > 0 && this.captureProgress <= 0 && this.captureProgress + value > 0) {
 		this.captureCube.material.color = new THREE.Color(this.natureColor)
 		this.loadMesh(this.loader, Game.config.nature.buildings['natureCell'].modelFile)
 		if (this.mesh)
@@ -62,7 +64,7 @@ Cell.prototype.capture = function(value){
 			this.scene.remove(this.mesh)
 		}
 		this.scene.add(this.mesh)
-	} else if (value < 0 && this.captureProgress >= 0) {
+	} else if (value < 0 && this.captureProgress >= 0 && this.captureProgress + value < 0) {
 		this.captureCube.material.color = new THREE.Color(this.newYorkColor)
 		this.loadMesh(this.loader, Game.config.newYork.buildings['newYorkCell'].modelFile)
 		if (this.mesh)
