@@ -35,12 +35,12 @@ Board.prototype.update =  function(time, dt){
 
 Board.prototype.loadHQs = function(loader){
 	// Create Nature HQ
-	this.leftHQ = new HQ(this.scene, "nature");
+	this.leftHQ = new HQ(this.scene, HQ.typesEnum.NATURE);
 	this.leftHQ.scene.translateZ(- (Game.config.lane.marginBottom))
 	
 
 	// Create New York HQ
-	this.rightHQ = new HQ(this.scene, "newYork");
+	this.rightHQ = new HQ(this.scene, HQ.typesEnum.NEW_YORK);
 	this.rightHQ.scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
 	this.rightHQ.scene.translateZ(- (Game.config.lane.marginBottom))
 }
@@ -52,8 +52,8 @@ Board.prototype.loadLanes = function(loader){
 	this.lowerLane.scene.translateZ(- (Game.config.lane.marginBottom))
 	
 
-	this.lowerLane.setPlayerPosition("nature", Game.config.nature.initOwnedCells);
-	this.lowerLane.setPlayerPosition("newYork", Game.config.newYork.initOwnedCells);
+	this.lowerLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
+	this.lowerLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
 
 	// Create Middle Lane
 	this.middleLane = new Lane(this.scene, loader);
@@ -61,8 +61,8 @@ Board.prototype.loadLanes = function(loader){
 	this.middleLane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing + 1 ))
 
 
-	this.middleLane.setPlayerPosition("nature", Game.config.nature.initOwnedCells);
-	this.middleLane.setPlayerPosition("newYork", Game.config.newYork.initOwnedCells);
+	this.middleLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
+	this.middleLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
 
 	// Create Upper Lane
 	this.uperLane = new Lane(this.scene, loader);
@@ -70,6 +70,6 @@ Board.prototype.loadLanes = function(loader){
 	this.uperLane.scene.translateZ(- (Game.config.lane.marginBottom + 2* (Game.config.lane.spacing + 1)))
 
 
-	this.uperLane.setPlayerPosition("nature", Game.config.nature.initOwnedCells);
-	this.uperLane.setPlayerPosition("newYork", Game.config.newYork.initOwnedCells);
+	this.uperLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
+	this.uperLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
 }
