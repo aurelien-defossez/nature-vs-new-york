@@ -76,5 +76,4 @@ Game.prototype.update = function(time)
     this.players.right.controlAction()
 
     this.renderer.render(this.scene, this.camera)
-
 }

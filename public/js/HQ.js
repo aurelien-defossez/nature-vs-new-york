@@ -1,6 +1,6 @@
 HQ.typesEnum = {
-  NATURE : 1,
-  NEW_YORK : 2
+  NATURE : 0,
+  NEW_YORK : 1
 }
 
 function HQ(scene, type)
@@ -14,7 +14,7 @@ function HQ(scene, type)
 		color = this.natureHQColor
 		this.health = Game.config.nature.health
 	}else if (type == HQ.typesEnum.NEW_YORK){
-		type = this.newYorkHQColor
+		color = this.newYorkHQColor
 		this.health = Game.config.newYork.health
 	}
     this.type = type
@@ -26,10 +26,19 @@ function HQ(scene, type)
 	this.hqCube.receiveShadow = true
 	this.scene.add(this.hqCube)
 	
-	
+	this.hp = Game.config.hq.hp
+	this.mana = Game.config.startMana
 }
 
 HQ.prototype.isAlive = function(){
   	return this.health > 0
+}
+
+HQ.prototype.update = function(time, dt) {
+	this.addMana(dt * Game.config.hq.manaPerSecond)
+}
+
+HQ.prototype.addMana = function(value) {
+	this.mana = this.mana + value
 }
 
