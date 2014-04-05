@@ -18,8 +18,8 @@ function Board(scene, loader, hud)
 	this.plane.castShadow = false
 	this.plane.receiveShadow = true
 
-	this.loadHQs(hud)
 	this.loadLanes(loader)
+	this.loadHQs(hud)
 
 }
 
@@ -36,8 +36,8 @@ Board.prototype.popMonster = function(button, laneIndex, playerName){
 
 Board.prototype.loadHQs = function(hud){
 	this.hqs = [
-		new HQ(this.scene, this.hud, HQ.typesEnum.NATURE),
-		new HQ(this.scene, this.hud, HQ.typesEnum.NEW_YORK)
+		new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE),
+		new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK)
 	]
 
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))

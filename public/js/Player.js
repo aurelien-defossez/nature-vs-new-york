@@ -5,9 +5,6 @@ function Player(name, board, controller) {
     this.controller = controller;
     this.controllerType = "gamepad";
 
-    // Time in ms between two actions
-    this.timeBetweenActions = 200;
-
 }
 
 Player.prototype.createUnit = function(button, laneIndex) {
@@ -21,11 +18,5 @@ Player.prototype.createBuilding = function(button, laneIndex) {
 
 
 Player.prototype.controlAction = function() {
-    var time = new Date(),
-        timeSinceLastAction = time - this.lastAction;
-
-    if(this.lastAction == null || timeSinceLastAction > this.timeBetweenActions) {
-        this.lastAction = new Date();
-        this.controller.checkAction(this)
-    }
+    this.controller.checkAction(this)
 }

@@ -1,7 +1,4 @@
-function Lane(scene, loader)
-{
-
-
+function Lane(scene, loader) {
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
 	this.cells = [];
@@ -28,15 +25,8 @@ function Lane(scene, loader)
 			cell.setOwner("newYork")
 		}
 	}
-	//this.cell = new Cell();
-	//this.cell.scene.translateX( Game.config.lane.marginLeft )
-	//this.cell.scene.translateZ(- (Game.config.lane.marginBottom))
-	//this.scene.add(this.cell.scene)
-	//this.cell2 = new Cell(scene, position, 1);
-
-
-
 }
+
 
 Lane.prototype.popBuilding = function(button, playerName){
 	if (playerName == "nature"){
@@ -49,6 +39,17 @@ Lane.prototype.popBuilding = function(button, playerName){
 		for (var i = this.cells.length -1 ; i >= this.cells.length - this.newYorkPosition ; i--){
 			if (this.cells[i].building == null){
 				this.cells[i].build(button, playerName)
+			}
+		}
+	}
+}
+
+Lane.prototype.capture = function(type, value){
+	if (type == HQ.typesEnum.NATURE) {
+		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
+			if (this.cells[i].owner == null) {
+				this.cells[i].capture(value)
+				break
 			}
 		}
 	}
