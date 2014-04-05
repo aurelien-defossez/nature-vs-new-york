@@ -83,7 +83,6 @@ HQ.prototype.update = function(time, dt) {
 	this.addMana(dt * this.manaGeneration)
 	
 	if(this.isAlive()) {
-		this.health -= 0.05  // for test
 		this.updateHealthBar();
 
 		for (var i = 0; i < 3; i++) {
