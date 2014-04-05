@@ -146,6 +146,5 @@ Cell.prototype.loadMesh = function(loader, name){
 		self.currentAnimation = self.animations.create
 		self.animationTime = self.currentAnimation.data.length;
 		self.currentAnimation.play()
-		self.scene.add(self.mesh)
 	})
 }
