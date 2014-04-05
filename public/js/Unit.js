@@ -4,9 +4,9 @@ function Unit(scene, player, type) {
     this.scene = scene;
     this.player = player;
 
-    if(this.player === 'nature') {
+    if(this.player === HQ.typesEnum.NATURE) {
         this.xPosition = 0.3;
-    } else if(this.player === 'newYork') {
+    } else if(this.player === HQ.typesEnum.NEW_YORK) {
         this.xPosition = Game.config.lane.cellNumber - 0.3;
     }
 
@@ -21,17 +21,15 @@ function Unit(scene, player, type) {
 }
 
 Unit.prototype.update = function(time, dt) {
-    if(this.unit) {
-        var newPositionX;
-        if(this.player === 'nature') {
-            newPositionX = dt * Game.config.unit.speed;
-        } else if(this.player === 'newYork') {
-            newPositionX = - dt * Game.config.unit.speed;
-        }
-
-        this.unit.translateX(newPositionX);
-        this.xPosition = this.unit.position.x;
+    var newPositionX;
+    if(this.player === HQ.typesEnum.NATURE) {
+        newPositionX = dt * Game.config.unit.speed;
+    } else if(this.player === HQ.typesEnum.NEW_YORK) {
+        newPositionX = - dt * Game.config.unit.speed;
     }
+
+    this.unit.translateX(newPositionX);
+    this.xPosition = this.unit.position.x;
 }
 
 Unit.prototype.destroy = function() {

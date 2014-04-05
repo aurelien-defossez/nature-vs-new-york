@@ -40,7 +40,7 @@ Board.prototype.loadHQs = function(hud){
 Board.prototype.loadLanes = function(loader){
 	this.lanes = []
 	for (var i = 0; i < 3; i++) {
-		var lane = new Lane(this.scene, loader)
+		var lane = new Lane(this, loader)
 		lane.scene.translateX( Game.config.lane.marginLeft )
 		lane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing * i))
 		this.lanes[i] = lane
@@ -54,4 +54,12 @@ Board.prototype.update = function(time, dt) {
 	for (var i = 0; i < 3; i++) {
 		this.lanes[i].update(time, dt)
 	}
+}
+
+Board.prototype.hitEnemy = function(player) {
+    if(player === HQ.typesEnum.NATURE) {
+        this.hqs[HQ.typesEnum.NEW_YORK].removeHealth(1);
+    } else if(player === HQ.typesEnum.NEW_YORK) {
+        this.hqs[HQ.typesEnum.NATURE].removeHealth(1);
+    }
 }

@@ -91,6 +91,11 @@ HQ.prototype.update = function(time, dt) {
 	}
 }
 
+HQ.prototype.removeHealth = function(value) {
+	this.health -= value
+	this.updateHealthBar()
+}
+
 HQ.prototype.addMana = function(value) {
 	this.mana += value
 	this.hud.updateMana(this.type, Math.floor(this.mana))

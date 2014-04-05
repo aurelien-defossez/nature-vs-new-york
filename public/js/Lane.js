@@ -1,6 +1,7 @@
-function Lane(scene, loader) {
+function Lane(board, loader) {
+    this.board = board;
 	this.scene = new THREE.Object3D()
-	scene.add(this.scene)
+	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
 
@@ -43,15 +44,17 @@ Lane.prototype.update = function(time, dt){
         unitPositionX = unit.xPosition;
         unit.update(time, dt);
         
-        if(unit.player === 'nature') {
+        if(unit.player === HQ.typesEnum.NATURE) {
             if(unitPositionX > Game.config.lane.cellNumber) {
                 console.log('Nature hit NYC');
+                this.board.hitEnemy(unit.player);
                 unit.destroy();
                 unitToRemove.push(i);
             }
-        } else if(unit.player === 'newYork') {
+        } else if(unit.player === HQ.typesEnum.NEW_YORK) {
             if(unitPositionX < 0) {
                 console.log('NYC hit Nature');
+                this.board.hitEnemy(unit.player);
                 unit.destroy();
                 unitToRemove.push(i);
             }
