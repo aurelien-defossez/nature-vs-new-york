@@ -5,7 +5,7 @@ function Game()
 	var gameDiv = document.getElementById("game")
 	
 	this.renderer = new THREE.WebGLRenderer({ antialias: Game.config.antialiasing })
-	this.renderer.setSize(1280, 720)
+	this.renderer.setSize(Game.config.board.width, Game.config.board.height)
 	this.renderer.shadowMapEnabled = true
 	this.renderer.setClearColor(0xddefff, 1)
 	gameDiv.appendChild(this.renderer.domElement)

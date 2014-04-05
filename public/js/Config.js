@@ -1,4 +1,8 @@
 Game.config = {
+    board : {
+      height: 720,
+      width:1280
+    },
 	antialiasing : true,
 	lane : {
 		cellNumber : 8,
@@ -8,10 +12,16 @@ Game.config = {
 		marginTop : 1,
 		marginBottom : 1
 	},
-	nature : {
+    hotKeys : {
+        keyboard : {
+          start : "U+0050"
+        }     
+    },
+    nature : {
 		initOwnedCells : 1
 	},
 	newYork : {
 		initOwnedCells : 2
 	}
 }
+
