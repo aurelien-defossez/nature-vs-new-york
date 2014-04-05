@@ -1,5 +1,6 @@
 function Building(scene, loader, button, player){
     this.player = player
+    this.parentScene = scene
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
 	this.builtTime = Game.config.buildings[buildingType].time
@@ -9,10 +10,26 @@ function Building(scene, loader, button, player){
 	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
 	this.BuildRate = 1/this.builtTime;
 	this.animationTime = 1;
+	this.lowLifeColor = 0xaa0000;
+	this.middleLifeColor = 0xff8928;
+	this.highLifeColor = 0x00aa00
+
+	this.healthBarBackground = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.03,0.03),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
+	this.healthBarBackground.position.x = 1 * 0.5
+	this.healthBarBackground.position.y = 0.03 * 0.5 + 1/2
+	this.healthBarBackground.position.z = -0.03 * 0.5 - 0.66
+
+	this.healthBar = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.04,0.04),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
+	this.healthBar.position.x = 1 * 0.5
+	this.healthBar.position.y = 0.04 * 0.5 + 1/2
+	this.healthBar.position.z = -0.03 * 0.5 - 0.66
+
+	this.parentScene.add(this.healthBarBackground);
+	this.parentScene.add(this.healthBar);
 
     console.log('Player ' + player + ' is building a ' + buildingType);
     
-	this.parentScene = scene
+	
 	this.animations = {}
 	this.currentAnimation = null
 	var self = this
@@ -68,6 +85,18 @@ Building.prototype.update = function(time, dt){
 		this.buildingProgress = this.buildingProgress + this.BuildRate * dt;
 		this.currentHP = this.currentHP + this.HpGainRate * dt;
 	}
+	this.healthBar.scale.x = this.currentHP / this.maxHP;
+	this.healthBar.position.x = this.currentHP / this.maxHP * 0.6 * 0.5 + 0.4 * 0.5
+	var color;
+
+	if (this.currentHP <= this.maxHP * 0.2)
+		color = this.lowLifeColor
+	else if (this.currentHP <= this.maxHP * 0.5)
+		color = this.middleLifeColor
+	else
+		color = this.highLifeColor
+
+	this.healthBar.material.color = new THREE.Color(color);
 
 	if (this.currentAnimation != null)
 	{
