@@ -1,9 +1,12 @@
-function Building(scene, loader, button, player){
+function Building(scene, loader, button, player, hq){
     this.player = player
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
+	this.type = buildingType
+	this.hq = hq
 	this.builtTime = Game.config.buildings[buildingType].time
 	this.buildingProgress = 0
+	this.built = false
 	this.maxHP = Game.config.buildings[buildingType].hp
 	this.currentHP = this.maxHP * 0.2
 	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
@@ -53,28 +56,41 @@ Building.prototype.changeAnimation = function(nextAnimation)
 	}
 }
 
-Building.prototype.progressBuilding = function(build)
+Building.prototype.applyEffect = function()
 {
-	if (build){
+	switch(this.type) {
+		case 'manaTree':
+		case 'bank':
+		console.log("manaPerSecond", this.type, this.hq, Game.config.buildings[this.type])
+			this.hq.manaPerSecond += Game.config.buildings[this.type].manaPerSecond
+		break
 
-	}else{
+		case 'protectorTree':
+		break
 
+		case 'rootTree':
+		break
 	}
 }
 
 Building.prototype.update = function(time, dt){
-	if (this.buildingProgress < 1)
+	if (!this.built)
 	{
 		this.buildingProgress = this.buildingProgress + this.BuildRate * dt;
 		this.currentHP = this.currentHP + this.HpGainRate * dt;
+
+		if (this.buildingProgress >= 1) {
+			this.built = true
+			this.buildingProgress = 1
+			this.applyEffect()
+		}
 	}
 
 	if (this.currentAnimation != null)
 	{
 		//debugger;
-		this.currentTime = (Math.abs(this.buildingProgress))
 		this.currentAnimation.reset()
-		this.currentAnimation.currentTime = this.currentTime;
+		this.currentAnimation.currentTime = this.buildingProgress
 		this.currentAnimation.update(0)
 	}
 }

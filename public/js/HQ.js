@@ -51,7 +51,7 @@ function HQ(scene, hud, lanes, type)
 	var hqConfig = Game.config[type == HQ.typesEnum.NATURE ? "nature" : "newYork"]
 	this.hp = hqConfig.hp
 	this.mana = hqConfig.startMana
-	this.manaGeneration = hqConfig.manaPerSecond
+	this.manaPerSecond = hqConfig.manaPerSecond
 	this.captureSpeed = [
 		hqConfig.captureSpeed,
 		hqConfig.captureSpeed,
@@ -105,7 +105,7 @@ HQ.prototype.updateHealthBar = function(){
 }
 
 HQ.prototype.update = function(time, dt) {
-	this.addMana(dt * this.manaGeneration)
+	this.addMana(dt * this.manaPerSecond)
 	
 	if(this.isAlive()) {
 		this.updateHealthBar();

@@ -146,7 +146,7 @@ Game.config = {
 	buildings: {
 		// Arbre Mana
 		manaTree: {
-			hp: 100,
+			hp: 50,
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
@@ -174,7 +174,7 @@ Game.config = {
 		},
 		// Banque
 		bank: {
-			hp: 100,
+			hp: 50,
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,

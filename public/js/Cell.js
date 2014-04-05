@@ -88,12 +88,12 @@ Cell.prototype.capture = function(value){
 	}
 }
 
-Cell.prototype.build = function(button, player){
+Cell.prototype.build = function(button, player, hq){
 	if (this.building)
 	{
 		this.building.destroy()
 	}
-	this.building = new Building(this.scene, this.loader, button, player);
+	this.building = new Building(this.scene, this.loader, button, player, hq);
 }
 
 
