@@ -27,7 +27,7 @@ Game.config = {
 		health : 10
 	},
 	newYork : {
-		initOwnedCells : 2,
+		initOwnedCells : 1,
 		health : 10
 	},
 	objectMapping : {

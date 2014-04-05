@@ -43,27 +43,15 @@ Board.prototype.loadLanes = function(loader){
 	this.lowerLane.scene.translateX( Game.config.lane.marginLeft )
 	this.lowerLane.scene.translateZ(- (Game.config.lane.marginBottom))
 	
-
-	this.lowerLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
-	this.lowerLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
-
 	// Create Middle Lane
 	this.middleLane = new Lane(this.scene, loader);
 	this.middleLane.scene.translateX( Game.config.lane.marginLeft )
 	this.middleLane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing + 1 ))
 
-
-	this.middleLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
-	this.middleLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
-
 	// Create Upper Lane
 	this.uperLane = new Lane(this.scene, loader);
 	this.uperLane.scene.translateX( Game.config.lane.marginLeft )
 	this.uperLane.scene.translateZ(- (Game.config.lane.marginBottom + 2* (Game.config.lane.spacing + 1)))
-
-
-	this.uperLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
-	this.uperLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
 }
 
 Board.prototype.update = function(time, dt) {
