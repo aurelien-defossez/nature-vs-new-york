@@ -1,7 +1,6 @@
 function Menu(){
   
     this.container = document.getElementById("menu")
-    console.log(this.container)
     this.width = Game.config.board.width/2
     this.height = Game.config.board.height/2
     this.container.setAttribute("style", "margin-left:-"+this.width/2+"px;");
@@ -30,6 +29,8 @@ function Menu(){
     this.endGameScreen.addEventListener('click', function(event){
       this.parent.show()
     })
+    
+    document.addEventListener( 'keydown', onDocumentKeyDown, false );
 }
 
 Menu.prototype.show = function(screenNb) {
