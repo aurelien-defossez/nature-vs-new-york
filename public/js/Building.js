@@ -14,6 +14,7 @@ function Building(scene, loader, name){
 	loader.load(fileName, function(geometry, materials)
 	{
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
+		self.mesh.castShadow = true
 		self.parentScene.add(self.mesh)
 		
 		//self.mesh.position.set(0.5, 0.5, -0.5)
@@ -32,10 +33,10 @@ function Building(scene, loader, name){
 		}
 		
 		self.animations.create = new THREE.Animation(self.mesh, "create", THREE.AnimationHandler.CATMULLROM)
-		self.animations.create.loop = false
-		self.animations.destroy = new THREE.Animation(self.mesh, "destroy", THREE.AnimationHandler.CATMULLROM)
-		self.animations.destroy.loop = false
-		self.currentAnimation = self.animations.destroy
+		self.animations.create.loop = true
+		//self.animations.destroy = new THREE.Animation(self.mesh, "destroy", THREE.AnimationHandler.CATMULLROM)
+		//self.animations.destroy.loop = false
+		self.currentAnimation = self.animations.create
 		//self.animations.idle = new THREE.Animation(self.mesh, "idle", THREE.AnimationHandler.CATMULLROM)
 		//self.animations.walk = new THREE.Animation(self.mesh, "walk", THREE.AnimationHandler.CATMULLROM)
 		//self.currentAnimation = self.animations.walk
@@ -68,4 +69,8 @@ Building.prototype.update = function(time, dt){
 			}
 		}
 	}
+}
+
+Building.prototype.destroy = function(){
+	this.parentScene.remove(this.mesh)
 }

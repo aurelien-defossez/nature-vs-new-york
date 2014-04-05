@@ -32,7 +32,7 @@ Game.config = {
 	},
 	objectMapping : {
 		"stupid" : {
-			file : "data/stupid.js"
+			file : "data/root.js"
 		}
 	}
 }

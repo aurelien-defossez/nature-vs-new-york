@@ -27,6 +27,10 @@ Cell.prototype.setOwner = function(player)
 }
 
 Cell.prototype.build = function(buildingName){
+	if (this.building)
+	{
+		this.building.destroy()
+	}
 	this.building = new Building(this.scene, this.loader, buildingName);
 }
 
