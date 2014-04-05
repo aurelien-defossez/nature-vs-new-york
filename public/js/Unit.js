@@ -24,9 +24,9 @@ function Unit(scene, player, type) {
 Unit.prototype.update = function(time, dt) {
     var newPositionX;
     if(this.player === 'nature') {
-        newPositionX = dt * Game.config.unit.speed / 1000;
+        newPositionX = dt * Game.config.unit.speed;
     } else if(this.player === 'newYork') {
-        newPositionX = - dt * Game.config.unit.speed / 1000;
+        newPositionX = - dt * Game.config.unit.speed;
     }
     
     this.cube.translateX(newPositionX);

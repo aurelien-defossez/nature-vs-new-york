@@ -58,8 +58,8 @@ function Game()
     this.musicManager = new MusicManager()
 
     this.players = {
-        left: new Player('nature', this.board, new PadController(1)),
-        right: new Player('newYork', this.board, new PadController(2))
+        left: new Player('nature', this.board, new PadController(0)),
+        right: new Player('newYork', this.board, new PadController(1))
     }
 }
 
@@ -67,7 +67,7 @@ Game.prototype.update = function(time)
 {
     var dt = 0
     if (this.currentTime != null) {
-        dt = Math.min(time - this.currentTime,  1000 / 25)
+        dt = Math.min(time - this.currentTime,  1000 / 25)/1000
     }
     this.currentTime = time
 

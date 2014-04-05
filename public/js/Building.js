@@ -59,7 +59,7 @@ Building.prototype.update = function(time, dt){
 	{
 		if (this.currentAnimation.isPlaying){
 
-			this.currentAnimation.update(dt / 1000)
+			this.currentAnimation.update(dt)
 		}
 		else{
 			if (this.currentAnimation.data.name == "destroy"){
