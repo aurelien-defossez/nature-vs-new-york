@@ -30,10 +30,35 @@ Lane.prototype.capture = function(type, value){
 }
 
 Lane.prototype.update = function(time, dt){
-	for (var i = 0; i < this.cells.length; i++){
+	var i,
+        unit,
+        unitPositionX,
+        unitToRemove = [];
+    
+    for (i = 0; i < this.cells.length; i++){
 		this.cells[i].update(time, dt);
 	}
-    for (var i = 0; i < this.units.length; i++){
-		this.units[i].update(time, dt);
+    for (i = 0; i < this.units.length; i++){
+		unit = this.units[i];
+        unitPositionX = unit.xPosition;
+        unit.update(time, dt);
+        
+        if(unit.player === 'nature') {
+            if(unitPositionX > Game.config.lane.cellNumber) {
+                console.log('Nature hit NYC');
+                unit.destroy();
+                unitToRemove.push(i);
+            }
+        } else if(unit.player === 'newYork') {
+            if(unitPositionX < 0) {
+                console.log('NYC hit Nature');
+                unit.destroy();
+                unitToRemove.push(i);
+            }
+        }
+        
 	}
+    for(i = unitToRemove.length - 1; i >= 0; i--) {
+        this.units.splice(i, 1);
+    }
 }
