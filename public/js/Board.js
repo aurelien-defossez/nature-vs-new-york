@@ -20,6 +20,8 @@ function Board(scene, loader, hud)
 
 	this.loadLanes(loader)
 	this.loadHQs(hud)
+	
+	this.alerts = []
 }
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
@@ -43,8 +45,31 @@ Board.prototype.popMonster = function(button, laneIndex, playerName){
     	lane.addUnitInQueue(unit)
     } else {
     	console.log("Not enough mana")
+		lane.sayNotEnoughMana(playerName)
     }
 }
+/*Board.prototype.sayNotEnoughMana = function(lane){
+	var alertTexture = THREE.ImageUtils.loadTexture('data/NotEnoughMana.png')
+	var alert = new THREE.Mesh( new THREE.PlaneGeometry(0.3, 0.02), new THREE.MeshLambertMaterial( { map: alertTexture } ) )
+	this.alerts.push( alert );
+    alert.position.x = 0.3;
+    alert.position.y = 0.3/2;
+    alert.position.z = -0.3/2;
+    alert.castShadow = true;
+    alert.receiveShadow = true;
+	alert.createDate = new Date()
+	alert.ttl = Game.config.alerts.ttl * 1000
+    this.scene.add(alert)
+}
+Board.prototype.purgeAlerts = function(time){
+	if (this.alerts.length > 0){
+		var alert = this.alerts[0]
+		if (time - alert.createDate.getTime() > alert.ttl) {
+			this.scene.remove(alert)
+			delete alert
+		}
+	}
+}*/
 
 Board.prototype.loadHQs = function(hud){
 	this.hqs = {

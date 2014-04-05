@@ -37,6 +37,7 @@ function Lane(board, loader) {
 		}
 	}
 	
+	this.alerts = []
 }
 
 Lane.prototype.buildNextUnit = function(type){
@@ -69,6 +70,34 @@ Lane.prototype.processCreationQueue = function(time, dt){
 				this.runUnit(unit)
 				this.buildNextUnit(unit.type)
 			}
+		}
+	}
+}
+
+Lane.prototype.sayNotEnoughMana = function(playerName){
+	var alertTexture = THREE.ImageUtils.loadTexture('data/NotEnoughMana.png')
+	var alert = new THREE.Mesh( new THREE.PlaneGeometry(1, 1), new THREE.MeshLambertMaterial( { map: alertTexture } ) )
+	this.alerts.push( alert );
+	if(playerName === HQ.typesEnum.NATURE) {
+		alert.position.x = 0.8;
+	} else if(playerName === HQ.typesEnum.NEW_YORK) {
+		alert.position.x = Game.config.lane.cellNumber - 0.8;
+	}
+	alert.position.y = 0.5;
+	alert.position.z = -0.3/2;
+    alert.castShadow = true;
+    alert.receiveShadow = true;
+	alert.createDate = new Date()
+	alert.ttl = Game.config.alerts.ttl * 1000
+    this.scene.add(alert)
+}
+Lane.prototype.purgeAlerts = function(){
+	if (this.alerts.length > 0){
+		var currentTime = new Date()
+		var alert = this.alerts[0]
+		if (currentTime.getTime() - alert.createDate.getTime() > alert.ttl) {
+			this.scene.remove(alert)
+			this.alerts.splice(0,1)
 		}
 	}
 }
@@ -134,4 +163,6 @@ Lane.prototype.update = function(time, dt){
     for(i = unitToRemove.length - 1; i >= 0; i--) {
         this.units.splice(unitToRemove[i], 1);
     }
+	
+	this.purgeAlerts()
 }
