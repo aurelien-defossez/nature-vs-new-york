@@ -38,8 +38,11 @@ function HQ(scene, hud, type)
 	this.hqCube.receiveShadow = true
 	this.scene.add(this.hqCube)
 	
-	this.hp = Game.config.hq.hp
-	this.mana = Game.config.hq.startMana
+	var hqConfig = Game.config[type == HQ.typesEnum.NATURE ? "nature" : "newYork"]
+	this.hp = hqConfig.hp
+	this.mana = hqConfig.startMana
+	this.manaGeneration = hqConfig.manaPerSecond
+	this.captureSpeed = hqConfig.captureSpeed
 }
 
 HQ.prototype.isAlive = function(){
@@ -47,7 +50,7 @@ HQ.prototype.isAlive = function(){
 }
 
 HQ.prototype.update = function(time, dt) {
-	this.addMana(dt * Game.config.hq.manaPerSecond / 1000)
+	this.addMana(dt * this.manaGeneration / 1000)
 }
 
 HQ.prototype.addMana = function(value) {
