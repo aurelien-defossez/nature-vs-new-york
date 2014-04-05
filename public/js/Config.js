@@ -31,8 +31,11 @@ Game.config = {
     		'input3' : 'bramble'
     	},
     	buildings : {
-    		'manaTree' : {
+    		'natureCell' : {
     			modelFile : "data/root.js"
+    		},
+    		'manaTree' : {
+    			modelFile : "data/stupid.js"
     		}
     	}
 	},
@@ -50,8 +53,11 @@ Game.config = {
     		'input3' : 'armedConcrete'
     	},
     	buildings : {
-    		'bank' : {
+    		'buildingCell' : {
     			modelFile : "data/rails.js"
+    		},
+    		'bank' : {
+    			modelFile : "data/stupid.js"
     		}
     	}
 	},
