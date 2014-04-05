@@ -154,8 +154,25 @@ Lane.prototype.update = function(time, dt){
     	}
 	}
 
-	if (this.id == 1 && natureTarget)
-		document.getElementById("debug").innerHTML = natureTarget.index + " / " + Math.floor(natureTarget.position * 10) / 10
+    for (i = 0; i < this.cells.length; i++) {
+    	var cell = this.cells[i]
+
+    	// Find first neutral or enemy empty cell
+    	if (!cell.owner || cell.owner == "nature" && !cell.building) {
+    		for (j = i * 3; j < this.cells.length * 3; j++) {
+				if (!this.waitingLine[j]) {
+					newYorkTarget = {
+						index: j,
+						position: j / 3 + 1 / 6
+					}
+					break
+				}
+			}
+
+			break
+    	}
+	}
+
 
     for (i = 0; i < this.cells.length; i++) {
 		this.cells[i].update(time, dt);
@@ -172,6 +189,20 @@ Lane.prototype.update = function(time, dt){
 	        		this.waitingLine[natureTarget.index] = unit
 		        	natureTarget.index --
 		        	natureTarget.position -= 1 / 3
+	        	} else {
+	        		unit.hide()
+	        	}
+
+	        	unit.phase = "wait"
+	        }
+
+	        if (unit.player == "newYork"
+	        && (!newYorkTarget || newYorkTarget.index < 0 || unit.xPosition < newYorkTarget.position)) {
+	        	if (newYorkTarget) {
+	        		unit.setPosition(newYorkTarget.position)
+	        		this.waitingLine[newYorkTarget.index] = unit
+		        	newYorkTarget.index ++
+		        	newYorkTarget.position -= 1 / 3
 	        	} else {
 	        		unit.hide()
 	        	}

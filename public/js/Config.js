@@ -19,7 +19,7 @@ Game.config = {
 		initOwnedCells : 1,
 		health : 10,
     	hp: 500,
-    	startMana: 5000,
+    	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0.05,
     	mapping : {
