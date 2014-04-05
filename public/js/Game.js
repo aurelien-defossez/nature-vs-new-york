@@ -61,9 +61,9 @@ function Game()
 	
 	this.musicManager = new MusicManager()
     
-    this.action = {
-        player1: new Date(),
-        player2: new Date()
+    this.players = {
+        left: new Player('nature', this.board, new PadController(1)),
+        right: new Player('newYork', this.board, new PadController(2))
     }
 }
 
@@ -78,19 +78,9 @@ Game.prototype.update = function(time)
         this.currentTime = time
 
         this.musicManager.update(time, dt, 0)
-
-        if (Gamepad.supported) {
-            pads = Gamepad.getStates()
-            time = new Date()
-            if(pads[1] && (this.action.player1 == null || time - this.action.player1 > 200)) {
-                this.action.player1 = new Date()
-                buttonAction(1, pads[1])
-            }
-            if(pads[2] && (this.action.player2 == null || time - this.action.player2 > 200)) {
-                this.action.player2 = new Date()
-                buttonAction(2, pads[2])
-            }
-        }
+        
+        this.players.left.controlAction()
+        this.players.right.controlAction()
 
     this.renderer.render(this.scene, this.camera)
 }

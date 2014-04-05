@@ -4,6 +4,7 @@ function Lane()
 
 	this.scene = new THREE.Object3D()
 	this.cells = [];
+    this.units = [];
 	laneWidth = Game.config.lane.cellNumber
 
 	laneHeight = 1
