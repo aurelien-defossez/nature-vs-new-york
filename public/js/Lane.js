@@ -21,6 +21,11 @@ function Lane(scene, loader)
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
+		if (i < Game.config.nature.initOwnedCells) {
+			cell.setOwner("nature")
+		} else if (i >= Game.config.lane.cellNumber - Game.config.newYork.initOwnedCells) {
+			cell.setOwner("newYork")
+		}
 	}
 	//this.cell = new Cell();
 	//this.cell.scene.translateX( Game.config.lane.marginLeft )
@@ -36,20 +41,5 @@ function Lane(scene, loader)
 Lane.prototype.update = function(time, dt){
 	for (var i = 0; i < this.cells.length; i++){
 		this.cells[i].update(time, dt);
-	}
-}
-
-
-Lane.prototype.setPlayerPosition = function(player, position){
-	var firstCell = 0
-	var lastCell = this.cells.length -1
-	if (player == "nature"){
-		lastCell = position - 1
-	}else if (player == "newYork"){
-		firstCell = this.cells.length - position 
-	}
-	for (var i = firstCell; i <= lastCell; i++)
-	{
-		this.cells[i].setOwner(player);
 	}
 }

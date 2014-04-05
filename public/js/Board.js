@@ -1,9 +1,10 @@
-function Board(scene, loader)
+function Board(scene, loader, hud)
 {
 
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
 
+	this.hud = hud
 	this.boardWidth = Game.config.lane.marginLeft + Game.config.lane.cellNumber + Game.config.lane.marginRight
 	this.boardHeight = Game.config.lane.marginTop + 2 * Game.config.lane.spacing + 3 + Game.config.lane.marginBottom
 	planeGeom = new THREE.PlaneGeometry(this.boardHeight, this.boardWidth);
@@ -17,15 +18,15 @@ function Board(scene, loader)
 	this.plane.castShadow = false
 	this.plane.receiveShadow = true
 
-	this.loadHQs(loader)
+	this.loadHQs(hud)
 	this.loadLanes(loader)
 
 }
 
-Board.prototype.loadHQs = function(){
+Board.prototype.loadHQs = function(hud){
 	this.hqs = [
-		new HQ(this.scene, HQ.typesEnum.NATURE),
-		new HQ(this.scene, HQ.typesEnum.NEW_YORK)
+		new HQ(this.scene, this.hud, HQ.typesEnum.NATURE),
+		new HQ(this.scene, this.hud, HQ.typesEnum.NEW_YORK)
 	]
 
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))
@@ -37,40 +38,20 @@ Board.prototype.loadHQs = function(){
 }
 
 Board.prototype.loadLanes = function(loader){
-	// Create Lower Lane
-	this.lowerLane = new Lane(this.scene, loader)
-	this.lowerLane.scene.translateX( Game.config.lane.marginLeft )
-	this.lowerLane.scene.translateZ(- (Game.config.lane.marginBottom))
-	
-
-	this.lowerLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
-	this.lowerLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
-
-	// Create Middle Lane
-	this.middleLane = new Lane(this.scene, loader);
-	this.middleLane.scene.translateX( Game.config.lane.marginLeft )
-	this.middleLane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing + 1 ))
-
-
-	this.middleLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
-	this.middleLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
-
-	// Create Upper Lane
-	this.uperLane = new Lane(this.scene, loader);
-	this.uperLane.scene.translateX( Game.config.lane.marginLeft )
-	this.uperLane.scene.translateZ(- (Game.config.lane.marginBottom + 2* (Game.config.lane.spacing + 1)))
-
-
-	this.uperLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
-	this.uperLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
+	this.lanes = []
+	for (var i = 0; i < 3; i++) {
+		var lane = new Lane(this.scene, loader)
+		lane.scene.translateX( Game.config.lane.marginLeft )
+		lane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing * i))
+		this.lanes[i] = lane
+	}
 }
 
 Board.prototype.update = function(time, dt) {
 	for (var i = 0; i < 2; i++) {
 		this.hqs[i].update(time, dt)
 	}
-
-	this.lowerLane.update(time, dt)
-	this.middleLane.update(time, dt)
-	this.uperLane.update(time, dt)
+	for (var i = 0; i < 3; i++) {
+		this.lanes[i].update(time, dt)
+	}
 }
