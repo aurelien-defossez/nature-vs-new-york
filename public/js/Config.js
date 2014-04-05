@@ -22,6 +22,11 @@ Game.config = {
 	},
 	newYork : {
 		initOwnedCells : 2
+	},
+	objectMapping : {
+		"stupid" : {
+			file : "data/stupid.js"
+		}
 	}
 }
 
