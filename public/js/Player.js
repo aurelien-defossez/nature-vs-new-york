@@ -3,6 +3,7 @@ function Player(name, board, controller) {
     this.name = name;
     this.board = board;
     this.controller = controller;
+    this.keyboardController = new KeyboardController(this);
     this.controllerType = "gamepad";
 
 }

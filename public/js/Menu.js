@@ -31,8 +31,6 @@ function Menu(){
 	  this.parent.resetGame()
     })
     
-    document.addEventListener( 'keydown', onDocumentKeyDown, false );
-	
 }
 
 Menu.prototype.show = function(screenNb) {
