@@ -1,6 +1,6 @@
 HQ.typesEnum = {
-  NATURE : 0,
-  NEW_YORK : 1
+  NATURE : "nature",
+  NEW_YORK : "newYork"
 }
 
 function HQ(scene, hud, lanes, type)

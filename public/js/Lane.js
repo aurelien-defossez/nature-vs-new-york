@@ -64,13 +64,13 @@ Lane.prototype.processCreationQueue = function(time, dt){
 
 
 Lane.prototype.popBuilding = function(button, playerName){
-	if (playerName == "nature"){
+	if (playerName == HQ.typesEnum.NATURE){
 		for (var i = 0; i <= this.naturePosition; i++){
 			if (this.cells[i].building == null){
 				this.cells[i].build(button, playerName)
 			}
 		}
-	}else if (playerName == "newYork"){
+	} else {
 		for (var i = this.cells.length -1 ; i >= this.cells.length - this.newYorkPosition ; i--){
 			if (this.cells[i].building == null){
 				this.cells[i].build(button, playerName)

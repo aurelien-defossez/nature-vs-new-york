@@ -1,16 +1,8 @@
 function Building(scene, loader, button, player){
-
-    this.player = player;
-	var fileName;
-	var buildingType;
-	if(this.player === 'nature') {
-		buildingType = Game.config.nature.actions[button]
-		fileName = Game.config.nature.buildings[buildingType].modelFile;
-    } else if(this.player === 'newYork') {
-    	buildingType = Game.config.newYork.actions[button]
-		fileName = Game.config.newYork.buildings[buildingType].modelFile;
-    }
-
+    this.player = player
+	var buildingType = Game.config[this.player].mapping.buildings[button]
+	var fileName = Game.config[this.player].buildings[buildingType].modelFile
+    
 	this.parentScene = scene
 	this.animations = {}
 	this.currentAnimation = null
