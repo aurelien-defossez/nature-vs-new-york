@@ -1,19 +1,8 @@
-function Lane(scene, loader)
-{
-
-
+function Lane(scene, loader) {
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
 	this.cells = [];
     this.units = [];
-	laneWidth = Game.config.lane.cellNumber
-
-	laneHeight = 1
-	//this.laneCube = new THREE.Mesh( new THREE.CubeGeometry(laneWidth,0.1,laneHeight),  new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
-	//this.laneCube.position.x = laneWidth/2
-	//this.laneCube.position.z = -1/2
-	//this.scene.add(this.laneCube)
-
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
@@ -27,16 +16,18 @@ function Lane(scene, loader)
 			cell.setOwner("newYork")
 		}
 	}
-	//this.cell = new Cell();
-	//this.cell.scene.translateX( Game.config.lane.marginLeft )
-	//this.cell.scene.translateZ(- (Game.config.lane.marginBottom))
-	//this.scene.add(this.cell.scene)
-	//this.cell2 = new Cell(scene, position, 1);
-
-
-
 }
 
+Lane.prototype.capture = function(type, value){
+	if (type == HQ.typesEnum.NATURE) {
+		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
+			if (this.cells[i].owner == null) {
+				this.cells[i].capture(value)
+				break
+			}
+		}
+	}
+}
 
 Lane.prototype.update = function(time, dt){
 	for (var i = 0; i < this.cells.length; i++){
