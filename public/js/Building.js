@@ -8,24 +8,27 @@ function Building(scene, loader, button, player, hq, laneIndex){
 	this.laneIndex = laneIndex
 	this.builtTime = Game.config.buildings[buildingType].time
 	this.buildingProgress = 0
+	this.destroyScaffoldingProgress = 0
+	this.ScaffoldingDestroyed = true;
 	this.built = false
 	this.maxHP = Game.config.buildings[buildingType].hp
 	this.currentHP = this.maxHP * 0.2
 	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
 	this.BuildRate = 1/this.builtTime;
 	this.animationTime = 1;
+	this.animationTimerSetter = 0;
 	this.lowLifeColor = 0xaa0000;
 	this.middleLifeColor = 0xff8928;
-	this.highLifeColor = 0x00aa00
+	this.highLifeColor = 0x00aa00;
 
 	this.healthBarBackground = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.03,0.03),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
 	this.healthBarBackground.position.x = 1 * 0.5
-	this.healthBarBackground.position.y = 0.03 * 0.5 + 1/2
+	this.healthBarBackground.position.y = 0.03 * 0.5 + 1
 	this.healthBarBackground.position.z = -0.03 * 0.5 - 0.66
 
 	this.healthBar = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.04,0.04),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
 	this.healthBar.position.x = 1 * 0.5
-	this.healthBar.position.y = 0.04 * 0.5 + 1/2
+	this.healthBar.position.y = 0.04 * 0.5 + 1
 	this.healthBar.position.z = -0.03 * 0.5 - 0.66
 
 	this.parentScene.add(this.healthBarBackground);
@@ -38,31 +41,45 @@ function Building(scene, loader, button, player, hq, laneIndex){
 	this.currentAnimation = null
 	var self = this
 
+	fileName = "data/bank.js"
 	loader.load(fileName, function(geometry, materials)
 	{
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
-		self.parentScene.add(self.mesh)
+		//self.parentScene.add(self.mesh)
 		
-		var materials = self.mesh.material.materials
+	})
+
+	fileName = Game.config.buildings.scaffolding.modelFile
+	loader.load(fileName, function(geometry, materials)
+	{
+		self.scaffoldingMesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
+		self.scaffoldingMesh.castShadow = true
+		self.parentScene.add(self.scaffoldingMesh)
+		
+		var materials = self.scaffoldingMesh.material.materials
 		for (var k in materials)
 		{
 			materials[k].skinning = true
 		}
 		
-		for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
+		for (var i = 0; i < self.scaffoldingMesh.geometry.animations.length; ++i)
 		{
-			if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
-				THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
+			if (THREE.AnimationHandler.get(self.scaffoldingMesh.geometry.animations[i].name) == null)
+				THREE.AnimationHandler.add(self.scaffoldingMesh.geometry.animations[i])
 		}
 		
-		self.animations.create = new THREE.Animation(self.mesh, buildingType+"_create", THREE.AnimationHandler.CATMULLROM)
+		self.animations.create = new THREE.Animation(self.scaffoldingMesh, "scaffolding_create", THREE.AnimationHandler.CATMULLROM)
 		self.animations.create.loop = false
+		self.animations.destroy = new THREE.Animation(self.scaffoldingMesh, "scaffolding_destroy", THREE.AnimationHandler.CATMULLROM)
+		self.animations.destroy.loop = false
 		self.currentAnimation = self.animations.create
 		self.animationTime = self.currentAnimation.data.length;
 		self.currentAnimation.play()
 	})
+
 }
+
 
 Building.prototype.changeAnimation = function(nextAnimation)
 {
@@ -104,8 +121,27 @@ Building.prototype.update = function(time, dt){
 			this.built = true
 			this.buildingProgress = 1
 			this.applyEffect()
+			this.parentScene.add(this.mesh)
+			this.currentAnimation.stop()
+			this.currentAnimation = this.animations.destroy
+			this.currentAnimation.play();
+			this.ScaffoldingDestroyed = false;
+			
 		}
+		this.animationTimerSetter = this.buildingProgress;
+	} 
+	if (!this.ScaffoldingDestroyed)
+	{
+		this.destroyScaffoldingProgress = this.destroyScaffoldingProgress + this.BuildRate * dt * 10;
+
+		if (this.destroyScaffoldingProgress >= 1){
+			this.ScaffoldingDestroyed = true;
+			this.destroyScaffoldingProgress = 1
+			this.parentScene.remove(this.scaffoldingMesh)
+		}
+		this.animationTimerSetter = this.destroyScaffoldingProgress;
 	}
+
 	this.healthBar.scale.x = this.currentHP / this.maxHP;
 	this.healthBar.position.x = this.currentHP / this.maxHP * 0.6 * 0.5 + 0.4 * 0.5
 	var color;
@@ -123,7 +159,7 @@ Building.prototype.update = function(time, dt){
 	{
 		//debugger;
 		this.currentAnimation.reset()
-		this.currentAnimation.currentTime = this.buildingProgress
+		this.currentAnimation.currentTime = this.animationTimerSetter
 		this.currentAnimation.update(0)
 	}
 }

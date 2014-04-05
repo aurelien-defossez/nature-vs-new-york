@@ -144,6 +144,10 @@ Game.config = {
 		}
 	},
 	buildings: {
+		// Scaffolding
+		scaffolding: {
+			modelFile: "data/scaffolding.js"
+		},
 		// Arbre Mana
 		manaTree: {
 			hp: 50,

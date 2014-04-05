@@ -59,8 +59,8 @@ function Game()
     this.musicManager = new MusicManager()
 
     this.players = {
-        left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0)),
-        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(1))
+        left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(1)),
+        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(0))
     }
 }
 
