@@ -19,3 +19,7 @@ function HUD(player)
 	this.newYorkHUD.translateY(0.33)
 	this.scene.add(this.newYorkHUD)
 }
+
+HUD.prototype.updateMana = function(type, value) {
+	document.getElementById(type == HQ.typesEnum.NATURE ? "mana" : "dollars").innerHTML = value
+}

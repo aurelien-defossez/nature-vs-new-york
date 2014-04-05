@@ -3,7 +3,7 @@ HQ.typesEnum = {
   NEW_YORK : 1
 }
 
-function HQ(scene, type, hud)
+function HQ(scene, hud, type)
 {
 	this.hud = hud
 	this.natureHQColor = 0x00ff00
@@ -39,7 +39,7 @@ function HQ(scene, type, hud)
 	this.scene.add(this.hqCube)
 	
 	this.hp = Game.config.hq.hp
-	this.mana = Game.config.startMana
+	this.mana = Game.config.hq.startMana
 }
 
 HQ.prototype.isAlive = function(){
@@ -47,10 +47,11 @@ HQ.prototype.isAlive = function(){
 }
 
 HQ.prototype.update = function(time, dt) {
-	this.addMana(dt * Game.config.hq.manaPerSecond)
+	this.addMana(dt * Game.config.hq.manaPerSecond / 1000)
 }
 
 HQ.prototype.addMana = function(value) {
-	this.mana = this.mana + value
+	this.mana += value
+	this.hud.updateMana(this.type, Math.floor(this.mana))
 }
 

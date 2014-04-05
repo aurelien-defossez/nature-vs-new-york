@@ -34,20 +34,20 @@ body{
   margin-top: -720px
 }
 
-#hud .mana,
-#hud .dollars {
+#hud #mana,
+#hud #dollars {
   position: absolute;
   top: 200px;
   font-size: 24px;
   text-shadow: 1px 1px white;
 }
 
-#hud .mana {
+#hud #mana {
   left: 60px;
   text-align: left;
 }
 
-#hud .dollars {
-  left: 1180px;
+#hud #dollars {
+  left: 1195px;
   text-align: right;
 }

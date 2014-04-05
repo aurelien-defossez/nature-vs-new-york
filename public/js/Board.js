@@ -3,7 +3,8 @@ function Board(scene, loader, hud)
 
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
-	
+
+	this.hud = hud
 	this.boardWidth = Game.config.lane.marginLeft + Game.config.lane.cellNumber + Game.config.lane.marginRight
 	this.boardHeight = Game.config.lane.marginTop + 2 * Game.config.lane.spacing + 3 + Game.config.lane.marginBottom
 	planeGeom = new THREE.PlaneGeometry(this.boardHeight, this.boardWidth);
@@ -24,8 +25,8 @@ function Board(scene, loader, hud)
 
 Board.prototype.loadHQs = function(hud){
 	this.hqs = [
-		new HQ(this.scene, HQ.typesEnum.NATURE, hud),
-		new HQ(this.scene, HQ.typesEnum.NEW_YORK, hud)
+		new HQ(this.scene, this.hud, HQ.typesEnum.NATURE),
+		new HQ(this.scene, this.hud, HQ.typesEnum.NEW_YORK)
 	]
 
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))
