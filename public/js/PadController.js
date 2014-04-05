@@ -10,6 +10,13 @@
  */
 function PadController(padNumber) {
     this.padNumber = padNumber;
+
+    this.buttons = {
+        a: 0,
+        b: 0,
+        x: 0,
+        y: 0
+    }
 }
 
 PadController.prototype.checkAction = function(player) {
@@ -21,19 +28,29 @@ PadController.prototype.checkAction = function(player) {
         pads = Gamepad.getStates();
         pad = pads[this.padNumber];
         if(pad) {
-            if(pad.faceButton0) {
+            if(pad.faceButton0 && !this.buttons.a) {
                 arrowAction(player, pad, 'A')
-            } else if(pad.faceButton1) {
+            } else if(pad.faceButton1 && !this.buttons.b) {
                 arrowAction(player, pad, 'B')
-            } else if(pad.faceButton2) {
+            } else if(pad.faceButton2 && !this.buttons.x) {
                 arrowAction(player, pad, 'X')
-            } else if(pad.faceButton3) {
+            } else if(pad.faceButton3 && !this.buttons.y) {
                 arrowAction(player, pad, 'Y')
             }
+
+            // Enregistrement du statut du pad
+            this.savePadState(pad);
         }
     }else{
         console.log("Gamepad Not supported")
     }
+}
+
+PadController.prototype.savePadState = function(pad) {
+    this.buttons.a = pad.faceButton0;
+    this.buttons.b = pad.faceButton1;
+    this.buttons.x = pad.faceButton2;
+    this.buttons.y = pad.faceButton3;
 }
 
 function arrowAction(player, pad, button) {

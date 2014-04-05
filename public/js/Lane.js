@@ -1,20 +1,9 @@
-function Lane(scene, loader)
-{
-
-
+function Lane(scene, loader) {
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
 	this.cells = [];
     this.units = [];
 	this.unitsCreationQueue = [];
-	laneWidth = Game.config.lane.cellNumber
-
-	laneHeight = 1
-	//this.laneCube = new THREE.Mesh( new THREE.CubeGeometry(laneWidth,0.1,laneHeight),  new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
-	//this.laneCube.position.x = laneWidth/2
-	//this.laneCube.position.z = -1/2
-	//this.scene.add(this.laneCube)
-
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
@@ -28,12 +17,6 @@ function Lane(scene, loader)
 			cell.setOwner("newYork")
 		}
 	}
-	//this.cell = new Cell();
-	//this.cell.scene.translateX( Game.config.lane.marginLeft )
-	//this.cell.scene.translateZ(- (Game.config.lane.marginBottom))
-	//this.scene.add(this.cell.scene)
-	//this.cell2 = new Cell(scene, position, 1);
-
 	
 }
 
@@ -68,14 +51,49 @@ Lane.prototype.processCreationQueue = function(time, dt){
 	}
 }
 
+Lane.prototype.capture = function(type, value){
+	if (type == HQ.typesEnum.NATURE) {
+		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
+			if (this.cells[i].owner == null) {
+				this.cells[i].capture(value)
+				break
+			}
+		}
+	}
+}
 
 Lane.prototype.update = function(time, dt){
-	for (var i = 0; i < this.cells.length; i++){
+	var i,
+        unit,
+        unitPositionX,
+        unitToRemove = [];
+    
+    for (i = 0; i < this.cells.length; i++){
 		this.cells[i].update(time, dt);
 	}
-    for (var i = 0; i < this.units.length; i++){
-		this.units[i].update(time, dt);
+    for (i = 0; i < this.units.length; i++){
+		unit = this.units[i];
+        unitPositionX = unit.xPosition;
+        unit.update(time, dt);
+        
+        if(unit.player === 'nature') {
+            if(unitPositionX > Game.config.lane.cellNumber) {
+                console.log('Nature hit NYC');
+                unit.destroy();
+                unitToRemove.push(i);
+            }
+        } else if(unit.player === 'newYork') {
+            if(unitPositionX < 0) {
+                console.log('NYC hit Nature');
+                unit.destroy();
+                unitToRemove.push(i);
+            }
+        }
+        
 	}
 	
 	this.processCreationQueue(time, dt)
+    for(i = unitToRemove.length - 1; i >= 0; i--) {
+        this.units.splice(i, 1);
+    }
 }

@@ -1,28 +1,26 @@
 function Unit(scene, player, type) {
     console.log('Player ' + player + ' is creating a ' + type);
-    var xPosition;
-    
+
     this.scene = scene;
     this.player = player;
 
-	if(this.player === 'nature') {
-        xPosition = 0.3;
+    if(this.player === 'nature') {
+        this.xPosition = 0.3;
     } else if(this.player === 'newYork') {
-        xPosition = Game.config.lane.cellNumber - 0.3;
+        this.xPosition = Game.config.lane.cellNumber - 0.3;
     }
 	
 	this.buildTime = Game.config.unit.buildTime * 1000
 	this.built = false
 	this.pending = true
 	
-    this.cube = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
-	this.cube.position.x = xPosition;
-	this.cube.position.y = 0.3;
-	this.cube.position.z = -0.3;
-	this.cube.castShadow = true;
-	this.cube.receiveShadow = true;
-	this.scene.add(this.cube);
-	
+    this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
+    this.unit.position.x = this.xPosition;
+    this.unit.position.y = 0.3;
+    this.unit.position.z = -0.3;
+    this.unit.castShadow = true;
+    this.unit.receiveShadow = true;
+    this.scene.add(this.unit);
 }
 
 Unit.prototype.isBuilt = function(){
@@ -42,16 +40,23 @@ Unit.prototype.building = function(time){
 }
 
 Unit.prototype.update = function(time, dt) {
-	if (this.isBuilt()){
-		var newPositionX;
-		if(this.player === 'nature') {
-			newPositionX = dt * Game.config.unit.speed;
-		} else if(this.player === 'newYork') {
-			newPositionX = - dt * Game.config.unit.speed;
+    if (this.isBuilt()){
+		if(this.unit) {
+			var newPositionX;
+			if(this.player === 'nature') {
+				newPositionX = dt * Game.config.unit.speed;
+			} else if(this.player === 'newYork') {
+				newPositionX = - dt * Game.config.unit.speed;
+			}
+
+			this.unit.translateX(newPositionX);
+			this.xPosition = this.unit.position.x;
 		}
-		this.cube.translateX(newPositionX);
 	} else {
 		this.building(time)
 	}
-    
+}
+
+Unit.prototype.destroy = function() {
+    this.scene.remove(this.unit);
 }

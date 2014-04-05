@@ -3,9 +3,10 @@ HQ.typesEnum = {
   NEW_YORK : 1
 }
 
-function HQ(scene, hud, type)
+function HQ(scene, hud, lanes, type)
 {
 	this.hud = hud
+	this.lanes = lanes
 	this.natureHQColor = 0x00ff00
 	this.newYorkHQColor = 0x0000ff
 	this.scene = new THREE.Object3D()
@@ -51,7 +52,11 @@ function HQ(scene, hud, type)
 	this.hp = hqConfig.hp
 	this.mana = hqConfig.startMana
 	this.manaGeneration = hqConfig.manaPerSecond
-	this.captureSpeed = hqConfig.captureSpeed
+	this.captureSpeed = [
+		hqConfig.captureSpeed,
+		hqConfig.captureSpeed,
+		hqConfig.captureSpeed
+	]
 }
 
 HQ.prototype.isAlive = function(){
@@ -75,11 +80,14 @@ HQ.prototype.updateHealthBar = function(){
 }
 
 HQ.prototype.update = function(time, dt) {
-	this.addMana(dt * this.manaGeneration / 1000)
+	this.addMana(dt * this.manaGeneration)
 	
 	if(this.isAlive()) {
-		this.health -= 0.05  // for test
 		this.updateHealthBar();
+
+		for (var i = 0; i < 3; i++) {
+			this.lanes[i].capture(this.type, this.captureSpeed[i] * dt)
+		}
 	}
 }
 
