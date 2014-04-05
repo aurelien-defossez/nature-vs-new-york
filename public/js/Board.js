@@ -20,7 +20,6 @@ function Board(scene, loader, hud)
 
 	this.loadLanes(loader)
 	this.loadHQs(hud)
-
 }
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
@@ -31,7 +30,7 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
     var unit = new Unit(lane.scene, playerName, button)
-    lane.units.push(unit);
+    lane.addUnitInQueue(unit)
 }
 
 Board.prototype.loadHQs = function(hud){

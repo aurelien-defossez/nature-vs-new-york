@@ -12,6 +12,7 @@ function Lane(scene, loader) {
 	//this.laneCube.position.z = -1/2
 	//this.scene.add(this.laneCube)
 
+	this.unitsCreationQueue = [];
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
@@ -23,6 +24,38 @@ function Lane(scene, loader) {
 			cell.setOwner("nature")
 		} else if (i >= Game.config.lane.cellNumber - this.newYorkPosition) {
 			cell.setOwner("newYork")
+		}
+	}
+	
+}
+
+Lane.prototype.buildNextUnit = function(){
+	if (this.unitsCreationQueue.length > 0) {
+		this.unitsCreationQueue[0].startBuild();
+		console.log("Start building next unit...")
+	}
+}
+
+Lane.prototype.runUnit = function(unit){
+	this.units.push(unit);
+	this.unitsCreationQueue.splice(0,1)
+	console.log("Unit ready!")
+}
+
+Lane.prototype.addUnitInQueue = function(unit){
+	this.unitsCreationQueue.push(unit)
+	if (this.unitsCreationQueue.length==1) {
+		this.buildNextUnit()
+	}
+}
+
+Lane.prototype.processCreationQueue = function(time, dt){
+	for (var i = 0; i < this.unitsCreationQueue.length; i++){
+		var unit = this.unitsCreationQueue[i]
+		unit.update(time, dt)
+		if (i==0 && unit.isBuilt()){
+			this.runUnit(unit)
+			this.buildNextUnit()
 		}
 	}
 }
@@ -85,6 +118,8 @@ Lane.prototype.update = function(time, dt){
         }
         
 	}
+	
+	this.processCreationQueue(time, dt)
     for(i = unitToRemove.length - 1; i >= 0; i--) {
         this.units.splice(i, 1);
     }
