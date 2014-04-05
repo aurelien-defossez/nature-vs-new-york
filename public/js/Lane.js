@@ -105,7 +105,6 @@ Lane.prototype.capture = function(type, value){
 Lane.prototype.update = function(time, dt){
 	var i,
         unit,
-        unitPositionX,
         unitToRemove = [];
     
     for (i = 0; i < this.cells.length; i++){
@@ -113,19 +112,16 @@ Lane.prototype.update = function(time, dt){
 	}
     for (i = 0; i < this.units.length; i++){
 		unit = this.units[i];
-        unitPositionX = unit.xPosition;
         unit.update(time, dt);
         
         if(unit.player === HQ.typesEnum.NATURE) {
-            if(unitPositionX > Game.config.lane.cellNumber) {
-                console.log('Nature hit NYC');
+            if(unit.xPosition > Game.config.lane.cellNumber) {
                 this.board.hitEnemy(unit.player);
                 unit.destroy();
                 unitToRemove.push(i);
             }
         } else if(unit.player === HQ.typesEnum.NEW_YORK) {
-            if(unitPositionX < 0) {
-                console.log('NYC hit Nature');
+            if(unit.xPosition < 0) {
                 this.board.hitEnemy(unit.player);
                 unit.destroy();
                 unitToRemove.push(i);
@@ -136,6 +132,6 @@ Lane.prototype.update = function(time, dt){
 	
 	this.processCreationQueue(time, dt)
     for(i = unitToRemove.length - 1; i >= 0; i--) {
-        this.units.splice(i, 1);
+        this.units.splice(unitToRemove[i], 1);
     }
 }
