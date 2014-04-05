@@ -18,7 +18,7 @@ function Game()
     this.hud = new HUD()
     this.hud.scene.position.set( 0, 0, -1);
 
-    this.board= new Board(this.scene, this.loader, this.hud);
+    this.board = new Board(this.scene, this.loader, this.hud);
 
     this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
     this.scene.add(this.camera)
