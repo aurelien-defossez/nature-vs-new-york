@@ -1,10 +1,12 @@
 function Lane(id, board, loader) {
     this.board = board;
     this.id = id
+    this.loader = loader
 	this.scene = new THREE.Object3D()
 	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
+
 
 	this.unitsCreationQueues = {
 	    sapCarrier: [],
@@ -48,7 +50,7 @@ Lane.prototype.runUnit = function(unit){
 }
 
 Lane.prototype.createUnit = function(player, type, position){
-	var unit = new Unit(this.scene, player, type)
+	var unit = new Unit(this.scene, player, type, this.loader)
 	unit.runUnit();
 	unit.setPosition(position)
 	unit.activate()

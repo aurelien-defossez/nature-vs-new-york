@@ -3,10 +3,11 @@ HQ.typesEnum = {
   NEW_YORK : "newYork"
 }
 
-function HQ(scene, hud, lanes, type)
+function HQ(scene, hud, lanes, type, loader)
 {
 	this.hud = hud
 	this.lanes = lanes
+	this.loader = loader
 	this.natureHQColor = 0x00ff00
 	this.newYorkHQColor = 0x0000ff
 	this.scene = new THREE.Object3D()
@@ -27,17 +28,17 @@ function HQ(scene, hud, lanes, type)
 	if (type == HQ.typesEnum.NATURE){
 		color = this.natureHQColor
 		this.health = Game.config.nature.health
-		this.healthBarBackground.translateX(-0.6)
-		this.healthBarBackground.translateY(0.45)
-		this.healthBar.translateX(-0.6)
-		this.healthBar.translateY(0.45)
+		this.healthBarBackground.translateX(-0.8)
+		this.healthBarBackground.translateY(0.55)
+		this.healthBar.translateX(-0.8)
+		this.healthBar.translateY(0.55)
 	}else if (type == HQ.typesEnum.NEW_YORK){
 		color = this.newYorkHQColor
 		this.health = Game.config.newYork.health
-		this.healthBarBackground.translateX(0.6)
-		this.healthBarBackground.translateY(0.45)
-		this.healthBar.translateX(0.6)
-		this.healthBar.translateY(0.45)
+		this.healthBarBackground.translateX(0.8)
+		this.healthBarBackground.translateY(0.55)
+		this.healthBar.translateX(0.8	)
+		this.healthBar.translateY(0.55)
 	}
     this.type = type
 	this.hqCube = new THREE.Mesh( new THREE.CubeGeometry(2,0.2,5),  new THREE.MeshBasicMaterial( { color: color } ) )
@@ -69,7 +70,7 @@ HQ.prototype.buyUnit = function(scene, player, type){
 
 	if (this.mana >= cost) {
 		this.mana -= cost
-		var unit = new Unit(scene, player, unitType)
+		var unit = new Unit(scene, player, unitType, this.loader)
 		return unit
 	}
 }

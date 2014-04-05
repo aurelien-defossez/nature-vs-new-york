@@ -3,14 +3,15 @@ function Board(scene, loader, hud)
 
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
+	this.loader = loader
 
 	this.hud = hud
 	this.boardWidth = Game.config.lane.marginLeft + Game.config.lane.cellNumber + Game.config.lane.marginRight
 	this.boardHeight = Game.config.lane.marginTop + 2 * Game.config.lane.spacing + 3 + Game.config.lane.marginBottom
-	planeGeom = new THREE.PlaneGeometry(this.boardHeight, this.boardWidth);
+	planeGeom = new THREE.PlaneGeometry(this.boardWidth, this.boardHeight);
 	material = new THREE.MeshLambertMaterial()
 	material.color = new THREE.Color( 0, 0.5, 0.2 );
-	this.plane = new THREE.Mesh(new THREE.PlaneGeometry(this.boardWidth, this.boardHeight), material)
+	this.plane = new THREE.Mesh(planeGeom, material)
 	this.plane.position.x = this.boardWidth/2
 	this.plane.position.z = -this.boardHeight/2
 	this.scene.add(this.plane)
@@ -80,8 +81,8 @@ Board.prototype.popMonster = function(button, laneIndex, playerName){
 
 Board.prototype.loadHQs = function(hud){
 	this.hqs = {
-		"nature": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE),
-		"newYork": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK)
+		"nature": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE, this.loader),
+		"newYork": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK, this.loader)
 	}
 
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))

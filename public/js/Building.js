@@ -26,12 +26,12 @@ function Building(scene, loader, button, player, hq, lane, cell){
 	this.healthBarBackground = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.03,0.03),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
 	this.healthBarBackground.position.x = 1 * 0.5
 	this.healthBarBackground.position.y = 0.03 * 0.5 + 1
-	this.healthBarBackground.position.z = -0.03 * 0.5 - 0.66
+	this.healthBarBackground.position.z = -0.03 * 0.5 - 0.25
 
 	this.healthBar = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.04,0.04),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
 	this.healthBar.position.x = 1 * 0.5
 	this.healthBar.position.y = 0.04 * 0.5 + 1
-	this.healthBar.position.z = -0.03 * 0.5 - 0.66
+	this.healthBar.position.z = -0.03 * 0.5 - 0.25
 
 	this.parentScene.add(this.healthBarBackground);
 	this.parentScene.add(this.healthBar);
@@ -143,7 +143,7 @@ Building.prototype.update = function(time, dt){
 
 	if (!this.ScaffoldingDestroyed)
 	{
-		this.destroyScaffoldingProgress = this.destroyScaffoldingProgress + this.BuildRate * dt * 10;
+		this.destroyScaffoldingProgress = this.destroyScaffoldingProgress + 1/this.currentAnimation.data.length * dt ;
 
 		if (this.destroyScaffoldingProgress >= 1){
 			this.ScaffoldingDestroyed = true;
@@ -168,9 +168,8 @@ Building.prototype.update = function(time, dt){
 
 	if (this.currentAnimation != null)
 	{
-		//debugger;
 		this.currentAnimation.reset()
-		this.currentAnimation.currentTime = this.animationTimerSetter
+		this.currentAnimation.currentTime = this.animationTimerSetter * this.currentAnimation.data.length;
 		this.currentAnimation.update(0)
 	}
 }

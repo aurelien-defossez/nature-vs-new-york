@@ -9,7 +9,7 @@ var colors = {
     mecha: 0xB81D1D         // Red
 }
 
-function Unit(scene, player, type) {
+function Unit(scene, player, type, loader) {
     console.log('Player ' + player + ' is creating a ' + type);
 
     var unitConfig = Game.config.units[type]
@@ -37,6 +37,37 @@ function Unit(scene, player, type) {
 	this.collided = false
 	this.target = null
 	this.fightStartDate = null;
+
+    this.animations = {}
+    this.currentAnimation = null
+    var self = this
+
+    fileName = "data/builder.js"
+    loader.load(fileName, function(geometry, materials)
+    {
+        self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
+        self.mesh.castShadow = true
+        self.mesh.receiveShadow = true
+        //self.parentScene.add(self.mesh)
+        
+        var materials = self.mesh.material.materials
+        for (var k in materials)
+        {
+            materials[k].skinning = true
+        }
+        
+        for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
+        {
+            if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
+                THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
+        }
+        
+        self.animations.walk = new THREE.Animation(self.mesh, type+"_walk", THREE.AnimationHandler.CATMULLROM)
+        self.animations.walk.loop = true
+        self.currentAnimation = self.animations.walk
+        self.currentAnimation.play()
+    })
+
 }
 
 Unit.prototype.startBuild = function(){
@@ -52,17 +83,26 @@ Unit.prototype.activate = function(){
 }
 
 Unit.prototype.runUnit = function(){
-	this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
+    if (!this.mesh)
+        return;
+    this.mesh.position.z = - 0.3 * 0.5
+    this.mesh.position.x = this.xPosition
+    this.mesh.rotation.y = Math.PI/2
+    if (this.player == "newYork"){
+        this.mesh.rotation.y = -Math.PI/2
+    }
+    this.scene.add(this.mesh);
+	/*this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
     this.unit.position.x = this.xPosition;
     this.unit.position.y = 0.3/2;
     this.unit.position.z = -0.3/2;
     this.unit.castShadow = true;
     this.unit.receiveShadow = true;
-    this.scene.add(this.unit);
+    this.scene.add(this.unit);*/
 }
 
 Unit.prototype.setPosition = function(x) {
-    this.unit.position.x = x
+    this.mesh.position.x = x
     this.xPosition = x
 }
 
@@ -71,25 +111,32 @@ Unit.prototype.update = function(time, dt) {
         if (this.target!=null){
             this.attackTarget(time)
         } else {
-            this.unit.translateX(this.speed * this.direction * dt)
-            this.xPosition = this.unit.position.x
-            this.unit.geometry.computeBoundingBox()
+            this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
+            this.xPosition = this.mesh.position.x
+            this.mesh.geometry.computeBoundingBox()
         }
     } else if (!this.pending) {
         this.buildDelay -= dt
     }
+
+    if (this.currentAnimation != null)
+    {
+        //this.currentAnimation.reset()
+        //this.currentAnimation.currentTime = this.animationTimerSetter
+        this.currentAnimation.update(dt)
+    }
 }
 
 Unit.prototype.destroy = function() {
-    this.scene.remove(this.unit);
+    this.scene.remove(this.mesh);
 }
 
 Unit.prototype.collides = function(unit){
 	var collides = false
-	if (this!==unit && unit.unit.geometry.boundingBox!=null){
+	//if (this!==unit && unit.unit.geometry.boundingBox!=null){
 		// TODO
 		//collides = this.unit.geometry.boundingBox.isIntersectionBox(unit.unit.geometry.boundingBox)
-	}
+	//}
 	return collides
 }
 
