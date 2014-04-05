@@ -14,13 +14,12 @@ function Unit(scene, player, type, loader) {
 
     var unitConfig = Game.config.units[type]
     
-	this.boundingBox = null
+    this.phase = "walk"
     this.scene = scene;
     this.player = player;
     this.type = type;
     this.direction = (this.player === HQ.typesEnum.NATURE) ? 1 : -1;
     this.hp = unitConfig.hp;
-	this.cooldown = unitConfig.cooldown * 1000
     this.speed = unitConfig.speed;
     this.attack = unitConfig.attack;
     this.attackBuilding = unitConfig.attackBuilding;
@@ -64,6 +63,8 @@ function Unit(scene, player, type, loader) {
         
         self.animations.walk = new THREE.Animation(self.mesh, type+"_walk", THREE.AnimationHandler.CATMULLROM)
         self.animations.walk.loop = true
+        self.animations.idle = new THREE.Animation(self.mesh, type+"_idle", THREE.AnimationHandler.CATMULLROM)
+        self.animations.idle.loop = true
         self.currentAnimation = self.animations.walk
         self.currentAnimation.play()
     })
@@ -74,12 +75,21 @@ Unit.prototype.startBuild = function(){
     this.pending = false
 }
 
+Unit.prototype.activate = function(){
+    return this.buildDelay = 0
+}
+
+Unit.prototype.setPosition = function(x) {
+    this.mesh.position.x = x
+    this.xPosition = x
+}
+
 Unit.prototype.isBuilt = function(time){
     return this.buildDelay <= 0
 }
 
-Unit.prototype.activate = function(){
-    return this.buildDelay = 0
+Unit.prototype.hide = function(time){
+    return this.mesh.visible = true
 }
 
 Unit.prototype.runUnit = function(){
@@ -101,19 +111,25 @@ Unit.prototype.runUnit = function(){
     this.scene.add(this.unit);*/
 }
 
-Unit.prototype.setPosition = function(x) {
-    this.mesh.position.x = x
-    this.xPosition = x
+Unit.prototype.swtichAnimation = function(phase){
+    this.phase = phase
+    if (phase == "walk"){
+
+        this.currentAnimation.stop()
+        this.currentAnimation = this.animations.walk
+        this.currentAnimation.play()
+    } else if ( phase == "wait"){
+        this.currentAnimation.stop()
+        this.currentAnimation = this.animations.idle
+        this.currentAnimation.play()
+    }
 }
 
 Unit.prototype.update = function(time, dt) {
     if (this.isBuilt()){
-        if (this.target!=null){
-            this.attackTarget(time)
-        } else {
+        if (this.phase == "walk") {
             this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
             this.xPosition = this.mesh.position.x
-            this.mesh.geometry.computeBoundingBox()
         }
     } else if (!this.pending) {
         this.buildDelay -= dt
@@ -121,8 +137,6 @@ Unit.prototype.update = function(time, dt) {
 
     if (this.currentAnimation != null)
     {
-        //this.currentAnimation.reset()
-        //this.currentAnimation.currentTime = this.animationTimerSetter
         this.currentAnimation.update(dt)
     }
 }

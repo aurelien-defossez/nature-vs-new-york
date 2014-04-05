@@ -35,7 +35,8 @@ body{
 }
 
 #hud #mana,
-#hud #dollars {
+#hud #dollars,
+#hud #debug {
   position: absolute;
   top: 200px;
   width: 50px;
@@ -51,4 +52,10 @@ body{
 #hud #dollars {
   left: 1170px;
   text-align: right;
+}
+
+#hud #debug {
+  top: 100px;
+  left: 600px;
+  text-align: left;
 }

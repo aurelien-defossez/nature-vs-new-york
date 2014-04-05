@@ -65,10 +65,6 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
 	var hq = this.hqs[playerName]
-
-
-
-
 	var unit = hq.buyUnit(lane.scene, playerName, button);
 
 	if (unit) {

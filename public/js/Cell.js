@@ -19,17 +19,12 @@ function Cell(scene, loader, lane, id)
 	this.loader = loader
 }
 
-Cell.prototype.setOwner = function(player)
-{
+Cell.prototype.setOwner = function(player) {
 	this.owner = player
 	this.captureProgress = player == "nature" ? 1 : -1
 
 	if (!this.mesh) {
-		if (player == "nature"){
-			this.loadMesh(this.loader, 'natureCell')
-		} else if (player == "newYork"){
-			this.loadMesh(this.loader, 'newYorkCell')
-		}
+		this.loadMesh(this.loader, player + 'Cell')
 	}
 }
 
@@ -43,10 +38,8 @@ Cell.prototype.capture = function(value){
 	this.captureProgress += value
 
 	if (this.captureProgress >= 1) {
-		this.captureProgress = 1
 		this.setOwner("nature")
 	} else if (this.captureProgress <= -1) {
-		this.captureProgress = -1
 		this.setOwner("newYork")
 	}
 }
@@ -65,8 +58,7 @@ Cell.prototype.update = function(time, dt){
 		this.building.update(time, dt);
 	}
 
-	if (this.currentAnimation != null)
-	{
+	if (this.currentAnimation != null) {
 		this.currentTime = (Math.abs(this.captureProgress)) * this.animationTime
 		this.currentAnimation.reset()
 		this.currentAnimation.currentTime = this.currentTime;
@@ -74,13 +66,11 @@ Cell.prototype.update = function(time, dt){
 	}
 }
 
-Cell.prototype.loadMesh = function(loader, name){
+Cell.prototype.loadMesh = function(loader, name) {
 	var self = this
 	var fileName = Game.config.buildings[name].modelFile
-	loader.load(fileName, function(geometry, materials)
-	{
-		if (self.mesh)
-		{
+	loader.load(fileName, function(geometry, materials) {
+		if (self.mesh) {
 			self.scene.remove(self.mesh)
 		}
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
@@ -88,18 +78,16 @@ Cell.prototype.loadMesh = function(loader, name){
 		self.scene.add(self.mesh)
 		
 		var materials = self.mesh.material.materials
-		for (var k in materials)
-		{
+		for (var k in materials) {
 			materials[k].skinning = true
 		}
 		
-		for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
-		{
+		for (var i = 0; i < self.mesh.geometry.animations.length; ++i) {
 			if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
 				THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
 		}
 		
-		self.animations.create = new THREE.Animation(self.mesh, name+"_create", THREE.AnimationHandler.CATMULLROM)
+		self.animations.create = new THREE.Animation(self.mesh, name + "_create", THREE.AnimationHandler.CATMULLROM)
 
 		self.animations.create.loop = false
 		self.currentAnimation = self.animations.create

@@ -6,6 +6,7 @@ function Lane(id, board, loader) {
 	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
+    this.waitingLine = [];
 
 
 	this.unitsCreationQueues = {
@@ -21,7 +22,7 @@ function Lane(id, board, loader) {
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
-		var cell = new Cell(this.scene, loader, this, i);
+		var cell = new Cell(this.scene, loader, this.id);
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
@@ -135,55 +136,93 @@ Lane.prototype.capture = function(type, value){
 		}
 	}
 }
-Lane.prototype.engageUnitsFight = function(unit1, unit2, time){
-	unit1.engageFight(unit2, time)
-	unit2.engageFight(unit1, time)
-	console.log("Fight!!!")
-} 
-
-Lane.prototype.unitCollides = function(unit){
-	for (i = 0; i < this.units.length; i++){
-		var target = this.units[i]
-		if(target.isAlive() && target.target==null && unit.collides(target)){
-			console.log("collides")
-			return this.units[i]
-		}
-	}
-}
 
 Lane.prototype.update = function(time, dt){
 	var i,
         unit,
         unitToRemove = [];
-    
-    for (i = 0; i < this.cells.length; i++){
+   
+   	// Define targets for units
+   	var natureTarget
+   	var newYorkTarget
+    for (i = this.cells.length - 1; i >= 0; --i) {
+    	var cell = this.cells[i]
+
+    	// Find first neutral or enemy empty cell
+    	if (!cell.owner || cell.owner == "newYork" && !cell.building) {
+    		for (j = (i + 1) * 3 - 1; j >= 0; --j) {
+				if (!this.waitingLine[j]) {
+					natureTarget = {
+						index: j,
+						position: j / 3 + 1 / 6
+					}
+					break
+				}
+			}
+
+			break
+    	}
+	}
+
+    for (i = 0; i < this.cells.length; i++) {
+    	var cell = this.cells[i]
+
+    	// Find first neutral or enemy empty cell
+    	if (!cell.owner || cell.owner == "nature" && !cell.building) {
+    		for (j = i * 3; j < this.cells.length * 3; j++) {
+				if (!this.waitingLine[j]) {
+					newYorkTarget = {
+						index: j,
+						position: j / 3 + 1 / 6
+					}
+					break
+				}
+			}
+
+			break
+    	}
+	}
+
+
+    for (i = 0; i < this.cells.length; i++) {
 		this.cells[i].update(time, dt);
 	}
-    for (i = 0; i < this.units.length; i++){
+
+    for (i = 0; i < this.units.length; i++) {
 		unit = this.units[i];
+
+		if (unit.phase == "walk") {
+	        if (unit.player == "nature"
+	        && (!natureTarget || natureTarget.index < 0 || unit.xPosition > natureTarget.position)) {
+	        	if (natureTarget) {
+	        		unit.setPosition(natureTarget.position)
+	        		this.waitingLine[natureTarget.index] = unit
+		        	natureTarget.index --
+		        	natureTarget.position -= 1 / 3
+	        	} else {
+	        		unit.hide()
+	        	}
+
+	        	
+	        	unit.swtichAnimation("wait")
+	        }
+
+	        if (unit.player == "newYork"
+	        && (!newYorkTarget || newYorkTarget.index < 0 || unit.xPosition < newYorkTarget.position)) {
+	        	if (newYorkTarget) {
+	        		unit.setPosition(newYorkTarget.position)
+	        		this.waitingLine[newYorkTarget.index] = unit
+		        	newYorkTarget.index ++
+		        	newYorkTarget.position -= 1 / 3
+	        	} else {
+	        		unit.hide()
+	        	}
+
+	        	unit.swtichAnimation("wait")
+	        }
+	    }
+
         unit.update(time, dt);
-		var unitCollided
-		if (unit.target==null) {
-			unitCollided = this.unitCollides(unit)
-		}
-        
-		if (unitCollided) {
-			this.engageUnitsFight(unit, unitCollided, time);
-		} else {
-			if(unit.player === HQ.typesEnum.NATURE && unit.xPosition > Game.config.lane.cellNumber) {
-				this.board.hitEnemy(unit.player);
-				unit.destroy();
-				unitToRemove.push(i);
-			} else if(unit.player === HQ.typesEnum.NEW_YORK && unit.xPosition < 0) {
-				this.board.hitEnemy(unit.player);
-				unit.destroy();
-				unitToRemove.push(i);
-			}
-		}
-		if (!unit.isAlive()) {
-			unitToRemove.push(i);
-		}
-		
 	}
 	
 	this.processCreationQueue(time, dt)
