@@ -11,7 +11,7 @@ function Board()
 	this.plane.position.z = -this.boardHeight/2
 	this.scene.add(this.plane)
 	this.plane.rotation.x = -Math.PI * 0.5
-	this.plane.castShadow = true
+	this.plane.castShadow = false
 	this.plane.receiveShadow = true
 
 	this.lowerLane = new Lane()

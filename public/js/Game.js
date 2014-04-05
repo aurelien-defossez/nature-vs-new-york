@@ -18,7 +18,7 @@ function Game()
 	
 	this.camera = new THREE.PerspectiveCamera(50.0, 16.0 / 9.0, 0.1, 1000.0)
 	this.scene.add(this.camera)
-	this.camera.position.set(this.board.boardWidth/2, 7, 1)
+	this.camera.position.set(this.board.boardWidth/2, 6, 2)
 	this.camera.lookAt(new THREE.Vector3( this.board.boardWidth/2, 0, -this.board.boardHeight/2 ))
 
 
@@ -31,25 +31,26 @@ function Game()
 	this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
 	this.hemiLight.color.setHSL(0.6, 1, 0.6)
 	this.hemiLight.groundColor.setHSL(0.095, 1, 0.75)
-	this.hemiLight.position.set(0, 500, 0)
+	this.hemiLight.position.set(0, 20, 0)
 	this.scene.add(this.hemiLight)
 	
 	this.dirLight = new THREE.DirectionalLight(0xffffff, 1)
 	this.dirLight.color.setHSL(0.1, 1, 0.95)
 	this.dirLight.position.set(-1, 1.75, 1)
-	this.dirLight.position.multiplyScalar(50)
+
+	this.dirLight.position.multiplyScalar(20)
+	this.dirLight.target.position.set(this.board.boardWidth/2, 0, -this.board.boardHeight/2)
 	this.dirLight.castShadow = true
-	this.dirLight.shadowCameraVisible = true
-	var shadowSize = 20
+	var shadowSize = 6
 	this.dirLight.shadowCameraLeft = -shadowSize;
 	this.dirLight.shadowCameraRight = shadowSize;
 	this.dirLight.shadowCameraTop = shadowSize;
 	this.dirLight.shadowCameraBottom = -shadowSize;
-	this.dirLight.shadowCameraNear = 50;
-	this.dirLight.shadowCameraFar = 250;
+	this.dirLight.shadowCameraNear = 30;
+	this.dirLight.shadowCameraFar = 60;
 	//this.dirLight.shadowCameraVisible = true
 	//this.dirLight.shadowMapBias = -10;
-	this.dirLight.shadowMapWidth = this.dirLight.shadowMapHeight = 512;
+	this.dirLight.shadowMapWidth = this.dirLight.shadowMapHeight = 1024;
 	this.scene.add(this.dirLight)
 	
 	//var light = new THREE.PointLight(0xffffff, 2, 0)

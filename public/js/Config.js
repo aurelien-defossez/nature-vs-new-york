@@ -1,6 +1,6 @@
 Game.config = {
 	lane : {
-		cellNumber : 6,
+		cellNumber : 8,
 		spacing : 1,
 		marginLeft : 2,
 		marginRight : 2,
