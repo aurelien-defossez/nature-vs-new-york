@@ -23,13 +23,6 @@ function Unit(scene, player, type) {
 	this.pending = true
 	this.cost = Game.config.unit.cost
 
-    this.unit = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
-    this.unit.position.x = this.xPosition;
-    this.unit.position.y = 0.3/2;
-    this.unit.position.z = -0.3/2;
-    this.unit.castShadow = true;
-    this.unit.receiveShadow = true;
-    this.scene.add(this.unit);
 }
 
 Unit.prototype.isBuilt = function(){
