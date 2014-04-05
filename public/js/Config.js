@@ -17,6 +17,9 @@ Game.config = {
           start : "U+0050"
         }     
     },
+	alerts : {
+		ttl : 1 // in seconds
+	},
     nature : {
 		initOwnedCells : 1,
 		health : 10,
