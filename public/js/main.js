@@ -20,7 +20,6 @@ function update(timestamp)
 
 function onDocumentKeyDown( event ) {
   
-  console.log(event.keyIdentifier)
   switch (event.keyIdentifier){
       case Game.config.hotKeys.keyboard.start : 
         if(!menu.isShown()) {
