@@ -9,13 +9,18 @@
 	<body>
         <div id="menu"></div>
 		<div id="game"></div>
-      
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r66/three.min.js"></script>
-        <script src="lib/gamepad_uncompressed.js"></script>
+		<div id="hud">
+			<div class="mana">50</div>
+			<div class="dollars">50</div>
+		</div>
+
+        <script src="lib/three.min.js"></script>
+        <script src="lib/gamepad.js"></script>
 		
 		<script src="js/main.js"></script>
-        <script src="js/Units.js"></script>
-        <script src="js/Controls.js"></script>
+        <script src="js/Unit.js"></script>
+        <script src="js/Player.js"></script>
+        <script src="js/PadController.js"></script>
 		<script src="js/Game.js"></script>
 		<script src="js/Menu.js"></script>
 		<script src="js/Config.js"></script>
@@ -23,6 +28,7 @@
 		<script src="js/Board.js"></script>
 		<script src="js/Lane.js"></script>
 		<script src="js/Cell.js"></script>
+		<script src="js/Building.js"></script>
 		<script src="js/HQ.js"></script>
 		<script src="js/MusicManager.js"></script>
 		
