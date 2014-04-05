@@ -25,6 +25,8 @@ function Cell(scene, loader)
 
 	this.animations = {}
 	this.currentAnimation = null
+	this.animationTime = 20;
+	this.reverse = false
 
 	this.building = null;
 	scene.add(this.scene)
@@ -62,7 +64,7 @@ Cell.prototype.capture = function(value){
 		this.scene.add(this.mesh)
 	} else if (value < 0 && this.captureProgress >= 0) {
 		this.captureCube.material.color = new THREE.Color(this.newYorkColor)
-		this.loadMesh(this.loader, Game.config.newYork.buildings['natureCell'].modelFile)
+		this.loadMesh(this.loader, Game.config.newYork.buildings['newYorkCell'].modelFile)
 		if (this.mesh)
 		{
 			this.scene.remove(this.mesh)
@@ -104,10 +106,10 @@ Cell.prototype.update = function(time, dt){
 
 	if (this.currentAnimation != null)
 	{
-		if (this.currentAnimation.isPlaying){
-
-			this.currentAnimation.update(dt)
-		}
+		this.currentTime = (Math.abs(this.captureProgress)) / 2 * this.animationTime
+		this.currentAnimation.reset()
+		this.currentAnimation.currentTime = this.currentTime;
+		this.currentAnimation.update(0)
 	}
 }
 
@@ -136,7 +138,7 @@ Cell.prototype.loadMesh = function(loader, fileName){
 		}
 		
 		self.animations.create = new THREE.Animation(self.mesh, "create", THREE.AnimationHandler.CATMULLROM)
-		self.animations.create.loop = true
+		self.animations.create.loop = false
 		//self.animations.destroy = new THREE.Animation(self.mesh, "destroy", THREE.AnimationHandler.CATMULLROM)
 		//self.animations.destroy.loop = false
 		self.currentAnimation = self.animations.create

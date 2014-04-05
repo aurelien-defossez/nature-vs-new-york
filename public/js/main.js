@@ -11,7 +11,7 @@ window.onload = function()
 function update(timestamp)
 {
 	if (!menu.isShown()) {
-      game.update(timestamp)
+      game.update(timestamp * 0.001)
     }
 	requestAnimationFrame(update)
     
