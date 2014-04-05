@@ -1,7 +1,8 @@
-function Board()
+function Board(scene, loader)
 {
 
 	this.scene = new THREE.Object3D()
+	scene.add(this.scene)
 
 	this.boardWidth = Game.config.lane.marginLeft + Game.config.lane.cellNumber + Game.config.lane.marginRight
 	this.boardHeight = Game.config.lane.marginTop + 2 * Game.config.lane.spacing + 3 + Game.config.lane.marginBottom
@@ -16,8 +17,8 @@ function Board()
 	this.plane.castShadow = false
 	this.plane.receiveShadow = true
 
-	this.loadHQs()
-	this.loadLanes()
+	this.loadHQs(loader)
+	this.loadLanes(loader)
 
 
 
@@ -26,45 +27,48 @@ function Board()
 
 }
 
-Board.prototype.loadHQs = function(){
+Board.prototype.update =  function(time, dt){
+	this.lowerLane.update(time, dt)
+	this.middleLane.update(time, dt)
+	this.uperLane.update(time, dt)
+}
+
+Board.prototype.loadHQs = function(loader){
 	// Create Nature HQ
-	this.leftHQ = new HQ("nature");
+	this.leftHQ = new HQ(this.scene, "nature");
 	this.leftHQ.scene.translateZ(- (Game.config.lane.marginBottom))
-	this.scene.add(this.leftHQ.scene)
-
-
+	
 
 	// Create New York HQ
-	this.rightHQ = new HQ("newYork");
-	this.scene.add(this.rightHQ.scene)
+	this.rightHQ = new HQ(this.scene, "newYork");
 	this.rightHQ.scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
 	this.rightHQ.scene.translateZ(- (Game.config.lane.marginBottom))
 }
 
-Board.prototype.loadLanes = function(){
+Board.prototype.loadLanes = function(loader){
 	// Create Lower Lane
-	this.lowerLane = new Lane()
+	this.lowerLane = new Lane(this.scene, loader)
 	this.lowerLane.scene.translateX( Game.config.lane.marginLeft )
 	this.lowerLane.scene.translateZ(- (Game.config.lane.marginBottom))
-	this.scene.add(this.lowerLane.scene)
+	
 
 	this.lowerLane.setPlayerPosition("nature", Game.config.nature.initOwnedCells);
 	this.lowerLane.setPlayerPosition("newYork", Game.config.newYork.initOwnedCells);
 
 	// Create Middle Lane
-	this.middleLane = new Lane();
+	this.middleLane = new Lane(this.scene, loader);
 	this.middleLane.scene.translateX( Game.config.lane.marginLeft )
 	this.middleLane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing + 1 ))
-	this.scene.add(this.middleLane.scene)
+
 
 	this.middleLane.setPlayerPosition("nature", Game.config.nature.initOwnedCells);
 	this.middleLane.setPlayerPosition("newYork", Game.config.newYork.initOwnedCells);
 
 	// Create Upper Lane
-	this.uperLane = new Lane();
+	this.uperLane = new Lane(this.scene, loader);
 	this.uperLane.scene.translateX( Game.config.lane.marginLeft )
 	this.uperLane.scene.translateZ(- (Game.config.lane.marginBottom + 2* (Game.config.lane.spacing + 1)))
-	this.scene.add(this.uperLane.scene)
+
 
 	this.uperLane.setPlayerPosition("nature", Game.config.nature.initOwnedCells);
 	this.uperLane.setPlayerPosition("newYork", Game.config.newYork.initOwnedCells);
