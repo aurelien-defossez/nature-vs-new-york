@@ -147,7 +147,7 @@ Game.config = {
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
-			modelFile : "data/stupid.js"
+			modelFile : "data/manaTree.js"
 		},
 		// Arbre Protecteur
 		protectorTree: {
@@ -175,7 +175,7 @@ Game.config = {
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
-			modelFile : "data/stupid.js"
+			modelFile : "data/bank.js"
 		},
 		// Station de Police
 		policeStation: {
