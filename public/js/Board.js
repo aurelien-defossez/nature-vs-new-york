@@ -20,29 +20,20 @@ function Board(scene, loader)
 	this.loadHQs(loader)
 	this.loadLanes(loader)
 
-
-
-
-
-
 }
 
-Board.prototype.update =  function(time, dt){
-	this.lowerLane.update(time, dt)
-	this.middleLane.update(time, dt)
-	this.uperLane.update(time, dt)
-}
+Board.prototype.loadHQs = function(){
+	this.hqs = [
+		new HQ(this.scene, HQ.typesEnum.NATURE),
+		new HQ(this.scene, HQ.typesEnum.NEW_YORK)
+	]
 
-Board.prototype.loadHQs = function(loader){
-	// Create Nature HQ
-	this.leftHQ = new HQ(this.scene, HQ.typesEnum.NATURE);
-	this.leftHQ.scene.translateZ(- (Game.config.lane.marginBottom))
+	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))
+	this.hqs[HQ.typesEnum.NEW_YORK].scene.translateZ(- (Game.config.lane.marginBottom))
+	this.hqs[HQ.typesEnum.NEW_YORK].scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
 	
-
-	// Create New York HQ
-	this.rightHQ = new HQ(this.scene, HQ.typesEnum.NEW_YORK);
-	this.rightHQ.scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
-	this.rightHQ.scene.translateZ(- (Game.config.lane.marginBottom))
+	this.scene.add(this.hqs[HQ.typesEnum.NATURE].scene)
+	this.scene.add(this.hqs[HQ.typesEnum.NEW_YORK].scene)
 }
 
 Board.prototype.loadLanes = function(loader){
@@ -72,4 +63,14 @@ Board.prototype.loadLanes = function(loader){
 
 	this.uperLane.setPlayerPosition(HQ.typesEnum.NATURE, Game.config.nature.initOwnedCells);
 	this.uperLane.setPlayerPosition(HQ.typesEnum.NEW_YORK, Game.config.newYork.initOwnedCells);
+}
+
+Board.prototype.update = function(time, dt) {
+	for (var i = 0; i < 2; i++) {
+		this.hqs[i].update(time, dt)
+	}
+
+	this.lowerLane.update(time, dt)
+	this.middleLane.update(time, dt)
+	this.uperLane.update(time, dt)
 }
