@@ -12,11 +12,6 @@ Game.config = {
 		marginTop : 1,
 		marginBottom : 1
 	},
-    hotKeys : {
-        keyboard : {
-          start : "U+0050"
-        }     
-    },
 	alerts : {
 		ttl : 1 // in seconds
 	},
@@ -151,7 +146,7 @@ Game.config = {
 	buildings: {
 		// Arbre Mana
 		manaTree: {
-			hp: 100,
+			hp: 50,
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
@@ -179,7 +174,7 @@ Game.config = {
 		},
 		// Banque
 		bank: {
-			hp: 100,
+			hp: 50,
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
@@ -232,22 +227,26 @@ Game.config = {
 			'Y' : 'input3'
 		},
         keyboard1 :{
-			'U+0051' : 'input0', // Letter Q
-			'U+0053' : 'input1', // Letter S
-			'U+0041' : 'input2', // Letter A
-			'U+005A' : 'input3', // Letter Z
-            'U+0044' : 'input4', // Letter D
-			'U+0058' : 'input5', // Letter X
-            'U+0046' : 'input6' // Letter F
+        	38: 'up',		// W
+        	40: 'down',		// S
+        	76: 'input0',	// L
+        	79: 'input1',	// O
+        	75: 'input2',	// K
+        	73: 'input3',	// I
+        	57: 'shoulder',	// 9
+        	48: 'bumper'	// 0
 		},
         keyboard2 :{
-			'U+004A' : 'input0', // Letter J
-			'U+004B' : 'input1', // Letter K
-			'U+0055' : 'input2', // Letter U
-			'U+0049' : 'input3', // Letter I
-            'U+004F' : 'input4', // Letter O
-			'U+004C' : 'input5', // Letter L
-            'U+004D' : 'input6' // Letter M
+        	87: 'up',		// W
+        	90: 'up',		// Z
+        	83: 'down',		// S
+        	49: 'input0',	// 1
+        	50: 'input1',	// 2
+        	51: 'input2',	// 3
+        	52: 'input3',	// 4
+        	65: 'shoulder',	// A
+        	81: 'shoulder',	// Q
+        	69: 'bumper'	// E
 		}
 	}
 }

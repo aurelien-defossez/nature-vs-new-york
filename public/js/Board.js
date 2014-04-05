@@ -27,18 +27,47 @@ function Board(scene, loader, hud)
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	var lane = this.lanes[laneIndex]
 	var hq = this.hqs[playerName]
-	var building = hq.buyBuilding(lane.scene, playerName, button);
 
-	if (building) {
-		lane.popBuilding(button, playerName)
+	var hasEmptyCell = false;
+	if (playerName == HQ.typesEnum.NATURE){
+		for (var i = 0; i <= lane.cells.length -1; i++){
+			if (lane.cells[i].building == null && lane.cells[i].owner == playerName){
+				hasEmptyCell = true;
+				break;
+			}
+		}
 	} else {
-    	console.log("Not enough mana")
-    }
+		for (var i = lane.cells.length -1 ; i >= 0; i--){
+			if (lane.cells[i].building == null && lane.cells[i].owner == playerName){
+				lane.cells[i].build(button, playerName, hq)
+				hasEmptyCell = true;
+				break;
+			}
+		}
+	}
+
+	if (hasEmptyCell)
+	{
+		var building = hq.buyBuilding(lane.scene, playerName, button);
+
+		if (building) {
+			lane.popBuilding(button, playerName, this.hqs[playerName])
+		} else {
+	    	console.log("Not enough mana")
+	    }
+	}else{
+		console.log("Not Enought Cells")
+	}
+	
 }
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
 	var hq = this.hqs[playerName]
+
+
+
+
 	var unit = hq.buyUnit(lane.scene, playerName, button);
 
 	if (unit) {
@@ -66,7 +95,7 @@ Board.prototype.loadHQs = function(hud){
 Board.prototype.loadLanes = function(loader){
 	this.lanes = []
 	for (var i = 0; i < 3; i++) {
-		var lane = new Lane(this, loader)
+		var lane = new Lane(i, this, loader)
 		lane.scene.translateX( Game.config.lane.marginLeft )
 		lane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing * i))
 		this.lanes[i] = lane

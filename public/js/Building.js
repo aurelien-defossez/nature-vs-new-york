@@ -1,19 +1,41 @@
-function Building(scene, loader, button, player){
+function Building(scene, loader, button, player, hq, laneIndex){
     this.player = player
+    this.parentScene = scene
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
+	this.type = buildingType
+	this.hq = hq
+	this.laneIndex = laneIndex
 	this.builtTime = Game.config.buildings[buildingType].time
+	this.buildingProgress = 0
+	this.built = false
 	this.maxHP = Game.config.buildings[buildingType].hp
 	this.currentHP = this.maxHP * 0.2
 	this.HpGainRate = (this.maxHP - this.currentHP) / this.builtTime;
+	this.BuildRate = 1/this.builtTime;
+	this.animationTime = 1;
+	this.lowLifeColor = 0xaa0000;
+	this.middleLifeColor = 0xff8928;
+	this.highLifeColor = 0x00aa00
+
+	this.healthBarBackground = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.03,0.03),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
+	this.healthBarBackground.position.x = 1 * 0.5
+	this.healthBarBackground.position.y = 0.03 * 0.5 + 1/2
+	this.healthBarBackground.position.z = -0.03 * 0.5 - 0.66
+
+	this.healthBar = new THREE.Mesh( new THREE.CubeGeometry(0.6,0.04,0.04),  new THREE.MeshBasicMaterial( { color: 0xffffff } ) )
+	this.healthBar.position.x = 1 * 0.5
+	this.healthBar.position.y = 0.04 * 0.5 + 1/2
+	this.healthBar.position.z = -0.03 * 0.5 - 0.66
+
+	this.parentScene.add(this.healthBarBackground);
+	this.parentScene.add(this.healthBar);
 
     console.log('Player ' + player + ' is building a ' + buildingType);
     
-	this.parentScene = scene
+	
 	this.animations = {}
 	this.currentAnimation = null
-	this.animationTime = 5;
-	this.buildingProgress = 0
 	var self = this
 
 	loader.load(fileName, function(geometry, materials)
@@ -21,9 +43,6 @@ function Building(scene, loader, button, player){
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
 		self.parentScene.add(self.mesh)
-		
-		//self.mesh.position.set(0.5, 0.5, -0.5)
-		//self.mesh.rotation.set(0, Math.PI/2, 0)
 		
 		var materials = self.mesh.material.materials
 		for (var k in materials)
@@ -55,25 +74,56 @@ Building.prototype.changeAnimation = function(nextAnimation)
 	}
 }
 
-Building.prototype.progressBuilding = function(build)
+Building.prototype.applyEffect = function()
 {
-	if (build){
+	switch(this.type) {
+		// Mana ++
+		case 'manaTree':
+		case 'bank':
+			this.hq.manaPerSecond += Game.config.buildings[this.type].manaPerSecond
+		break
 
-	}else{
+		// Capture ++
+		case 'rootTree':
+			this.hq.captureSpeed[this.laneIndex] += Game.config.buildings[this.type].captureSpeed
+		break
 
+		case 'protectorTree':
+			// Nothing to do
+		break
 	}
 }
 
 Building.prototype.update = function(time, dt){
-	if (this.building/buildingProgress)
-	this.building.buildingProgress = 1/this.builtTime * dt
-			this.lanes[i].capture(this.type, this.captureSpeed[i] * dt)
+	if (!this.built)
+	{
+		this.buildingProgress = this.buildingProgress + this.BuildRate * dt;
+		this.currentHP = this.currentHP + this.HpGainRate * dt;
+
+		if (this.buildingProgress >= 1) {
+			this.built = true
+			this.buildingProgress = 1
+			this.applyEffect()
+		}
+	}
+	this.healthBar.scale.x = this.currentHP / this.maxHP;
+	this.healthBar.position.x = this.currentHP / this.maxHP * 0.6 * 0.5 + 0.4 * 0.5
+	var color;
+
+	if (this.currentHP <= this.maxHP * 0.2)
+		color = this.lowLifeColor
+	else if (this.currentHP <= this.maxHP * 0.5)
+		color = this.middleLifeColor
+	else
+		color = this.highLifeColor
+
+	this.healthBar.material.color = new THREE.Color(color);
 
 	if (this.currentAnimation != null)
 	{
-		this.currentTime = (Math.abs(this.captureProgress)) * this.animationTime
+		//debugger;
 		this.currentAnimation.reset()
-		this.currentAnimation.currentTime = this.currentTime;
+		this.currentAnimation.currentTime = this.buildingProgress
 		this.currentAnimation.update(0)
 	}
 }

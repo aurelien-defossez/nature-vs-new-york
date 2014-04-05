@@ -40,9 +40,9 @@ function HQ(scene, hud, lanes, type)
 		this.healthBar.translateY(0.45)
 	}
     this.type = type
-	this.hqCube = new THREE.Mesh( new THREE.CubeGeometry(2,1,5),  new THREE.MeshBasicMaterial( { color: color } ) )
+	this.hqCube = new THREE.Mesh( new THREE.CubeGeometry(2,0.2,5),  new THREE.MeshBasicMaterial( { color: color } ) )
 	this.hqCube.position.x = 1
-	this.hqCube.position.y = 1/2
+	this.hqCube.position.y = 0.2/2
 	this.hqCube.position.z = -5/2
 	this.hqCube.castShadow = true
 	this.hqCube.receiveShadow = true
@@ -51,7 +51,7 @@ function HQ(scene, hud, lanes, type)
 	var hqConfig = Game.config[type == HQ.typesEnum.NATURE ? "nature" : "newYork"]
 	this.hp = hqConfig.hp
 	this.mana = hqConfig.startMana
-	this.manaGeneration = hqConfig.manaPerSecond
+	this.manaPerSecond = hqConfig.manaPerSecond
 	this.captureSpeed = [
 		hqConfig.captureSpeed,
 		hqConfig.captureSpeed,
@@ -105,7 +105,7 @@ HQ.prototype.updateHealthBar = function(){
 }
 
 HQ.prototype.update = function(time, dt) {
-	this.addMana(dt * this.manaGeneration)
+	this.addMana(dt * this.manaPerSecond)
 	
 	if(this.isAlive()) {
 		this.updateHealthBar();
