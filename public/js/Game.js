@@ -5,7 +5,7 @@ function Game()
 	var gameDiv = document.getElementById("game")
 	
 	this.renderer = new THREE.WebGLRenderer()
-	this.renderer.setSize(1280, 720)
+	this.renderer.setSize(Game.config.board.width, Game.config.board.height)
 	this.renderer.shadowMapEnabled = true
 	this.renderer.setClearColor(0xddefff, 1)
 	gameDiv.appendChild(this.renderer.domElement)
@@ -59,6 +59,9 @@ function Game()
 	this.loader = new THREE.JSONLoader()
 	
 	this.musicManager = new MusicManager()
+    
+    document.addEventListener( 'keydown', onDocumentKeyDown, false );
+    
 }
 
 Game.prototype.update = function(time)
@@ -72,3 +75,5 @@ Game.prototype.update = function(time)
 	
 	this.renderer.render(this.scene, this.camera)
 }
+
+
