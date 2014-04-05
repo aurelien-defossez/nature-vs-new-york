@@ -27,7 +27,6 @@ PadController.prototype.checkAction = function(player) {
     if(Gamepad.supported) {
         pads = Gamepad.getStates();
         pad = pads[this.padNumber];
-
         if(pad) {
             if(pad.faceButton0 && !this.buttons.a) {
                 arrowAction(player, pad, 'A')
@@ -42,6 +41,8 @@ PadController.prototype.checkAction = function(player) {
             // Enregistrement du statut du pad
             this.savePadState(pad);
         }
+    }else{
+        console.log("Gamepad Not supported")
     }
 }
 
