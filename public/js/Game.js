@@ -60,6 +60,11 @@ function Game()
 	this.loader = new THREE.JSONLoader()
 	
 	this.musicManager = new MusicManager()
+    
+    this.action = {
+        player1: new Date(),
+        player2: new Date()
+    }
 }
 
 Game.prototype.update = function(time)
