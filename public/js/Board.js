@@ -29,29 +29,21 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
-	var hq = this.getHQByPlayerName(playerName)
+	var hq = this.hqs[playerName]
 	var unit = hq.buyUnit(lane.scene, playerName, button);
-    lane.addUnitInQueue(unit)
-}
-Board.prototype.canCreateUnit = function(playerName){
-	var hq = this.getHQByPlayerName(playerName)
-	return hq.canCreateUnit(Game.config.unit.cost)
-}
-Board.prototype.getHQByPlayerName = function(playerName){
-	var hq = null
-	if ( playerName==HQ.typesEnum.NATURE ) {
-		hq = this.hqs[0]
-	} else if (playerName == HQ.typesEnum.NEW_YORK){
-		hq = this.hqs[1]
-	}
-	return hq
+
+	if (unit) {
+    	lane.addUnitInQueue(unit)
+    } else {
+    	console.log("Not enough mana")
+    }
 }
 
 Board.prototype.loadHQs = function(hud){
-	this.hqs = [
-		new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE),
-		new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK)
-	]
+	this.hqs = {
+		"nature": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE),
+		"newYork": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK)
+	}
 
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))
 	this.hqs[HQ.typesEnum.NEW_YORK].scene.translateZ(- (Game.config.lane.marginBottom))
@@ -72,18 +64,14 @@ Board.prototype.loadLanes = function(loader){
 }
 
 Board.prototype.update = function(time, dt) {
-	for (var i = 0; i < 2; i++) {
-		this.hqs[i].update(time, dt)
-	}
+	this.hqs.nature.update(time, dt)
+	this.hqs.newYork.update(time, dt)
+
 	for (var i = 0; i < 3; i++) {
 		this.lanes[i].update(time, dt)
 	}
 }
 
 Board.prototype.hitEnemy = function(player) {
-    if(player === HQ.typesEnum.NATURE) {
-        this.hqs[HQ.typesEnum.NEW_YORK].removeHealth(1);
-    } else if(player === HQ.typesEnum.NEW_YORK) {
-        this.hqs[HQ.typesEnum.NATURE].removeHealth(1);
-    }
+	this.hqs[player] .removeHealth(1);
 }

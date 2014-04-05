@@ -1,6 +1,6 @@
 HQ.typesEnum = {
-  NATURE : 0,
-  NEW_YORK : 1
+  NATURE : "nature",
+  NEW_YORK : "newYork"
 }
 
 function HQ(scene, hud, lanes, type)
@@ -68,9 +68,14 @@ HQ.prototype.canCreateUnit = function(cost){
 }
 
 HQ.prototype.buyUnit = function(scene, player, type){
-	var unit = new Unit(scene, player, type)
-	this.mana -= unit.cost
-	return unit
+	var unitType = Game.config[player].mapping.units[type]
+	var cost = Game.config.units[unitType].cost
+
+	if (this.mana >= cost) {
+		this.mana -= cost
+		var unit = new Unit(scene, player, unitType)
+		return unit
+	}
 }
 
 HQ.prototype.updateHealthBar = function(){

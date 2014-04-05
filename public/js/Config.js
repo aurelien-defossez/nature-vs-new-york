@@ -24,11 +24,19 @@ Game.config = {
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0.05,
-    	actions : {
-    		'input0' : 'manaTree',
-    		'input1' : 'protectorTree',
-    		'input2' : 'rootTree',
-    		'input3' : 'bramble'
+    	mapping : {
+    		buildings: {
+	    		'input0' : 'manaTree',
+	    		'input1' : 'protectorTree',
+	    		'input2' : 'rootTree',
+	    		'input3' : 'bramble'
+	    	},
+	    	units: {
+	    		'input0' : 'sapCarrier',
+	    		'input1' : 'wolf',
+	    		'input2' : 'bear',
+	    		'input3' : 'ent'
+	    	}
     	},
     	buildings : {
     		'natureCell' : {
@@ -46,11 +54,19 @@ Game.config = {
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0,
-    	actions : {
-    		'input0' : 'bank',
-    		'input1' : 'policeStation',
-    		'input2' : 'workShop',
-    		'input3' : 'armedConcrete'
+    	mapping : {
+    		buildings: {
+	    		'input0' : 'bank',
+	    		'input1' : 'policeStation',
+	    		'input2' : 'workShop',
+	    		'input3' : 'armedConcrete'
+	    	},
+	    	units: {
+	    		'input0' : 'builder',
+	    		'input1' : 'lumberjack',
+	    		'input2' : 'policeman',
+	    		'input3' : 'mecha'
+	    	}
     	},
     	buildings : {
     		'buildingCell' : {
@@ -91,7 +107,7 @@ Game.config = {
 			time: 6
 		},
 		// Ent
-		Ent: {
+		ent: {
 			attack: 10,
 			buildingAttack: 10,
 			hp: 50,
@@ -128,7 +144,7 @@ Game.config = {
 			time: 2
 		},
 		// Mécha
-		Mecha: {
+		mecha: {
 			attack: 10,
 			buildingAttack: 10,
 			hp: 50,

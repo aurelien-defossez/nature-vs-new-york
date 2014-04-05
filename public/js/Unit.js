@@ -1,5 +1,4 @@
 function Unit(scene, player, type) {
-    type = "wolf"
     console.log('Player ' + player + ' is creating a ' + type);
 
     var unitConfig = Game.config.units[type]
