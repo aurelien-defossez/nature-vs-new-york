@@ -1,8 +1,9 @@
-function HQ(player)
+function HQ(scene, player)
 {
 	this.natureHQColor = 0x00ff00
 	this.newYorkHQColor = 0x0000ff
 	this.scene = new THREE.Object3D()
+	scene.add(this.scene)
 	var color
 	if (player == "nature"){
 		color = this.natureHQColor
