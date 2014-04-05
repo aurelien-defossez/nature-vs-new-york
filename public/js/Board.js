@@ -24,7 +24,14 @@ function Board(scene, loader, hud)
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	var lane = this.lanes[laneIndex]
-    lane.popBuilding(button, playerName)
+	var hq = this.hqs[playerName]
+	var building = hq.buyBuilding(lane.scene, playerName, button);
+
+	if (building) {
+		lane.popBuilding(button, playerName)
+	} else {
+    	console.log("Not enough mana")
+    }
 }
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
