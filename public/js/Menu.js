@@ -29,8 +29,7 @@ function Menu(){
     this.endGameScreen.addEventListener('click', function(event){
       this.parent.show()
     })
-    
-    document.addEventListener( 'keydown', onDocumentKeyDown, false );
+
 }
 
 Menu.prototype.show = function(screenNb) {

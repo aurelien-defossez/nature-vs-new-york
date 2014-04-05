@@ -208,6 +208,22 @@ Game.config = {
 			'B' : 'input1',
 			'X' : 'input2',
 			'Y' : 'input3'
+		},
+        keyboard1 :{
+			'U+0051' : 'input0', // Letter Q
+			'U+0053' : 'input1', // Letter S
+			'U+0041' : 'input2', // Letter A
+			'U+005A' : 'input3', // Letter Z
+            'U+0044' : 'input4', // Letter D
+			'U+0058' : 'input5' // Letter X
+		},
+        keyboard2 :{
+			'U+004A' : 'input0', // Letter J
+			'U+004B' : 'input1', // Letter K
+			'U+0055' : 'input2', // Letter U
+			'U+0049' : 'input3', // Letter I
+            'U+004F' : 'input4', // Letter O
+			'U+004C' : 'input5' // Letter L
 		}
 	}
 }
