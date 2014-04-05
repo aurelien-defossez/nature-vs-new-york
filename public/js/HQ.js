@@ -1,6 +1,6 @@
 HQ.typesEnum = {
-  NATURE : 0,
-  NEW_YORK : 1
+  NATURE : "nature",
+  NEW_YORK : "newYork"
 }
 
 function HQ(scene, hud, lanes, type)
@@ -61,6 +61,27 @@ function HQ(scene, hud, lanes, type)
 
 HQ.prototype.isAlive = function(){
   	return this.health > 0
+}
+
+HQ.prototype.buyUnit = function(scene, player, type){
+	var unitType = Game.config[player].mapping.units[type]
+	var cost = Game.config.units[unitType].cost
+
+	if (this.mana >= cost) {
+		this.mana -= cost
+		var unit = new Unit(scene, player, unitType)
+		return unit
+	}
+}
+
+HQ.prototype.buyBuilding = function(scene, player, type){
+	var buildingType = Game.config[player].mapping.buildings[type]
+	var cost = Game.config.buildings[buildingType].cost
+
+	if (this.mana >= cost) {
+		this.mana -= cost
+		return true
+	}
 }
 
 HQ.prototype.updateHealthBar = function(){

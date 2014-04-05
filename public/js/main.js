@@ -13,8 +13,12 @@ window.onload = function()
 
 function update(timestamp)
 {
-    if (!menu.isShown()) {
-        game.update(timestamp)
+	if (game.isStartup){
+		menu.show()
+		game.isStartup = false
+	}
+	if (!menu.isShown()) {
+      game.update(timestamp * 0.001)
     }
     requestAnimationFrame(update)
 

@@ -28,8 +28,9 @@ function Menu(){
     this.endGameScreen.parent = this
     this.endGameScreen.addEventListener('click', function(event){
       this.parent.show()
+	  this.parent.resetGame()
     })
-
+    
 }
 
 Menu.prototype.show = function(screenNb) {
@@ -53,11 +54,11 @@ Menu.prototype.isShown = function(){
 Menu.prototype.setScreen = function(screenNb){
   switch(screenNb){
       case 100 : //show end screen
-        this.removeAllChildren();
+        this.removeAllChildren()
         this.domElement.appendChild(this.endGameScreen)
         break;
       default: //show start btn by default
-        this.removeAllChildren();
+        this.removeAllChildren()
         this.domElement.appendChild(this.startBtn)
   }
   
@@ -72,5 +73,10 @@ Menu.prototype.removeAllChildren = function(){
 }
 
 
+Menu.prototype.resetGame = function(){
+	//reset game here!
+	console.log("Restart Game!")
+	window.location.reload()
+}
 
 

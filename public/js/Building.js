@@ -1,20 +1,15 @@
 function Building(scene, loader, button, player){
+    this.player = player
+	var buildingType = Game.config[this.player].mapping.buildings[button]
+	var fileName = Game.config.buildings[buildingType].modelFile
 
-    this.player = player;
-	var fileName;
-	var buildingType;
-	if(this.player === 'nature') {
-		buildingType = Game.config.nature.actions[button]
-		fileName = Game.config.nature.buildings[buildingType].modelFile;
-    } else if(this.player === 'newYork') {
-    	buildingType = Game.config.newYork.actions[button]
-		fileName = Game.config.newYork.buildings[buildingType].modelFile;
-    }
-
+    console.log('Player ' + player + ' is building a ' + buildingType);
+    
 	this.parentScene = scene
 	this.animations = {}
 	this.currentAnimation = null
 	var self = this
+
 	loader.load(fileName, function(geometry, materials)
 	{
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
@@ -36,14 +31,9 @@ function Building(scene, loader, button, player){
 				THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
 		}
 		
-		self.animations.create = new THREE.Animation(self.mesh, "create", THREE.AnimationHandler.CATMULLROM)
+		self.animations.create = new THREE.Animation(self.mesh, buildingType+"_create", THREE.AnimationHandler.CATMULLROM)
 		self.animations.create.loop = true
-		//self.animations.destroy = new THREE.Animation(self.mesh, "destroy", THREE.AnimationHandler.CATMULLROM)
-		//self.animations.destroy.loop = false
 		self.currentAnimation = self.animations.create
-		//self.animations.idle = new THREE.Animation(self.mesh, "idle", THREE.AnimationHandler.CATMULLROM)
-		//self.animations.walk = new THREE.Animation(self.mesh, "walk", THREE.AnimationHandler.CATMULLROM)
-		//self.currentAnimation = self.animations.walk
 		self.currentAnimation.play()
 	})
 }

@@ -17,6 +17,9 @@ Game.config = {
           start : "U+0050"
         }     
     },
+	alerts : {
+		ttl : 1 // in seconds
+	},
     nature : {
 		initOwnedCells : 1,
 		health : 10,
@@ -24,19 +27,19 @@ Game.config = {
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0.05,
-    	actions : {
-    		'input0' : 'manaTree',
-    		'input1' : 'protectorTree',
-    		'input2' : 'rootTree',
-    		'input3' : 'bramble'
-    	},
-    	buildings : {
-    		'natureCell' : {
-    			modelFile : "data/root.js"
-    		},
-    		'manaTree' : {
-    			modelFile : "data/stupid.js"
-    		}
+    	mapping : {
+    		buildings: {
+	    		'input0' : 'manaTree',
+	    		'input1' : 'protectorTree',
+	    		'input2' : 'rootTree',
+	    		'input3' : 'bramble'
+	    	},
+	    	units: {
+	    		'input0' : 'sapCarrier',
+	    		'input1' : 'wolf',
+	    		'input2' : 'bear',
+	    		'input3' : 'ent'
+	    	}
     	}
 	},
 	newYork : {
@@ -46,19 +49,19 @@ Game.config = {
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0,
-    	actions : {
-    		'input0' : 'bank',
-    		'input1' : 'policeStation',
-    		'input2' : 'workShop',
-    		'input3' : 'armedConcrete'
-    	},
-    	buildings : {
-    		'buildingCell' : {
-    			modelFile : "data/rails.js"
-    		},
-    		'bank' : {
-    			modelFile : "data/stupid.js"
-    		}
+    	mapping : {
+    		buildings: {
+	    		'input0' : 'bank',
+	    		'input1' : 'policeStation',
+	    		'input2' : 'workShop',
+	    		'input3' : 'armedConcrete'
+	    	},
+	    	units: {
+	    		'input0' : 'builder',
+	    		'input1' : 'lumberjack',
+	    		'input2' : 'policeman',
+	    		'input3' : 'mecha'
+	    	}
     	}
 	},
 	units: {
@@ -91,7 +94,7 @@ Game.config = {
 			time: 6
 		},
 		// Ent
-		Ent: {
+		ent: {
 			attack: 10,
 			buildingAttack: 10,
 			hp: 50,
@@ -106,7 +109,7 @@ Game.config = {
 			hp: 5,
 			speed: 0.2,
 			cost: 20,
-			time: 20,
+			time: 10,
 			captureSpeed: 0.1
 		},
 		// Bûcheron
@@ -128,7 +131,7 @@ Game.config = {
 			time: 2
 		},
 		// Mécha
-		Mecha: {
+		mecha: {
 			attack: 10,
 			buildingAttack: 10,
 			hp: 50,
@@ -143,7 +146,8 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 1.0
+			manaPerSecond: 1.0,
+			modelFile : "data/manaTree.js"
 		},
 		// Arbre Protecteur
 		protectorTree: {
@@ -170,7 +174,8 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 1.0
+			manaPerSecond: 1.0,
+			modelFile : "data/bank.js"
 		},
 		// Station de Police
 		policeStation: {
@@ -191,7 +196,15 @@ Game.config = {
 			hp: 50,
 			cost: 10,
 			time: 10
-		}
+		},
+		// Case nature
+		natureCell : {
+    			modelFile : "data/root.js"
+		},
+		// Case newYork
+		newYorkCell : {
+    			modelFile : "data/rails.js"
+		},
 	},
 	objectMapping : {
 		"stupid" : {
@@ -200,7 +213,8 @@ Game.config = {
 	},
     unit : {
 		speed : 1,
-		buildTime : 3 //in seconds
+		time : 3, //in seconds
+		cost : 10
 	},
 	controls : {
 		'gamepad' :{

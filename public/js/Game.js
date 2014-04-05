@@ -1,6 +1,7 @@
 function Game()
 {
     this.currentTime = null
+	this.isStartup = true
 
     var gameDiv = document.getElementById("game")
 
@@ -67,7 +68,7 @@ Game.prototype.update = function(time)
 {
     var dt = 0
     if (this.currentTime != null) {
-        dt = Math.min(time - this.currentTime,  1000 / 25)/1000
+        dt = Math.min(time - this.currentTime,  1000 / 25)
     }
     this.currentTime = time
 

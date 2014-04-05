@@ -20,24 +20,62 @@ function Board(scene, loader, hud)
 
 	this.loadLanes(loader)
 	this.loadHQs(hud)
+	
+	this.alerts = []
 }
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	var lane = this.lanes[laneIndex]
-    lane.popBuilding(button, playerName)
+	var hq = this.hqs[playerName]
+	var building = hq.buyBuilding(lane.scene, playerName, button);
+
+	if (building) {
+		lane.popBuilding(button, playerName)
+	} else {
+    	console.log("Not enough mana")
+    }
 }
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
     var lane = this.lanes[laneIndex]
-    var unit = new Unit(lane.scene, playerName, button)
-    lane.addUnitInQueue(unit)
+	var hq = this.hqs[playerName]
+	var unit = hq.buyUnit(lane.scene, playerName, button);
+
+	if (unit) {
+    	lane.addUnitInQueue(unit)
+    } else {
+    	console.log("Not enough mana")
+		lane.sayNotEnoughMana(playerName)
+    }
 }
+/*Board.prototype.sayNotEnoughMana = function(lane){
+	var alertTexture = THREE.ImageUtils.loadTexture('data/NotEnoughMana.png')
+	var alert = new THREE.Mesh( new THREE.PlaneGeometry(0.3, 0.02), new THREE.MeshLambertMaterial( { map: alertTexture } ) )
+	this.alerts.push( alert );
+    alert.position.x = 0.3;
+    alert.position.y = 0.3/2;
+    alert.position.z = -0.3/2;
+    alert.castShadow = true;
+    alert.receiveShadow = true;
+	alert.createDate = new Date()
+	alert.ttl = Game.config.alerts.ttl * 1000
+    this.scene.add(alert)
+}
+Board.prototype.purgeAlerts = function(time){
+	if (this.alerts.length > 0){
+		var alert = this.alerts[0]
+		if (time - alert.createDate.getTime() > alert.ttl) {
+			this.scene.remove(alert)
+			delete alert
+		}
+	}
+}*/
 
 Board.prototype.loadHQs = function(hud){
-	this.hqs = [
-		new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE),
-		new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK)
-	]
+	this.hqs = {
+		"nature": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NATURE),
+		"newYork": new HQ(this.scene, this.hud, this.lanes, HQ.typesEnum.NEW_YORK)
+	}
 
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))
 	this.hqs[HQ.typesEnum.NEW_YORK].scene.translateZ(- (Game.config.lane.marginBottom))
@@ -58,18 +96,14 @@ Board.prototype.loadLanes = function(loader){
 }
 
 Board.prototype.update = function(time, dt) {
-	for (var i = 0; i < 2; i++) {
-		this.hqs[i].update(time, dt)
-	}
+	this.hqs.nature.update(time, dt)
+	this.hqs.newYork.update(time, dt)
+
 	for (var i = 0; i < 3; i++) {
 		this.lanes[i].update(time, dt)
 	}
 }
 
 Board.prototype.hitEnemy = function(player) {
-    if(player === HQ.typesEnum.NATURE) {
-        this.hqs[HQ.typesEnum.NEW_YORK].removeHealth(1);
-    } else if(player === HQ.typesEnum.NEW_YORK) {
-        this.hqs[HQ.typesEnum.NATURE].removeHealth(1);
-    }
+	this.hqs[player == "nature" ? "newYork" : "nature"].removeHealth(1);
 }
