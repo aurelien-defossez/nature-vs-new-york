@@ -53,7 +53,7 @@ Lane.prototype.runUnit = function(unit){
 Lane.prototype.addUnitInQueue = function(unit){
 	this.unitsCreationQueue.push(unit)
 	if (this.unitsCreationQueue.length==1) {
-		unit.startBuild()
+		this.buildNextUnit()
 	}
 }
 
