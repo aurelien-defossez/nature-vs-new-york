@@ -23,7 +23,21 @@ Game.config = {
     	hp: 500,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.05
+    	captureSpeed: 0.05,
+    	actions : {
+    		'input0' : 'manaTree',
+    		'input1' : 'protectorTree',
+    		'input2' : 'rootTree',
+    		'input3' : 'bramble'
+    	},
+    	buildings : {
+    		'natureCell' : {
+    			modelFile : "data/root.js"
+    		},
+    		'manaTree' : {
+    			modelFile : "data/stupid.js"
+    		}
+    	}
 	},
 	newYork : {
 		initOwnedCells : 1,
@@ -31,7 +45,21 @@ Game.config = {
     	hp: 500,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0
+    	captureSpeed: 0,
+    	actions : {
+    		'input0' : 'bank',
+    		'input1' : 'policeStation',
+    		'input2' : 'workShop',
+    		'input3' : 'armedConcrete'
+    	},
+    	buildings : {
+    		'buildingCell' : {
+    			modelFile : "data/rails.js"
+    		},
+    		'bank' : {
+    			modelFile : "data/stupid.js"
+    		}
+    	}
 	},
 	units: {
 		// Porteur de sève
@@ -171,7 +199,16 @@ Game.config = {
 		}
 	},
     unit : {
-		speed : 1
+		speed : 1,
+		buildTime : 3 //in seconds
+	},
+	controls : {
+		'gamepad' :{
+			'A' : 'input0',
+			'B' : 'input1',
+			'X' : 'input2',
+			'Y' : 'input3'
+		}
 	}
 }
 

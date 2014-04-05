@@ -20,7 +20,17 @@ function Board(scene, loader, hud)
 
 	this.loadLanes(loader)
 	this.loadHQs(hud)
+}
 
+Board.prototype.popBuilding = function(button, laneIndex, playerName){
+	var lane = this.lanes[laneIndex]
+    lane.popBuilding(button, playerName)
+}
+
+Board.prototype.popMonster = function(button, laneIndex, playerName){
+    var lane = this.lanes[laneIndex]
+    var unit = new Unit(lane.scene, playerName, button)
+    lane.addUnitInQueue(unit)
 }
 
 Board.prototype.loadHQs = function(hud){

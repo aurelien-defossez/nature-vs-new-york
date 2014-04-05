@@ -4,6 +4,16 @@ function Lane(board, loader) {
 	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
+	laneWidth = Game.config.lane.cellNumber
+	this.naturePosition = Game.config.nature.initOwnedCells;
+	this.newYorkPosition = Game.config.newYork.initOwnedCells;
+	laneHeight = 1
+	//this.laneCube = new THREE.Mesh( new THREE.CubeGeometry(laneWidth,0.1,laneHeight),  new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
+	//this.laneCube.position.x = laneWidth/2
+	//this.laneCube.position.z = -1/2
+	//this.scene.add(this.laneCube)
+
+	this.unitsCreationQueue = [];
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
@@ -11,10 +21,59 @@ function Lane(board, loader) {
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
-		if (i < Game.config.nature.initOwnedCells) {
+		if (i < this.naturePosition) {
 			cell.setOwner("nature")
-		} else if (i >= Game.config.lane.cellNumber - Game.config.newYork.initOwnedCells) {
+		} else if (i >= Game.config.lane.cellNumber - this.newYorkPosition) {
 			cell.setOwner("newYork")
+		}
+	}
+	
+}
+
+Lane.prototype.buildNextUnit = function(){
+	if (this.unitsCreationQueue.length > 0) {
+		this.unitsCreationQueue[0].startBuild();
+		console.log("Start building next unit...")
+	}
+}
+
+Lane.prototype.runUnit = function(unit){
+	this.units.push(unit);
+	this.unitsCreationQueue.splice(0,1)
+	console.log("Unit ready!")
+}
+
+Lane.prototype.addUnitInQueue = function(unit){
+	this.unitsCreationQueue.push(unit)
+	if (this.unitsCreationQueue.length==1) {
+		this.buildNextUnit()
+	}
+}
+
+Lane.prototype.processCreationQueue = function(time, dt){
+	for (var i = 0; i < this.unitsCreationQueue.length; i++){
+		var unit = this.unitsCreationQueue[i]
+		unit.update(time, dt)
+		if (i==0 && unit.isBuilt()){
+			this.runUnit(unit)
+			this.buildNextUnit()
+		}
+	}
+}
+
+
+Lane.prototype.popBuilding = function(button, playerName){
+	if (playerName == "nature"){
+		for (var i = 0; i <= this.naturePosition; i++){
+			if (this.cells[i].building == null){
+				this.cells[i].build(button, playerName)
+			}
+		}
+	}else if (playerName == "newYork"){
+		for (var i = this.cells.length -1 ; i >= this.cells.length - this.newYorkPosition ; i--){
+			if (this.cells[i].building == null){
+				this.cells[i].build(button, playerName)
+			}
 		}
 	}
 }
@@ -29,6 +88,7 @@ Lane.prototype.capture = function(type, value){
 		}
 	}
 }
+
 
 Lane.prototype.update = function(time, dt){
 	var i,
@@ -61,6 +121,8 @@ Lane.prototype.update = function(time, dt){
         }
         
 	}
+	
+	this.processCreationQueue(time, dt)
     for(i = unitToRemove.length - 1; i >= 0; i--) {
         this.units.splice(i, 1);
     }

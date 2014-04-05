@@ -28,18 +28,19 @@ PadController.prototype.checkAction = function(player) {
         pads = Gamepad.getStates();
         pad = pads[this.padNumber];
         if(pad) {
+            buildingMode = (pad.leftShoulder1 > 0.3)||(pad.rightShoulder1 > 0.3)
             if(pad.faceButton0 && !this.buttons.a) {
-                arrowAction(player, pad, 'A')
+                this.arrowAction(player, pad, 'A', buildingMode)
             } else if(pad.faceButton1 && !this.buttons.b) {
-                arrowAction(player, pad, 'B')
+                this.arrowAction(player, pad, 'B', buildingMode)
             } else if(pad.faceButton2 && !this.buttons.x) {
-                arrowAction(player, pad, 'X')
+                this.arrowAction(player, pad, 'X', buildingMode)
             } else if(pad.faceButton3 && !this.buttons.y) {
-                arrowAction(player, pad, 'Y')
+                this.arrowAction(player, pad, 'Y', buildingMode)
             }
 
-            // Enregistrement du statut du pad
-            this.savePadState(pad);
+                // Enregistrement du statut du pad
+                this.savePadState(pad);
         }
     }else{
         console.log("Gamepad Not supported")
@@ -53,7 +54,7 @@ PadController.prototype.savePadState = function(pad) {
     this.buttons.y = pad.faceButton3;
 }
 
-function arrowAction(player, pad, button) {
+PadController.prototype.arrowAction = function(player, pad, button, buildingMode) {
     var lane;
     if( pad.dpadUp ) {
         lane = 2;
@@ -62,5 +63,10 @@ function arrowAction(player, pad, button) {
     } else {
         lane = 1;
     }
-    player.createUnit(button, lane);
+    if (buildingMode)
+    {
+        player.createBuilding(button, lane);
+    }else{
+        player.createUnit(button, lane);
+    }
 }
