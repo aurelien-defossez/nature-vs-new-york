@@ -95,7 +95,7 @@ Board.prototype.loadHQs = function(hud){
 Board.prototype.loadLanes = function(loader){
 	this.lanes = []
 	for (var i = 0; i < 3; i++) {
-		var lane = new Lane(this, loader)
+		var lane = new Lane(i, this, loader)
 		lane.scene.translateX( Game.config.lane.marginLeft )
 		lane.scene.translateZ(- (Game.config.lane.marginBottom + Game.config.lane.spacing * i))
 		this.lanes[i] = lane

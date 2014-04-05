@@ -1,17 +1,10 @@
-function Lane(board, loader) {
+function Lane(id, board, loader) {
     this.board = board;
+    this.id = id
 	this.scene = new THREE.Object3D()
 	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
-	laneWidth = Game.config.lane.cellNumber
-	this.naturePosition = Game.config.nature.initOwnedCells;
-	this.newYorkPosition = Game.config.newYork.initOwnedCells;
-	laneHeight = 1
-	//this.laneCube = new THREE.Mesh( new THREE.CubeGeometry(laneWidth,0.1,laneHeight),  new THREE.MeshBasicMaterial( { color: 0x0000ff } ) )
-	//this.laneCube.position.x = laneWidth/2
-	//this.laneCube.position.z = -1/2
-	//this.scene.add(this.laneCube)
 
 	this.unitsCreationQueues = {
 	    sapCarrier: [],
@@ -26,13 +19,13 @@ function Lane(board, loader) {
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
-		var cell = new Cell(this.scene, loader);
+		var cell = new Cell(this.scene, loader, this.id);
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
-		if (i < this.naturePosition) {
+		if (i < Game.config.nature.initOwnedCells) {
 			cell.setOwner("nature")
-		} else if (i >= Game.config.lane.cellNumber - this.newYorkPosition) {
+		} else if (i >= Game.config.lane.cellNumber - Game.config.newYork.initOwnedCells) {
 			cell.setOwner("newYork")
 		}
 	}

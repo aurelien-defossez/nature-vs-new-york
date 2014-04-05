@@ -1,9 +1,10 @@
-function Building(scene, loader, button, player, hq){
+function Building(scene, loader, button, player, hq, laneIndex){
     this.player = player
 	var buildingType = Game.config[this.player].mapping.buildings[button]
 	var fileName = Game.config.buildings[buildingType].modelFile
 	this.type = buildingType
 	this.hq = hq
+	this.laneIndex = laneIndex
 	this.builtTime = Game.config.buildings[buildingType].time
 	this.buildingProgress = 0
 	this.built = false
@@ -59,16 +60,19 @@ Building.prototype.changeAnimation = function(nextAnimation)
 Building.prototype.applyEffect = function()
 {
 	switch(this.type) {
+		// Mana ++
 		case 'manaTree':
 		case 'bank':
-		console.log("manaPerSecond", this.type, this.hq, Game.config.buildings[this.type])
 			this.hq.manaPerSecond += Game.config.buildings[this.type].manaPerSecond
 		break
 
-		case 'protectorTree':
+		// Capture ++
+		case 'rootTree':
+			this.hq.captureSpeed[this.laneIndex] += Game.config.buildings[this.type].captureSpeed
 		break
 
-		case 'rootTree':
+		case 'protectorTree':
+			// Nothing to do
 		break
 	}
 }

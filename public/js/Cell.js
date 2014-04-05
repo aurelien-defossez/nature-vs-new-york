@@ -1,10 +1,11 @@
-function Cell(scene, loader)
+function Cell(scene, loader, laneId)
 {
 	this.neutralColor = 0xaaaaaa
 	this.natureColor = 0x00aa00
 	this.newYorkColor = 0x0000aa
 	this.owner = null
 	this.captureProgress = 0
+	this.laneId = laneId
 	this.scene = new THREE.Object3D()
 
 	this.cube = new THREE.Mesh( new THREE.CubeGeometry(0.9,0.05,0.9),  new THREE.MeshBasicMaterial( { color: this.neutralColor } ) )
@@ -93,7 +94,7 @@ Cell.prototype.build = function(button, player, hq){
 	{
 		this.building.destroy()
 	}
-	this.building = new Building(this.scene, this.loader, button, player, hq);
+	this.building = new Building(this.scene, this.loader, button, player, hq, this.laneId);
 }
 
 
