@@ -44,7 +44,6 @@ Lane.prototype.buildNextUnit = function(type){
 }
 
 Lane.prototype.runUnit = function(unit){
-	unit.id = this.units.length
 	this.units.push(unit);
 	this.unitsCreationQueues[unit.type].splice(0,1)
 	unit.runUnit();
@@ -56,7 +55,6 @@ Lane.prototype.createUnit = function(player, type, position){
 	unit.runUnit();
 	unit.setPosition(position)
 	unit.activate()
-	unit.id = this.units.length
 	this.units.push(unit)
 }
 
@@ -241,6 +239,10 @@ Lane.prototype.update = function(time, dt){
 	}
 
     for (i = 0; i < this.units.length; i++) {
+    	unit.index = i
+    }
+
+    for (i = 0; i < this.units.length; i++) {
 		unit = this.units[i];
 		var opponent = unit.player == "nature" ? "newYork" : "nature"
 
@@ -284,7 +286,7 @@ Lane.prototype.update = function(time, dt){
     				actionDone = true
     				if (potentialUnit.hit(unit.attack)) {
 	    				this.waitingLine[potentialUnit.waitingLineIndex] = null
-	    				unitToRemove.push(potentialUnit.id)
+	    				unitToRemove.push(potentialUnit.index)
 	    			}
     				break
     			}
@@ -318,7 +320,7 @@ Lane.prototype.update = function(time, dt){
 					this.board.hqs[opponent].hit(unit.buildingAttack)
 					unit.hit(unit.hp)
     				this.waitingLine[unit.waitingLineIndex] = null
-    				unitToRemove.push(unit.id)
+    				unitToRemove.push(i)
 				}
 			}
 

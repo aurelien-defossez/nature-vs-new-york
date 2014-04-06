@@ -17,8 +17,7 @@ Game.config = {
 	},
     nature : {
 		initOwnedCells : 1,
-		health : 10,
-    	hp: 500,
+    	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0.05,
@@ -39,8 +38,7 @@ Game.config = {
 	},
 	newYork : {
 		initOwnedCells : 1,
-		health : 10,
-    	hp: 500,
+    	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
     	captureSpeed: 0,

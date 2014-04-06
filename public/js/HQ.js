@@ -27,14 +27,14 @@ function HQ(scene, hud, lanes, type, loader)
 	var color
 	if (type == HQ.typesEnum.NATURE){
 		color = this.natureHQColor
-		this.health = Game.config.nature.health
+		this.health = Game.config.nature.hp
 		this.healthBarBackground.translateX(-0.8)
 		this.healthBarBackground.translateY(0.55)
 		this.healthBar.translateX(-0.8)
 		this.healthBar.translateY(0.55)
 	}else if (type == HQ.typesEnum.NEW_YORK){
 		color = this.newYorkHQColor
-		this.health = Game.config.newYork.health
+		this.health = Game.config.newYork.hp
 		this.healthBarBackground.translateX(0.8)
 		this.healthBarBackground.translateY(0.55)
 		this.healthBar.translateX(0.8	)
@@ -89,12 +89,12 @@ HQ.prototype.updateHealthBar = function(){
 	var widthOld = this.healthBar.scale.x * this.healthBar.geometry.width
 	switch(this.type){
 		case HQ.typesEnum.NATURE:
-			var scaleX = this.health/Game.config.nature.health
+			var scaleX = this.health/Game.config.nature.hp
 			this.healthBar.scale.x = scaleX
 			this.healthBar.position.x -= (widthOld - this.healthBar.geometry.width * scaleX)/2
 			break;
 		case HQ.typesEnum.NEW_YORK:
-			var scaleX = this.health/Game.config.newYork.health
+			var scaleX = this.health/Game.config.newYork.hp
 			this.healthBar.scale.x = scaleX
 			this.healthBar.position.x -= (widthOld - this.healthBar.geometry.width * scaleX)/2
 			break;
@@ -120,10 +120,6 @@ HQ.prototype.update = function(time, dt) {
 HQ.prototype.hit = function(points) {
 	this.health -= points
 	this.updateHealthBar()
-
-	if (this.health <= 0) {
-		// TODO: Game over
-	}
 }
 
 HQ.prototype.addMana = function(value) {
