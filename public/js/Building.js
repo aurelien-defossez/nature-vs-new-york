@@ -48,6 +48,12 @@ function Building(scene, loader, button, player, hq, lane, cell){
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
 		//self.parentScene.add(self.mesh)
+		console.log(Game.config.buildings[buildingType].modelFile)
+		if (Game.config.buildings[buildingType].modelFile == "data/tree_mana.js")
+		{
+			materials[1].alphaTest = 0.5;
+		}
+
 
 	})
 	var name
