@@ -47,7 +47,7 @@ function HQ(scene, hud, lanes, type, loader)
 	this.hqCube.position.z = -5/2
 	this.hqCube.castShadow = true
 	this.hqCube.receiveShadow = true
-	this.scene.add(this.hqCube)
+	//this.scene.add(this.hqCube)
 
 	var hqConfig = Game.config[type == HQ.typesEnum.NATURE ? "nature" : "newYork"]
 	this.hp = hqConfig.hp

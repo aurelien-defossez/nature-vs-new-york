@@ -80,6 +80,7 @@ Cell.prototype.loadMesh = function(loader, name) {
 		}
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
+		self.mesh.receiveShadow = true
 		self.scene.add(self.mesh)
 		
 		var materials = self.mesh.material.materials

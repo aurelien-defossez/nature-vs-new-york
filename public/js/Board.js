@@ -19,7 +19,7 @@ function Board(scene, loader, hud)
 	this.plane = new THREE.Mesh(planeGeom, material)
 	this.plane.position.x = this.boardWidth/2
 	this.plane.position.z = -this.boardHeight/2
-	this.scene.add(this.plane)
+	//this.scene.add(this.plane)
 	this.plane.rotation.x = -Math.PI * 0.5
 	this.plane.castShadow = false
 	this.plane.receiveShadow = true
@@ -31,6 +31,24 @@ function Board(scene, loader, hud)
 		nature : null,
 		newYork : null
 	}
+
+
+	this.animations = {}
+	this.currentAnimation = null
+	var self = this
+	var fileName = "data/shitload_of_polys.js"
+	loader.load(fileName, function(geometry, materials)
+	{
+		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
+		self.mesh.castShadow = true
+		self.scene.add(self.mesh)
+		self.mesh.position.x = 5.5
+		self.mesh.position.z = -3.5
+		self.mesh.castShadow = true
+		self.mesh.receiveShadow = true
+		//self.mesh.position.z = -this.boardHeight/2
+
+	})
 }
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){

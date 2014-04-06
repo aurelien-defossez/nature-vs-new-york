@@ -102,13 +102,34 @@ Lane.prototype.capture = function(type, value){
 	if (type == HQ.typesEnum.NATURE) {
 		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
 			var cell = this.cells[i]
+			var hasBuilderOnCell = false;
+			for (var j = 0; j< this.units.length; j++)
+			{
+				var unit = this.units[j];
+				if (unit.type == "builder"){
+					var index = Math.floor(unit.xPosition);
+					
+					if (index == i || (index == i+1 )) 
+					{
+						//console.log("STOP")
+						hasBuilderOnCell = true;
+					}	
+
+				}
+			}
+			if (hasBuilderOnCell)
+				break;
+
+			
 			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
 				remaining = cell.capture(value)
 			}
+
 		}
 	} else {
 		for (var i = Game.config.lane.cellNumber - 1; i >= 0; --i) {
 			var cell = this.cells[i]
+			
 			if (remaining > 0 && cell.captureProgress > -1 && cell.building == null) {
 				remaining = -cell.capture(-value)
 			}
@@ -166,11 +187,10 @@ Lane.prototype.update = function(time, dt){
     for (i = this.cells.length - 1; i >= 0; --i) {
     	var cell = this.cells[i]
 
-    	if (!cell.owner || cell.owner == "newYork" && cell.captureProgress > -1) {
+    	if (!cell.owner || cell.owner == "nature" && cell.captureProgress > -1 ) {
     		builderTarget = {
     			index: (i + 1) * 3
     		}
-
     		break
     	}
 	}
