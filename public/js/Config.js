@@ -1,7 +1,7 @@
 Game.config = {
     board : {
-      height: 590,
-      width:1050
+      height: 565,
+      width:1000
     },
     /*board : {
       height: 450,
