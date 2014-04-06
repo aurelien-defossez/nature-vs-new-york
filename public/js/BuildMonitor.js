@@ -1,6 +1,25 @@
 function BuildMonitor(){
 	
-	this.displayedQueues = {
+	this.displayedQueues = {}	
+
+	for (var lane = 0;lane < 3; lane++) {
+		this.displayedQueues["lane"+lane] = {
+			nature : {},
+			newYork : {}
+		}	
+		for (var i=0; i<4; i++) {
+			this.displayedQueues["lane"+lane].nature["input"+i] = {
+				size : 0,
+				unit : null
+			}
+			this.displayedQueues["lane"+lane].newYork["input"+i] = {
+				size : 0,
+				unit : null
+			}
+		}
+	}
+	
+	/*this.displayedQueues = {
 		nature : {
 			input0 : {
 				size : 0,
@@ -37,7 +56,7 @@ function BuildMonitor(){
 				unit : null
 			}
 		}
-	};
+	};*/
 	
 	this.availableMappings = {
 		nature : Game.config.nature.mapping.units,
@@ -74,15 +93,15 @@ BuildMonitor.prototype.getInputFromUnitType = function(unitType){
 	}
 }
 
-BuildMonitor.prototype.refreshQueue = function(queue){
+BuildMonitor.prototype.refreshQueue = function(index, queue){
 	for (var type in queue) {
 		var playerType = this.getPlayerTypeFromUnitType(type)
 		var input = this.getInputFromUnitType(type)
-		this.displayedQueues[playerType][input].size = queue[type].length
+		this.displayedQueues["lane"+index][playerType][input].size = queue[type].length
 		if (queue[type].length > 0) {
-			this.displayedQueues[playerType][input].unit = queue[type][0]
+			this.displayedQueues["lane"+index][playerType][input].unit = queue[type][0]
 		} else {
-			this.displayedQueues[playerType][input].unit = null
+			this.displayedQueues["lane"+index][playerType][input].unit = null
 		}
 	}
 }
