@@ -36,7 +36,8 @@ function Unit(scene, player, type, loader, hq) {
     }
 	this.pending = true
 	this.cost = Game.config.unit.cost
-    this.buildDelay = unitConfig.time;
+	this.buildTime = unitConfig.time
+    this.buildDelay = unitConfig.time
 
     this.animations = {}
     this.currentAnimation = null
@@ -203,4 +204,10 @@ Unit.prototype.destroy = function() {
     } 
     this.switchAnimation("die")
     //this.scene.remove(this.mesh);
+}
+
+Unit.prototype.getBuildPercentProgress = function(){
+	if (!this.isBuilt()) {
+		return Math.floor( (this.buildTime - this.buildDelay) / this.buildTime * 100 )
+	}
 }

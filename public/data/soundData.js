@@ -11,25 +11,31 @@ var soundData = {
 	
 	effects: {
 		"manaTreeSpawn": {
-			files: [ "data/mana_tree_spawn.wav" ],
+			files: [ "data/mana_tree_spawn.mp3" ],
 			gain: 1.0,
 			pitch: 1.0,
 			pitchRandomization: 0.1
 		},
 		"rootTreeSpawn": {
-			files: [ "data/root_tree_spawn.wav" ],
+			files: [ "data/root_tree_spawn.mp3" ],
 			gain: 1.0,
 			pitch: 1.0,
 			pitchRandomization: 0.1
 		},
 		"protectorTreeSpawn": {
-			files: [ "data/protector_tree_spawn.wav" ],
+			files: [ "data/protector_tree_spawn.mp3" ],
 			gain: 1.0,
 			pitch: 1.0,
 			pitchRandomization: 0.1
 		},
+		"bankSpawn": {
+			files: [ "data/bank_spawn.mp3" ],
+			gain: 0.5,
+			pitch: 1.0,
+			pitchRandomization: 0.1
+		},
 		"policeStationSpawn": {
-			files: [ "data/police_station_spawn.wav" ],
+			files: [ "data/police_station_spawn.mp3" ],
 			gain: 0.5,
 			pitch: 1.0,
 			pitchRandomization: 0.1

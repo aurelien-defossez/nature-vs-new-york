@@ -66,22 +66,26 @@ HQ.prototype.isAlive = function(){
 
 HQ.prototype.buyUnit = function(scene, player, type){
 	var unitType = Game.config[player].mapping.units[type]
-	var cost = Game.config.units[unitType].cost
+	if (unitType) {
+		var cost = Game.config.units[unitType].cost
 
-	if (this.mana >= cost) {
-		this.mana -= cost
-		var unit = new Unit(scene, player, unitType, this.loader, this)
-		return unit
+		if (this.mana >= cost) {
+			this.mana -= cost
+			var unit = new Unit(scene, player, unitType, this.loader, this)
+			return unit
+		}
 	}
 }
 
 HQ.prototype.buyBuilding = function(scene, player, type){
 	var buildingType = Game.config[player].mapping.buildings[type]
-	var cost = Game.config.buildings[buildingType].cost
+	if (buildingType) {
+		var cost = Game.config.buildings[buildingType].cost
 
-	if (this.mana >= cost) {
-		this.mana -= cost
-		return true
+		if (this.mana >= cost) {
+			this.mana -= cost
+			return true
+		}
 	}
 }
 
