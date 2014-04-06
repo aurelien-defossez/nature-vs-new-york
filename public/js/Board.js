@@ -86,9 +86,12 @@ Board.prototype.showAlert = function(alertType, playerName){
 	
 	if (this.alerts[playerName]==null || this.alerts[playerName].type != alertType){
 		var imgPath = 'data/'
-		if (alertType == Board.alertTypesEnum.NOT_ENOUGH_MANA) {
+		if (alertType == Board.alertTypesEnum.NOT_ENOUGH_MANA && playerName == HQ.typesEnum.NATURE) {
 			console.log("Not enough mana")
 			imgPath += 'NotEnoughMana.png'
+		} else if (alertType == Board.alertTypesEnum.NOT_ENOUGH_MANA && playerName == HQ.typesEnum.NEW_YORK) {
+			console.log("Not enough dollars")
+			imgPath += 'NotEnoughDollars.png'
 		} else if (alertType == Board.alertTypesEnum.NO_EMPTY_CELL) {
 			console.log("No empty cells")
 			imgPath += 'NoEmptyCell.png'
