@@ -23,6 +23,7 @@ function Unit(scene, player, type, loader) {
     this.attack = unitConfig.attack;
     this.buildingAttack = unitConfig.buildingAttack;
     this.cooldown = unitConfig.cooldown;
+    this.cooldownTimer = 0
 
     console.log('Player ' + player + ' is creating a ' + type, this);
 
@@ -145,6 +146,8 @@ Unit.prototype.update = function(time, dt) {
         if (this.phase == "walk") {
             this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
             this.xPosition = this.mesh.position.x
+        } else if (this.cooldownTimer > 0) {
+            this.cooldownTimer -= dt
         }
     } else if (!this.pending) {
         this.buildDelay -= dt
@@ -154,6 +157,14 @@ Unit.prototype.update = function(time, dt) {
     {
         this.currentAnimation.update(dt)
     }
+}
+
+Unit.prototype.startCooldown = function() {
+    this.cooldownTimer = this.cooldown
+}
+
+Unit.prototype.isReady = function() {
+    return this.cooldownTimer <= 0
 }
 
 Unit.prototype.hit = function(points) {

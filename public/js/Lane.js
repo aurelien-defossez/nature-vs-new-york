@@ -273,7 +273,7 @@ Lane.prototype.update = function(time, dt){
 
 	        	unit.switchAnimation("wait")
 	        }
-	    } else {
+	    } else if (unit.isReady()) {
 	    	// Enemy unit in sight: Attack the nearest
 	    	var direction = unit.player == "nature" ? 1 : -1
 	    	var attacked = false
@@ -307,11 +307,16 @@ Lane.prototype.update = function(time, dt){
 				cellId += direction
 				cell = this.cells[cellId]
 				if (cell.building && cell.building.player != unit.player) {
+    				attacked = true
 					if (cell.building.hit(unit.buildingAttack)) {
 						cell.building = null
 					}
     			}
     		}
+
+			if (attacked) {
+				unit.startCooldown()
+			}
 	    }
 
         unit.update(time, dt);
