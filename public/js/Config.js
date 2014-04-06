@@ -20,7 +20,7 @@ Game.config = {
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.5,
+    	captureSpeed: 0.05,
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',

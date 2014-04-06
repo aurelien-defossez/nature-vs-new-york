@@ -85,15 +85,15 @@ Lane.prototype.processCreationQueue = function(time, dt){
 
 Lane.prototype.popBuilding = function(button, playerName, hq){
 	if (playerName == HQ.typesEnum.NATURE){
-		for (var i = 0; i <= this.cells.length -1; i++){
-			if (this.cells[i].building == null && this.cells[i].owner == playerName){
+		for (var i = 0; i < this.cells.length; i++){
+			if (this.cells[i].building == null && this.cells[i].captureProgress == 1){
 				this.cells[i].build(button, playerName, hq)
 				break;
 			}
 		}
 	} else {
-		for (var i = this.cells.length -1 ; i >= 0; i--){
-			if (this.cells[i].building == null && this.cells[i].owner == playerName){
+		for (var i = this.cells.length - 1 ; i >= 0; i--){
+			if (this.cells[i].building == null && this.cells[i].captureProgress == -1){
 				this.cells[i].build(button, playerName, hq)
 				break;
 			}
