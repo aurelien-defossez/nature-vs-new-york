@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="bank_spawn_data" version="1.3.0" audacityversion="2.0.5" sel0="7.4572984320" sel1="7.4572984320" vpos="0" h="0.0000000000" zoom="66.7802159916" rate="44100.0">
+	<tags/>
+	<wavetrack name="NYPD SIREN SOUND" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="264585">
+				<waveblock start="0">
+					<simpleblockfile filename="e00005c6.au" len="132301" min="-0.55326" max="0.546645" rms="0.112921"/>
+				</waveblock>
+				<waveblock start="132301">
+					<simpleblockfile filename="e0000094.au" len="131976" min="-0.437833" max="0.442613" rms="0.096394"/>
+				</waveblock>
+				<waveblock start="264277">
+					<simpleblockfile filename="e0000e6c.au" len="308" min="-0.001126" max="0.00107" rms="0.000041"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Piste audio" channel="2" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="0" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="4.26773103">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="69266">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000707.au" len="34632" min="-0.280862" max="0.274999" rms="0.070885"/>
+				</waveblock>
+				<waveblock start="34632">
+					<simpleblockfile filename="e00001f9.au" len="34634" min="-0.280911" max="0.271456" rms="0.071083"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

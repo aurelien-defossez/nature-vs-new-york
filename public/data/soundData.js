@@ -28,5 +28,11 @@ var soundData = {
 			pitch: 1.0,
 			pitchRandomization: 0.1
 		},
+		"policeStationSpawn": {
+			files: [ "data/police_station_spawn.wav" ],
+			gain: 0.5,
+			pitch: 1.0,
+			pitchRandomization: 0.1
+		}
 	}
 }
