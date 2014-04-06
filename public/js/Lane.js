@@ -294,7 +294,7 @@ Lane.prototype.update = function(time, dt){
 	    	// Enemy unit in sight: Attack the nearest
 	    	var direction = unit.player == "nature" ? 1 : -1
 	    	var actionDone = false
-    		for (j = unit.waitingLineIndex + direction; j < unit.waitingLineIndex + direction * 3; j += direction) {
+    		for (j = unit.waitingLineIndex + direction; j > unit.waitingLineIndex - 3 && j < unit.waitingLineIndex + 3; j += direction) {
     			var potentialUnit = this.waitingLine[j]
     			if (potentialUnit && potentialUnit.player != unit.player) {
     				actionDone = true
