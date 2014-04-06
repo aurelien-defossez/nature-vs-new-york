@@ -131,7 +131,8 @@ Game.config = {
 			hp: 10,
 			speed: 0.5,
 			cost: 2,
-			time: 2
+			time: 2,
+			modelFile:"data/policeman.js"
 		},
 		// Mécha
 		mecha: {
