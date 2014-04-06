@@ -9,16 +9,20 @@ body{
 }
 
 #menu{
-  position:absolute;
-  top:20px;
-  left:50%;
-  background-color:#ddd;
+	position:absolute;
+	top:0;
+	left:50%;
+	background:transparent url('data/splashscreen.jpg') no-repeat left top;
+	overflow:hidden;
 }
-#menu div.options{
-  width:306px;
+#menu div.option-start{
+	width:342px;
+	height:91px;
+	background:transparent url('data/StartGame.png') no-repeat left top;
 }
-#menu div.options:hover{
-  cursor:pointer;
+#menu div.option-start:hover{
+	cursor:pointer;
+	background:transparent url('data/StartGame_hover.png') no-repeat left top;
 }
 
 #menu .the-end{
@@ -45,7 +49,6 @@ body{
   text-shadow: 1px 1px black;
   color: white;
   padding-top: 8px;
-  display: none;
 
 }
 
@@ -54,11 +57,11 @@ body{
   text-align: right;
   background-image: url("/data/mana.png");
   background-repeat: no-repeat;
+  display: none;
 }
 
 #manaCount{
   margin-right: 45px;
- 
 }
 
 #hud #dollars {
@@ -66,11 +69,11 @@ body{
   text-align: left;
   background-image: url("/data/dolars.png");
   background-repeat: no-repeat;
+  display: none;
 }
 
 #dollarsCount{
   margin-left: 47px;
- 
 }
 
 #hud #debug {
