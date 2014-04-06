@@ -39,6 +39,12 @@ PadController.prototype.checkAction = function(player) {
                 this.arrowAction(player, pad, 'Y', buildingMode)
             }
 
+            displayMana = (pad.leftShoulder0 == 1)||(pad.rightShoulder0 == 1)
+            if (displayMana)
+                player.displayManaCount()
+            else
+                player.hideManaCount()
+
                 // Enregistrement du statut du pad
                 this.savePadState(pad);
         }

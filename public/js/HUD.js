@@ -23,5 +23,5 @@ function HUD(player)
 }
 
 HUD.prototype.updateMana = function(type, value) {
-	document.getElementById(type == HQ.typesEnum.NATURE ? "mana" : "dollars").innerHTML = value
+	document.getElementById(type == HQ.typesEnum.NATURE ? "manaCount" : "dollarsCount").innerHTML = value
 }

@@ -1,6 +1,7 @@
 
 function KeyboardController(player) {
     this.player = player;
+    this.displayMana = false;
 
     this.buttons = {
         a: 0,
@@ -20,12 +21,14 @@ KeyboardController.prototype.pressKey = function(key) {
 
 KeyboardController.prototype.releaseKey = function(key) {
     this.updateKey(key, 0);
+
 }
 
 KeyboardController.prototype.updateKey = function(key, value) {
+    console.log("key : "+key+", value : "+value);
     switch(key) {
         case 'input0':
-            this.buttons.a = value;
+            this.buttons.a = value; 
             break;
         case 'input1':
             this.buttons.b = value;
@@ -45,6 +48,14 @@ KeyboardController.prototype.updateKey = function(key, value) {
         case 'shoulder' :
             this.buttons.r = value;
             break;
+        case 'bumper' :
+            this.displayMana = value;
+            break;
+    }
+    if (this.displayMana){
+        this.player.displayManaCount()
+    }else{
+        this.player.hideManaCount()
     }
 }
 
@@ -59,7 +70,6 @@ KeyboardController.prototype.performAction = function() {
     } else if(this.buttons.y) {
         this.arrowAction('Y')
     }
-
 }
 
 KeyboardController.prototype.arrowAction = function(button) {

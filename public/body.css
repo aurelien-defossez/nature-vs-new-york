@@ -39,19 +39,38 @@ body{
 #hud #debug {
   position: absolute;
   top: 200px;
-  width: 50px;
+  width: 138px;
+  height: 43px;
   font-size: 24px;
-  text-shadow: 1px 1px white;
+  text-shadow: 1px 1px black;
+  color: white;
+  padding-top: 8px;
+  display: none;
+
 }
 
 #hud #mana {
   left: 60px;
-  text-align: left;
+  text-align: right;
+  background-image: url("/data/mana.png");
+  background-repeat: no-repeat;
+}
+
+#manaCount{
+  margin-right: 45px;
+ 
 }
 
 #hud #dollars {
-  left: 1170px;
-  text-align: right;
+  left: 1100px;
+  text-align: left;
+  background-image: url("/data/dolars.png");
+  background-repeat: no-repeat;
+}
+
+#dollarsCount{
+  margin-left: 47px;
+ 
 }
 
 #hud #debug {

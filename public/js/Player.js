@@ -19,3 +19,22 @@ Player.prototype.createBuilding = function(button, laneIndex) {
 Player.prototype.controlAction = function() {
     this.controller.checkAction(this)
 }
+
+Player.prototype.displayManaCount = function(){
+    if (this.name == "nature")
+    {
+        document.getElementById("mana").style.display="block"
+    }else{
+        document.getElementById("dollars").style.display="block"    
+    }
+}
+
+Player.prototype.hideManaCount = function(){
+    if (this.name == "nature")
+    {
+        document.getElementById("mana").style.display="none"
+    }else{
+        document.getElementById("dollars").style.display="none"    
+    }
+}
+
