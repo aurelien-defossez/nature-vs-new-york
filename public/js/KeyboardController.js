@@ -1,6 +1,6 @@
 
-function KeyboardController(player) {
-    this.player = player;
+function KeyboardController() {
+    this.player
     this.displayMana = false;
 
     this.buttons = {

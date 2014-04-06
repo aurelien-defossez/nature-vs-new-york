@@ -20,7 +20,7 @@ Game.config = {
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.5,
+    	captureSpeed: 0.05,
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
@@ -37,7 +37,7 @@ Game.config = {
     	}
 	},
 	newYork : {
-		initOwnedCells : 4,
+		initOwnedCells : 1,
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
@@ -60,7 +60,7 @@ Game.config = {
 	units: {
 		// Porteur de sève
 		sapCarrier: {
-			attack: 0,
+			attack: 1,
 			buildingAttack: 0,
 			cooldown: 1,
 			hp: 5,
@@ -77,7 +77,8 @@ Game.config = {
 			hp: 15,
 			speed: 1.0,
 			cost: 4,
-			time: 4
+			time: 4,
+			modelFile: "data/wolf.js"
 		},
 		// Ours
 		bear: {
@@ -87,7 +88,8 @@ Game.config = {
 			hp: 5,
 			speed: 0.4,
 			cost: 8,
-			time: 6
+			time: 6,
+			modelFile: "data/bear.js"
 		},
 		// Ent
 		ent: {
@@ -101,14 +103,15 @@ Game.config = {
 		},
 		// Constructeur
 		builder: {
-			attack: 0,
+			attack: 1,
 			buildingAttack: 0,
 			cooldown: 1,
 			hp: 5,
 			speed: 0.2,
 			cost: 20,
 			time: 10,
-			captureSpeed: 0.1
+			captureSpeed: 0.1,
+			modelFile:"data/builder.js"
 		},
 		// Bûcheron
 		lumberjack: {
