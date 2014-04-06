@@ -37,8 +37,8 @@ function Building(scene, loader, button, player, hq, lane, cell){
 	this.parentScene.add(this.healthBar);
 
     console.log('Player ' + player + ' is building a ' + buildingType);
-    
-	
+
+
 	this.animations = {}
 	this.currentAnimation = null
 	var self = this
@@ -49,7 +49,7 @@ function Building(scene, loader, button, player, hq, lane, cell){
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
 		//self.parentScene.add(self.mesh)
-		
+
 	})
 
 	fileName = Game.config.buildings.scaffolding.modelFile
@@ -58,19 +58,19 @@ function Building(scene, loader, button, player, hq, lane, cell){
 		self.scaffoldingMesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.scaffoldingMesh.castShadow = true
 		self.parentScene.add(self.scaffoldingMesh)
-		
+
 		var materials = self.scaffoldingMesh.material.materials
 		for (var k in materials)
 		{
 			materials[k].skinning = true
 		}
-		
+
 		for (var i = 0; i < self.scaffoldingMesh.geometry.animations.length; ++i)
 		{
 			if (THREE.AnimationHandler.get(self.scaffoldingMesh.geometry.animations[i].name) == null)
 				THREE.AnimationHandler.add(self.scaffoldingMesh.geometry.animations[i])
 		}
-		
+
 		self.animations.create = new THREE.Animation(self.scaffoldingMesh, "scaffolding_create", THREE.AnimationHandler.CATMULLROM)
 		self.animations.create.loop = false
 		self.animations.destroy = new THREE.Animation(self.scaffoldingMesh, "scaffolding_destroy", THREE.AnimationHandler.CATMULLROM)
@@ -129,7 +129,7 @@ Building.prototype.update = function(time, dt){
 			this.currentAnimation = this.animations.destroy
 			this.currentAnimation.play();
 			this.ScaffoldingDestroyed = false;
-			
+
 		}
 		this.animationTimerSetter = this.buildingProgress;
 	} else {
@@ -138,7 +138,7 @@ Building.prototype.update = function(time, dt){
 			this.time -= Game.config.buildings.policeStation.policemansDelay
 			this.lane.createUnit("newYork", "policeman", this.cell.id + .5)
 		}
-	} 
+	}
 
 
 	if (!this.ScaffoldingDestroyed)
@@ -174,6 +174,18 @@ Building.prototype.update = function(time, dt){
 	}
 }
 
+Building.prototype.hit = function(points){
+	this.currentHP -= points
+
+	if (this.currentHP <= 0) {
+		this.destroy()
+		return true
+	}
+}
+
 Building.prototype.destroy = function(){
 	this.parentScene.remove(this.mesh)
+	this.parentScene.remove(this.healthBarBackground);
+	this.parentScene.remove(this.healthBar);
+	this.parentScene.remove(this.scaffoldingMesh);
 }
