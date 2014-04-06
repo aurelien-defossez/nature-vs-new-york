@@ -118,7 +118,7 @@ Unit.prototype.runUnit = function(){
 }
 
 Unit.prototype.switchAnimation = function(phase){
-    if (this.phase == "build") {
+    if (this.capturing) {
         this.capturing = false
         this.hq.captureSpeed[this.lane.id] -= Game.config.units.builder.captureSpeed
     }
@@ -183,7 +183,7 @@ Unit.prototype.hit = function(points) {
 }
 
 Unit.prototype.destroy = function() {
-    if (this.phase == "build") {
+    if (!this.capturing) {
         this.capturing = false
         this.hq.captureSpeed[this.lane.id] -= Game.config.units.builder.captureSpeed
     }

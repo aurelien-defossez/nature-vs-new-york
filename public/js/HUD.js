@@ -2,7 +2,6 @@ function HUD(player)
 {
 	this.scene = new THREE.Object3D()
 
-
 	natureTexture = THREE.ImageUtils.loadTexture('data/natureHUD.png')
 	natureMaterial = new THREE.MeshLambertMaterial( { map: natureTexture } );
 	natureGeometry = new THREE.PlaneGeometry(0.6, 0.25),
@@ -20,8 +19,21 @@ function HUD(player)
 	this.newYorkHUD.translateX(0.7)
 	this.newYorkHUD.translateY(0.40)
 	this.scene.add(this.newYorkHUD)
+	
+	this.buildMonitor = new BuildMonitor()
 }
 
 HUD.prototype.updateMana = function(type, value) {
 	document.getElementById(type == HQ.typesEnum.NATURE ? "manaCount" : "dollarsCount").innerHTML = value
+}
+
+HUD.prototype.refreshBuildMonitor = function(queue){
+	console.log("refresh build-monitor")
+	this.buildMonitor.refreshQueue(queue)
+	for (var input in this.buildMonitor.displayedQueues.nature){
+		document.querySelector("#nature-build-queue ."+input+" .queue-size").innerHTML = this.buildMonitor.displayedQueues.nature[input]
+	}
+	for (var input in this.buildMonitor.displayedQueues.newYork){
+		document.querySelector("#newYork-build-queue ."+input+" .queue-size").innerHTML = this.buildMonitor.displayedQueues.newYork[input]
+	}
 }

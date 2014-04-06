@@ -7,17 +7,32 @@ var soundData = {
 		}
 	],
 	
-	musicGain: 1.0,
+	musicGain: 0.25,
 	
 	effects: {
-		"walk": {
-			files: [
-				"data/footstepleft.wav",
-				"data/footstepright.wav"
-			],
+		"manaTreeSpawn": {
+			files: [ "data/mana_tree_spawn.wav" ],
 			gain: 1.0,
 			pitch: 1.0,
-			pitchRandomization: 0.4
+			pitchRandomization: 0.1
+		},
+		"rootTreeSpawn": {
+			files: [ "data/root_tree_spawn.wav" ],
+			gain: 1.0,
+			pitch: 1.0,
+			pitchRandomization: 0.1
+		},
+		"protectorTreeSpawn": {
+			files: [ "data/protector_tree_spawn.wav" ],
+			gain: 1.0,
+			pitch: 1.0,
+			pitchRandomization: 0.1
+		},
+		"policeStationSpawn": {
+			files: [ "data/police_station_spawn.wav" ],
+			gain: 0.5,
+			pitch: 1.0,
+			pitchRandomization: 0.1
 		}
 	}
 }

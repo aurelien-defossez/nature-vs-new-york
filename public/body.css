@@ -40,7 +40,9 @@ body{
 
 #hud #mana,
 #hud #dollars,
-#hud #debug {
+#hud #debug,
+#hud #nature-build-queue,
+#hud #newYork-build-queue {
   position: absolute;
   top: 200px;
   width: 138px;
@@ -81,3 +83,55 @@ body{
   left: 600px;
   text-align: left;
 }
+
+#hud #nature-build-queue,
+#hud #newYork-build-queue{
+  top: 230px;
+  text-align: left;
+  font-size: 18px;
+  color: #444;
+  padding-top: 3px;
+  display: none;
+}
+#hud #nature-build-queue{
+  left: 60px;
+}
+#hud #newYork-build-queue{
+	left: 1100px;
+	text-align: right;
+}
+#hud #nature-build-queue ul, #hud #newYork-build-queue ul{
+  list-style: none;
+  padding:0;
+}
+#hud li.input0{
+	background-image: url("/data/key-x.png");
+	background-repeat: no-repeat;
+}
+#hud li.input1{
+	background-image: url("/data/key-y.png");
+	background-repeat: no-repeat;
+}
+#hud li.input2{
+	background-image: url("/data/key-a.png");
+	background-repeat: no-repeat;
+}
+#hud li.input3{
+	background-image: url("/data/key-b.png");
+	background-repeat: no-repeat;
+}
+#hud #nature-build-queue li, #hud #newYork-build-queue li{
+	background-size: 20px;
+	height:30px;
+}
+#hud #nature-build-queue li span, #hud #newYork-build-queue li span{
+	margin-left: 47px;
+}
+#hud #newYork-build-queue li span{
+	margin-right: 47px;
+}
+#hud #newYork-build-queue li{
+	background-position:right top;
+}
+
+
