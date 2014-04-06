@@ -234,7 +234,13 @@ Game.config = {
 		cost : 10
 	},
 	controls : {
-		'gamepad' :{
+		'gamepad': {
+			'A' : 'input0',
+			'B' : 'input1',
+			'X' : 'input2',
+			'Y' : 'input3'
+		},
+		'keyboard': {
 			'A' : 'input0',
 			'B' : 'input1',
 			'X' : 'input2',

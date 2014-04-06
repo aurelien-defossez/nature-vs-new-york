@@ -59,10 +59,10 @@ function Game()
     this.musicManager = new MusicManager()
 
     this.players = {
-        left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0)),
-        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(1))
+        left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0), "gamepad"),
+        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new KeyboardController(), "keyboard")
     }
-    this.players.right.controller.disableControl = true;
+    this.players.right.controller.controllerType = "keyboard";
     this.players.right.controller.player = this.players.right;
 
 }

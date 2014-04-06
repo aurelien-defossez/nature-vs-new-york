@@ -26,17 +26,16 @@ function update(timestamp)
 
 
 function onDocumentKeyDown( event ) {
-    var keyboardAction;
-
+    var keyboardAction; 
     keyboardAction = Game.config.controls.keyboard1[event.keyCode];
     if(keyboardAction) {
-        //console.log('Player 1 is doing ' + keyboardAction);
-        game.players.left.keyboardController.pressKey(keyboardAction);
+        if (game.players.left.controller.controllerType=="keyboard")
+            game.players.left.controller.pressKey(keyboardAction);
     } else {
         keyboardAction = Game.config.controls.keyboard2[event.keyCode];
         if(keyboardAction) {
-            //console.log('Player 2 is doing ' + keyboardAction);
-            game.players.right.keyboardController.pressKey(keyboardAction);
+            if (game.players.right.controller.controllerType=="keyboard")
+                game.players.right.controller.pressKey(keyboardAction);
         }
     }
 
@@ -45,13 +44,15 @@ function onDocumentKeyDown( event ) {
 function onDocumentKeyUp( event ) {
     var keyboardAction;
 
-    keyboardAction = Game.config.controls.keyboard1[event.keyIdentifier];
+    keyboardAction = Game.config.controls.keyboard1[event.keyCode];
     if(keyboardAction) {
-        game.players.left.keyboardController.releaseKey(keyboardAction);
+        if (game.players.left.controller.controllerType=="keyboard")
+            game.players.left.controller.releaseKey(keyboardAction);
     } else {
-        keyboardAction = Game.config.controls.keyboard2[event.keyIdentifier];
+        keyboardAction = Game.config.controls.keyboard2[event.keyCode];
         if(keyboardAction) {
-            game.players.right.keyboardController.releaseKey(keyboardAction);
+            if (game.players.right.controller.controllerType=="keyboard")
+                game.players.right.controller.releaseKey(keyboardAction);
         }
     }
 

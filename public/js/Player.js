@@ -1,9 +1,9 @@
-function Player(name, board, controller) {
+function Player(name, board, controller, type) {
 
     this.name = name;
     this.board = board;
     this.controller = controller;
-    this.controllerType = "gamepad";
+    this.controllerType = type;
     disableControl = false;
 
 }
@@ -17,7 +17,7 @@ Player.prototype.createBuilding = function(button, laneIndex) {
 }
 
 Player.prototype.controlAction = function() {
-    if (!this.disableControl)
+    if (this.controllerType == "gamepad")
         this.controller.checkAction(this)
 }
 
