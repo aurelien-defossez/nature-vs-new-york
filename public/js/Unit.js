@@ -163,8 +163,10 @@ Unit.prototype.switchAnimation = function(phase){
 Unit.prototype.update = function(time, dt) {
     if (this.isBuilt()){
         if (this.phase == "walk") {
-            this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
-            this.xPosition = this.mesh.position.x
+            if (this.mesh) {
+                this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
+                this.xPosition = this.mesh.position.x
+            }
         } else if (this.cooldownTimer > 0) {
             this.cooldownTimer -= dt
         }
