@@ -61,7 +61,7 @@ Game.config = {
 		// Porteur de sève
 		sapCarrier: {
 			attack: 1,
-			buildingAttack: 0,
+			buildingAttack: 1,
 			cooldown: 1,
 			hp: 5,
 			speed: 0.2,
@@ -104,7 +104,7 @@ Game.config = {
 		// Constructeur
 		builder: {
 			attack: 1,
-			buildingAttack: 0,
+			buildingAttack: 1,
 			cooldown: 1,
 			hp: 5,
 			speed: 0.2,
