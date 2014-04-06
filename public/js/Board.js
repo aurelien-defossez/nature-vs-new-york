@@ -1,3 +1,8 @@
+Board.alertTypesEnum = {
+	NOT_ENOUGH_MANA : 0,
+	NO_EMPTY_CELL : 1
+}
+
 function Board(scene, loader, hud)
 {
 
@@ -22,7 +27,10 @@ function Board(scene, loader, hud)
 	this.loadLanes(loader)
 	this.loadHQs(hud)
 
-	this.alerts = []
+	this.alerts = {
+		nature : null,
+		newYork : null
+	}
 }
 
 Board.prototype.popBuilding = function(button, laneIndex, playerName){
@@ -54,10 +62,10 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 		if (building) {
 			lane.popBuilding(button, playerName, this.hqs[playerName])
 		} else {
-	    	console.log("Not enough mana")
+	    	this.showAlert(Board.alertTypesEnum.NOT_ENOUGH_MANA, playerName)
 	    }
 	}else{
-		console.log("Not Enought Cells")
+		this.showAlert(Board.alertTypesEnum.NO_EMPTY_CELL, playerName)
 	}
 
 }
@@ -70,9 +78,51 @@ Board.prototype.popMonster = function(button, laneIndex, playerName){
 	if (unit) {
     	lane.addUnitInQueue(unit)
     } else {
-    	console.log("Not enough mana")
-		lane.sayNotEnoughMana(playerName)
+		this.showAlert(Board.alertTypesEnum.NOT_ENOUGH_MANA, playerName)
     }
+}
+
+Board.prototype.showAlert = function(alertType, playerName){
+	
+	if (this.alerts[playerName]==null || this.alerts[playerName].type != alertType){
+		var imgPath = 'data/'
+		if (alertType == Board.alertTypesEnum.NOT_ENOUGH_MANA) {
+			console.log("Not enough mana")
+			imgPath += 'NotEnoughMana.png'
+		} else if (alertType == Board.alertTypesEnum.NO_EMPTY_CELL) {
+			console.log("No empty cells")
+			imgPath += 'NoEmptyCell.png'
+		}
+		
+		var alertTexture = THREE.ImageUtils.loadTexture(imgPath)
+		var alert = new THREE.Mesh( new THREE.PlaneGeometry(1, 1)
+								   , new THREE.MeshLambertMaterial( { transparent:true, map: alertTexture } ) )
+		this.scene.remove(this.alerts[playerName])
+		this.alerts[playerName] = alert;
+		if(playerName === HQ.typesEnum.NATURE) {
+			alert.position.x = 4.6;
+		} else if(playerName === HQ.typesEnum.NEW_YORK) {
+			alert.position.x = this.boardWidth - 4.6;
+		}
+		alert.type = alertType
+		alert.position.y = 3;
+		alert.position.z = -this.boardHeight/2;
+		alert.rotation.x = -Math.PI * 0.35
+		alert.castShadow = true;
+		alert.receiveShadow = true;
+		alert.createDate = new Date()
+		alert.ttl = Game.config.alerts.ttl * 1000
+		this.scene.add(alert)
+	}
+	
+}
+Board.prototype.purgeAlert = function(playerName){
+	var currentTime = new Date()
+	var alert = this.alerts[playerName]
+	if (alert!= null && currentTime.getTime() - alert.createDate.getTime() > alert.ttl) {
+		this.scene.remove(alert)
+		this.alerts[playerName] = null
+	}
 }
 
 Board.prototype.loadHQs = function(hud){
@@ -106,4 +156,7 @@ Board.prototype.update = function(time, dt) {
 	for (var i = 0; i < 3; i++) {
 		this.lanes[i].update(time, dt)
 	}
+	
+	this.purgeAlert(HQ.typesEnum.NATURE)
+	this.purgeAlert(HQ.typesEnum.NEW_YORK)
 }
