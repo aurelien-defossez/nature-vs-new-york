@@ -115,6 +115,7 @@ Lane.prototype.update = function(time, dt){
    	// Define targets for units using buildings and waiting line
    	var natureTarget
    	var newYorkTarget
+   	var builderTarget
     for (i = this.cells.length - 1; i >= 0; --i) {
     	var cell = this.cells[i]
 
@@ -126,6 +127,12 @@ Lane.prototype.update = function(time, dt){
 
 			break
     	}
+	}
+
+	if (!natureTarget) {
+		natureTarget = {
+			index: (this.cells.length + 1) * 3 - 1
+		}
 	}
 
     for (i = 0; i < this.cells.length; i++) {
@@ -141,11 +148,26 @@ Lane.prototype.update = function(time, dt){
     	}
 	}
 
-	// Find farthest units
-	var farthestUnit = {
-		nature: null,
-		newYork: null
+	if (!newYorkTarget) {
+		newYorkTarget = {
+			index: 0
+		}
 	}
+
+    for (i = this.cells.length - 1; i >= 0; --i) {
+    	var cell = this.cells[i]
+
+    	if (!cell.owner || cell.owner == "newYork" && cell.captureProgress > -1) {
+    		builderTarget = {
+    			index: (i + 1) * 3
+    		}
+
+    		break
+    	}
+	}
+
+	// Find farthest units
+	var farthestUnit = {}
 	this.farthestUnit = farthestUnit
     for (i = 0; i < this.units.length; i++) {
     	var unit = this.units[i]
@@ -159,7 +181,7 @@ Lane.prototype.update = function(time, dt){
     }
 
     // Correct targets using farthest units
-    if (natureTarget && farthestUnit.newYork && farthestUnit.newYork.xPosition - 1 / 6 < natureTarget.index / 3) {
+    if (farthestUnit.newYork && farthestUnit.newYork.xPosition - 1 / 6 < natureTarget.index / 3) {
     	natureTarget = {
     		index: Math.floor(farthestUnit.newYork.xPosition * 3) - 1
     	}
@@ -172,36 +194,40 @@ Lane.prototype.update = function(time, dt){
     }
 
     // Find next available spot
-    if (natureTarget) {
-		for (j = natureTarget.index; j >= 0; --j) {
-			if (!this.waitingLine[j]) {
-				natureTarget = {
-					index: j
-				}
-				break
+	for (j = natureTarget.index; j >= 0; --j) {
+		if (!this.waitingLine[j]) {
+			natureTarget = {
+				index: j
 			}
+			break
 		}
 	}
 
-	if (newYorkTarget) {
-		for (j = newYorkTarget.index; j < this.cells.length * 3; j++) {
-			if (!this.waitingLine[j]) {
-				newYorkTarget = {
-					index: j
-				}
-				break
+	for (j = newYorkTarget.index; j < this.cells.length * 3; j++) {
+		if (!this.waitingLine[j]) {
+			newYorkTarget = {
+				index: j
 			}
+			break
 		}
+	}
+
+	if (this.id == 1 && builderTarget) {
+		document.getElementById("debug").innerHTML = builderTarget.index + ", " + newYorkTarget.index
+	}
+
+	if (!builderTarget) {
+		builderTarget = {
+			index: newYorkTarget.index
+		}
+	} else if (newYorkTarget.index > builderTarget.index) {
+		builderTarget.index = newYorkTarget.index
 	}
 
     // Compute target positions
-    if (natureTarget) {
-    	natureTarget.position = natureTarget.index / 3 + 1 / 6
-    }
-
-    if (newYorkTarget) {
-    	newYorkTarget.position = newYorkTarget.index / 3 + 1 / 6
-    }
+    natureTarget.position = natureTarget.index / 3 + 1 / 6
+    newYorkTarget.position = newYorkTarget.index / 3 + 1 / 6
+   	builderTarget.position = builderTarget.index / 3 + 1 / 6
 
     for (i = 0; i < this.cells.length; i++) {
 		this.cells[i].update(time, dt);
@@ -216,34 +242,48 @@ Lane.prototype.update = function(time, dt){
 		var opponent = unit.player == "nature" ? "newYork" : "nature"
 
 		if (unit.phase == "walk") {
-	        if (unit.player == "nature"
-	        && (!natureTarget || natureTarget.index < 0 || unit.xPosition > natureTarget.position)) {
-	        	if (natureTarget) {
-	        		unit.setPosition(natureTarget.position)
-	        		this.waitingLine[natureTarget.index] = unit
-	        		unit.waitingLineIndex = natureTarget.index
-		        	natureTarget.index --
-		        	natureTarget.position -= 1 / 3
-	        	} else {
-	        		unit.hide()
+	        if (unit.type == "builder") {
+	        	if (builderTarget.index < 0 || unit.xPosition < builderTarget.position) {
+		        	if (builderTarget) {
+		        		unit.setPosition(builderTarget.position)
+		        		this.waitingLine[builderTarget.index] = unit
+		        		unit.waitingLineIndex = builderTarget.index
+			        	builderTarget.index ++
+			        	builderTarget.position += 1 / 3
+		        	} else {
+		        		unit.hide()
+		        	}
+
+		        	unit.switchAnimation("build")
+		        }
+	        } else if (unit.player == "nature") {
+	        	if (natureTarget.index < 0 || unit.xPosition > natureTarget.position) {
+		        	if (natureTarget) {
+		        		unit.setPosition(natureTarget.position)
+		        		this.waitingLine[natureTarget.index] = unit
+		        		unit.waitingLineIndex = natureTarget.index
+			        	natureTarget.index --
+			        	natureTarget.position -= 1 / 3
+		        	} else {
+		        		unit.hide()
+		        	}
+
+		        	unit.switchAnimation("wait")
+		        }
+	        } else if (unit.player == "newYork") {
+	        	if (!newYorkTarget || newYorkTarget.index < 0 || unit.xPosition < newYorkTarget.position) {
+		        	if (newYorkTarget) {
+		        		unit.setPosition(newYorkTarget.position)
+		        		this.waitingLine[newYorkTarget.index] = unit
+		        		unit.waitingLineIndex = newYorkTarget.index
+			        	newYorkTarget.index ++
+			        	newYorkTarget.position += 1 / 3
+		        	} else {
+		        		unit.hide()
+		        	}
+
+	        		unit.switchAnimation("wait")
 	        	}
-
-	        	unit.switchAnimation("wait")
-	        }
-
-	        if (unit.player == "newYork"
-	        && (!newYorkTarget || newYorkTarget.index < 0 || unit.xPosition < newYorkTarget.position)) {
-	        	if (newYorkTarget) {
-	        		unit.setPosition(newYorkTarget.position)
-	        		this.waitingLine[newYorkTarget.index] = unit
-	        		unit.waitingLineIndex = newYorkTarget.index
-		        	newYorkTarget.index ++
-		        	newYorkTarget.position += 1 / 3
-	        	} else {
-	        		unit.hide()
-	        	}
-
-	        	unit.switchAnimation("wait")
 	        }
 	    } else if (unit.isReady()) {
 	    	// Enemy unit in sight: Attack the nearest

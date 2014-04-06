@@ -37,7 +37,7 @@ Game.config = {
     	}
 	},
 	newYork : {
-		initOwnedCells : 4,
+		initOwnedCells : 1,
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,

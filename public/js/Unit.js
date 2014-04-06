@@ -118,21 +118,25 @@ Unit.prototype.runUnit = function(){
 
 Unit.prototype.switchAnimation = function(phase){
     this.phase = phase
-    if (phase == "walk"){
-        if (this.currentAnimation)
-        {
-            this.currentAnimation.stop()
-            this.currentAnimation = this.animations.walk
-            this.currentAnimation.play()
-        }
 
+    if (this.currentAnimation){
+        this.currentAnimation.stop()
+        this.currentAnimation = null
+    }
+
+    if (phase == "walk"){
+        this.currentAnimation = this.animations.walk
+        this.capturing = false
     } else if ( phase == "wait"){
-        if (this.currentAnimation)
-        {
-            this.currentAnimation.stop()
-            this.currentAnimation = this.animations.idle
-            this.currentAnimation.play()
-        }
+        this.currentAnimation = this.animations.idle
+        this.capturing = false
+    } else if ( phase == "build"){
+        this.currentAnimation = this.animations.idle
+        this.capturing = true
+    }
+
+    if (this.currentAnimation) {
+        this.currentAnimation.play()
     }
 }
 
@@ -159,7 +163,7 @@ Unit.prototype.startCooldown = function() {
 }
 
 Unit.prototype.isReady = function() {
-    return this.cooldownTimer <= 0
+    return !this.capturing && this.cooldownTimer <= 0
 }
 
 Unit.prototype.hit = function(points) {
