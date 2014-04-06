@@ -9,16 +9,20 @@ body{
 }
 
 #menu{
-  position:absolute;
-  top:20px;
-  left:50%;
-  background-color:#ddd;
+	position:absolute;
+	top:0;
+	left:50%;
+	background:transparent url('data/splashscreen.jpg') no-repeat left top;
+	overflow:hidden;
 }
-#menu div.options{
-  width:306px;
+#menu div.option-start{
+	width:342px;
+	height:91px;
+	background:transparent url('data/StartGame.png') no-repeat left top;
 }
-#menu div.options:hover{
-  cursor:pointer;
+#menu div.option-start:hover{
+	cursor:pointer;
+	background:transparent url('data/StartGame_hover.png') no-repeat left top;
 }
 
 #menu .the-end{

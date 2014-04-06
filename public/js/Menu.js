@@ -1,17 +1,16 @@
 function Menu(){
   
     this.container = document.getElementById("menu")
-    this.width = Game.config.board.width/2
-    this.height = Game.config.board.height/2
+    this.width = Game.config.board.width
+    this.height = Game.config.board.height
     this.container.setAttribute("style", "margin-left:-"+this.width/2+"px;");
     
     this.domElement = document.createElement("div")
     this.domElement.className = "wrapper"
-    this.domElement.setAttribute("style", "width:"+this.width+"px;")
+    this.domElement.setAttribute("style", "width:"+this.width+"px;height:"+this.height+"px;")
     
     this.startBtn = document.createElement("div")
-    this.startBtn.className = "options"
-    this.startBtn.innerHTML = "<img src='data/StartGame.png' />"
+    this.startBtn.className = "option-start"
     this.startBtn.setAttribute("style", "margin-left:auto;margin-right:auto;margin-top:"+(this.height/2-104/2)+"px;margin-bottom:"+(this.height/2-104/2)+"px;")
     
     this.endGameScreen = document.createElement("div")
