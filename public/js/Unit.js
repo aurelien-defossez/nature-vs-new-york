@@ -36,10 +36,6 @@ function Unit(scene, player, type, loader) {
 	this.cost = Game.config.unit.cost
     this.buildDelay = unitConfig.time;
 
-	this.collided = false
-	this.target = null
-	this.fightStartDate = null;
-
     this.animations = {}
     this.currentAnimation = null
     var self = this

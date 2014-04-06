@@ -176,6 +176,7 @@ Lane.prototype.update = function(time, dt){
 		nature: null,
 		newYork: null
 	}
+	this.farthestUnit = farthestUnit
     for (i = 0; i < this.units.length; i++) {
     	var unit = this.units[i]
     	var localBest = farthestUnit[unit.player]
@@ -188,17 +189,15 @@ Lane.prototype.update = function(time, dt){
     }
 
     // Correct targets using farthest units
-    if (natureTarget && farthestUnit.newYork && farthestUnit.newYork.xPosition < natureTarget.index / 3 + 1 / 6) {
-    	var index = Math.floor(farthestUnit.newYork.xPosition * 3)
+    if (natureTarget && farthestUnit.newYork && farthestUnit.newYork.xPosition < natureTarget.index / 3 - 1 / 6) {
     	natureTarget = {
-    		index: index
+    		index: Math.floor(farthestUnit.newYork.xPosition * 3)
     	}
     }
 
     if (newYorkTarget && farthestUnit.nature && farthestUnit.nature.xPosition > newYorkTarget.index / 3 + 1 / 6) {
-    	var index = Math.ceil(farthestUnit.nature.xPosition * 3)
     	newYorkTarget = {
-    		index: index
+    		index: Math.ceil(farthestUnit.nature.xPosition * 3)
     	}
     }
 
@@ -239,7 +238,7 @@ Lane.prototype.update = function(time, dt){
 	}
 
     for (i = 0; i < this.units.length; i++) {
-    	unit.index = i
+    	this.units[i].index = i
     }
 
     for (i = 0; i < this.units.length; i++) {
@@ -310,12 +309,12 @@ Lane.prototype.update = function(time, dt){
 				cellId += direction
 				cell = this.cells[cellId]
 				if (cell) {
-				if (cell.building && cell.building.player != unit.player) {
+					if (cell.building && cell.building.player != unit.player) {
 	    				actionDone = true
-					if (cell.building.hit(unit.buildingAttack)) {
-						cell.building = null
+						if (cell.building.hit(unit.buildingAttack)) {
+							cell.building = null
+						}
 					}
-    			}
 				} else {
 					this.board.hqs[opponent].hit(unit.buildingAttack)
 					unit.hit(unit.hp)
@@ -327,10 +326,12 @@ Lane.prototype.update = function(time, dt){
 			if (!actionDone) {
 				// Next spot is free: Move
 				if (!this.waitingLine[unit.waitingLineIndex + direction]
-				&& (!farthestUnit[opponent] || Math.abs(farthestUnit[opponent].xPosition - unit.xPosition) < 1 / 5)) {
+				&& (!farthestUnit[opponent] || Math.abs(farthestUnit[opponent].xPosition - unit.xPosition) > 1 / 2)) {
 					actionDone = true
+    				this.waitingLine[unit.waitingLineIndex] = null
+    				unit.waitingLineIndex = null
 					unit.switchAnimation("walk")
-    		}
+				}
 			}
 
 			// Wait
