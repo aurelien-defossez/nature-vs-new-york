@@ -51,6 +51,12 @@ var soundData = {
 			gain: 0.5,
 			pitch: 1.0,
 			pitchRandomization: 0.2
+		},
+		"policemanDeath": {
+			files: [ "data/policeman_death.mp3" ],
+			gain: 0.5,
+			pitch: 1.0,
+			pitchRandomization: 0.2
 		}
 	}
 }
