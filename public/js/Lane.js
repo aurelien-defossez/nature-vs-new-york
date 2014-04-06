@@ -192,7 +192,7 @@ Lane.prototype.update = function(time, dt){
     for (i = this.cells.length - 1; i >= 0; --i) {
     	var cell = this.cells[i]
 
-    	if (!cell.owner || cell.owner == "nature" && cell.captureProgress > -1 ) {
+    	if (!cell.owner || cell.captureProgress > -1 ) {
     		builderTarget = {
     			index: (i + 1) * 3
     		}
@@ -272,20 +272,18 @@ Lane.prototype.update = function(time, dt){
 		var opponent = unit.player == "nature" ? "newYork" : "nature"
 
 		if (unit.phase == "walk") {
-	        if (unit.type == "builder" && unit.xPosition > builderTarget.position) {
-	        	if (builderTarget.index < 0 || unit.xPosition < builderTarget.position) {
-		        	if (builderTarget) {
-		        		unit.setPosition(builderTarget.position)
-		        		this.waitingLine[builderTarget.index] = unit
-		        		unit.waitingLineIndex = builderTarget.index
-			        	builderTarget.index ++
-			        	builderTarget.position += 1 / 3
-		        	} else {
-		        		unit.hide()
-		        	}
+	        if (unit.type == "builder" && unit.xPosition > builderTarget.position && unit.xPosition < builderTarget.position + 1/6) {
+	        	if (builderTarget) {
+	        		unit.setPosition(builderTarget.position)
+	        		this.waitingLine[builderTarget.index] = unit
+	        		unit.waitingLineIndex = builderTarget.index
+		        	builderTarget.index ++
+		        	builderTarget.position += 1 / 3
+	        	} else {
+	        		unit.hide()
+	        	}
 
-		        	unit.switchAnimation("build")
-		        }
+	        	unit.switchAnimation("build")
 	        } else if (unit.player == "nature") {
 	        	if (natureTarget.index < 0 || unit.xPosition > natureTarget.position) {
 		        	if (natureTarget) {

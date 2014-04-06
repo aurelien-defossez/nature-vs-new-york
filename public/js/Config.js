@@ -114,7 +114,7 @@ Game.config = {
 			speed: 0.2,
 			cost: 20,
 			time: 2,
-			captureSpeed: 1,
+			captureSpeed: 0.1,
 			modelFile:"data/builder.js"
 		},
 		// Bûcheron
