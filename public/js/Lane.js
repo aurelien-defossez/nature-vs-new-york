@@ -43,6 +43,7 @@ Lane.prototype.buildNextUnit = function(type){
 }
 
 Lane.prototype.runUnit = function(unit){
+	unit.lane = this
 	this.units.push(unit);
 	this.unitsCreationQueues[unit.type].splice(0,1)
 	unit.runUnit();
@@ -50,10 +51,11 @@ Lane.prototype.runUnit = function(unit){
 }
 
 Lane.prototype.createUnit = function(player, type, position){
-	var unit = new Unit(this.scene, player, type, this.loader)
+	var unit = new Unit(this.scene, player, type, this.loader, null)
 	unit.runUnit();
 	unit.setPosition(position)
 	unit.activate()
+	unit.lane = this
 	this.units.push(unit)
 }
 
@@ -96,12 +98,19 @@ Lane.prototype.popBuilding = function(button, playerName, hq){
 }
 
 Lane.prototype.capture = function(type, value){
+	var remaining = value
 	if (type == HQ.typesEnum.NATURE) {
 		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
 			var cell = this.cells[i]
-			if (cell.owner == null || cell.owner != "nature" && cell.building == null) {
-				cell.capture(value)
-				break
+			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
+				remaining = cell.capture(value)
+			}
+		}
+	} else {
+		for (var i = Game.config.lane.cellNumber - 1; i >= 0; --i) {
+			var cell = this.cells[i]
+			if (remaining > 0 && cell.captureProgress > -1 && cell.building == null) {
+				remaining = -cell.capture(-value)
 			}
 		}
 	}
@@ -212,10 +221,6 @@ Lane.prototype.update = function(time, dt){
 		}
 	}
 
-	if (this.id == 1 && builderTarget) {
-		document.getElementById("debug").innerHTML = builderTarget.index + ", " + newYorkTarget.index
-	}
-
 	if (!builderTarget) {
 		builderTarget = {
 			index: newYorkTarget.index
@@ -242,7 +247,7 @@ Lane.prototype.update = function(time, dt){
 		var opponent = unit.player == "nature" ? "newYork" : "nature"
 
 		if (unit.phase == "walk") {
-	        if (unit.type == "builder") {
+	        if (unit.type == "builder" && unit.xPosition > builderTarget.position - 1/3) {
 	        	if (builderTarget.index < 0 || unit.xPosition < builderTarget.position) {
 		        	if (builderTarget) {
 		        		unit.setPosition(builderTarget.position)
@@ -351,6 +356,12 @@ Lane.prototype.update = function(time, dt){
 			if (actionDone) {
 				unit.startCooldown()
 			}
+	    } else if (unit.phase == "build") {
+	    	var cellId = Math.floor(unit.waitingLineIndex / 3) - 1
+
+	    	if (cellId >= 0 && this.cells[cellId].captureProgress == -1) {
+	    		unit.switchAnimation("walk")
+	    	}
 	    }
 
         unit.update(time, dt);
