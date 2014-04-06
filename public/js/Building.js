@@ -51,8 +51,17 @@ function Building(scene, loader, button, player, hq, lane, cell){
 		//self.parentScene.add(self.mesh)
 
 	})
+	var name
+	if (this.player == "newYork"){
+		fileName = Game.config.buildings.scaffolding.modelFile
+		name = "scaffolding"
+	}
 
-	fileName = Game.config.buildings.scaffolding.modelFile
+	else{
+		fileName = Game.config.buildings.tree.modelFile
+		name = "tree"
+	}
+
 	loader.load(fileName, function(geometry, materials)
 	{
 		self.scaffoldingMesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
@@ -71,9 +80,9 @@ function Building(scene, loader, button, player, hq, lane, cell){
 				THREE.AnimationHandler.add(self.scaffoldingMesh.geometry.animations[i])
 		}
 
-		self.animations.create = new THREE.Animation(self.scaffoldingMesh, "scaffolding_create", THREE.AnimationHandler.CATMULLROM)
+		self.animations.create = new THREE.Animation(self.scaffoldingMesh, name+"_create", THREE.AnimationHandler.CATMULLROM)
 		self.animations.create.loop = false
-		self.animations.destroy = new THREE.Animation(self.scaffoldingMesh, "scaffolding_destroy", THREE.AnimationHandler.CATMULLROM)
+		self.animations.destroy = new THREE.Animation(self.scaffoldingMesh, name+"_destroy", THREE.AnimationHandler.CATMULLROM)
 		self.animations.destroy.loop = false
 		self.currentAnimation = self.animations.create
 		self.animationTime = self.currentAnimation.data.length;
