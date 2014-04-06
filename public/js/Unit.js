@@ -105,7 +105,9 @@ Unit.prototype.isBuilt = function(time){
 }
 
 Unit.prototype.hide = function(time){
-    return this.mesh.visible = true
+    if (this.mesh) {
+        this.mesh.visible = true
+    }
 }
 
 Unit.prototype.runUnit = function(){
