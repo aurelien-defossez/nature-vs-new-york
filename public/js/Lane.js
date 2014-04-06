@@ -189,13 +189,13 @@ Lane.prototype.update = function(time, dt){
     }
 
     // Correct targets using farthest units
-    if (natureTarget && farthestUnit.newYork && farthestUnit.newYork.xPosition < natureTarget.index / 3 - 1 / 6) {
+    if (natureTarget && farthestUnit.newYork && farthestUnit.newYork.xPosition - 1 / 6 < natureTarget.index / 3) {
     	natureTarget = {
-    		index: Math.floor(farthestUnit.newYork.xPosition * 3)
+    		index: Math.floor(farthestUnit.newYork.xPosition * 3) - 1
     	}
     }
 
-    if (newYorkTarget && farthestUnit.nature && farthestUnit.nature.xPosition > newYorkTarget.index / 3 + 1 / 6) {
+    if (newYorkTarget && farthestUnit.nature && farthestUnit.nature.xPosition > newYorkTarget.index / 3) {
     	newYorkTarget = {
     		index: Math.ceil(farthestUnit.nature.xPosition * 3)
     	}
