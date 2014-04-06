@@ -139,6 +139,5 @@ MusicManager.prototype.update = function(time, dt, playerHeight)
 		}
 		
 		layer.gain.gain.value = gainValue * soundData.musicGain
-		console.log(layer.gain.gain.value)
 	}
 }
