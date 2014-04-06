@@ -37,11 +37,16 @@ Cell.prototype.capture = function(value){
 
 	this.captureProgress += value
 
+	var remaining = 0
 	if (this.captureProgress >= 1) {
+		remaining = 1 - this.captureProgress
 		this.setOwner("nature")
 	} else if (this.captureProgress <= -1) {
+		remaining = 1 + this.captureProgress
 		this.setOwner("newYork")
 	}
+
+	return remaining
 }
 
 Cell.prototype.build = function(button, player, hq){

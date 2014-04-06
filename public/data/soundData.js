@@ -7,17 +7,16 @@ var soundData = {
 		}
 	],
 	
-	musicGain: 1.0,
+	musicGain: 0.25,
 	
 	effects: {
-		"walk": {
+		"mana_tree_spawn": {
 			files: [
-				"data/footstepleft.wav",
-				"data/footstepright.wav"
+				"data/mana_tree_spawn.wav"
 			],
 			gain: 1.0,
 			pitch: 1.0,
-			pitchRandomization: 0.4
+			pitchRandomization: 0.1
 		}
 	}
 }

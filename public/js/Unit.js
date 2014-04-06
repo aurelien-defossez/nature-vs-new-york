@@ -9,7 +9,7 @@ var colors = {
     mecha: 0xB81D1D         // Red
 }
 
-function Unit(scene, player, type, loader) {
+function Unit(scene, player, type, loader, hq) {
 
     var unitConfig = Game.config.units[type]
 
@@ -17,6 +17,7 @@ function Unit(scene, player, type, loader) {
     this.scene = scene;
     this.player = player;
     this.type = type;
+    this.hq = hq
     this.direction = (this.player === HQ.typesEnum.NATURE) ? 1 : -1;
     this.hp = unitConfig.hp;
     this.speed = unitConfig.speed;
@@ -117,6 +118,11 @@ Unit.prototype.runUnit = function(){
 }
 
 Unit.prototype.switchAnimation = function(phase){
+    if (this.capturing) {
+        this.capturing = false
+        this.hq.captureSpeed[this.lane.id] -= Game.config.units.builder.captureSpeed
+    }
+
     this.phase = phase
 
     if (this.currentAnimation){
@@ -133,6 +139,7 @@ Unit.prototype.switchAnimation = function(phase){
     } else if ( phase == "build"){
         this.currentAnimation = this.animations.idle
         this.capturing = true
+        this.hq.captureSpeed[this.lane.id] += Game.config.units.builder.captureSpeed
     }
 
     if (this.currentAnimation) {
@@ -176,5 +183,10 @@ Unit.prototype.hit = function(points) {
 }
 
 Unit.prototype.destroy = function() {
+    if (!this.capturing) {
+        this.capturing = false
+        this.hq.captureSpeed[this.lane.id] -= Game.config.units.builder.captureSpeed
+    }
+    
     this.scene.remove(this.mesh);
 }

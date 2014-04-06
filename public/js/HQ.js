@@ -70,7 +70,7 @@ HQ.prototype.buyUnit = function(scene, player, type){
 
 	if (this.mana >= cost) {
 		this.mana -= cost
-		var unit = new Unit(scene, player, unitType, this.loader)
+		var unit = new Unit(scene, player, unitType, this.loader, this)
 		return unit
 	}
 }
