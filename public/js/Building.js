@@ -128,6 +128,26 @@ Building.prototype.applyEffect = function()
 	}
 }
 
+Building.prototype.removeEffect = function(){
+	switch(this.type) {
+		// Mana ++
+		case 'manaTree':
+		case 'bank':
+			this.hq.manaPerSecond -= Game.config.buildings[this.type].manaPerSecond
+		break
+
+		// Capture ++
+		case 'rootTree':
+			this.hq.captureSpeed[this.lane.id] -= Game.config.buildings[this.type].captureSpeed
+		break
+
+		case 'protectorTree':
+		case 'policeStation':
+			// Nothing to do
+		break
+	}
+}
+
 Building.prototype.update = function(time, dt){
 	if (!this.built)
 	{
@@ -192,6 +212,7 @@ Building.prototype.hit = function(points){
 	this.currentHP -= points
 
 	if (this.currentHP <= 0) {
+		this.removeEffect()
 		this.destroy()
 		return true
 	}
