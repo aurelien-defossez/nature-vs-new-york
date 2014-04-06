@@ -94,8 +94,10 @@ Unit.prototype.activate = function(){
 }
 
 Unit.prototype.setPosition = function(x) {
-    this.mesh.position.x = x
-    this.xPosition = x
+    if (this.mesh) {
+        this.mesh.position.x = x
+        this.xPosition = x
+    }
 }
 
 Unit.prototype.isBuilt = function(time){
