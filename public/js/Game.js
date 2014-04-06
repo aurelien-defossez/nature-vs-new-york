@@ -60,10 +60,10 @@ function Game()
 
     this.players = {
         left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0), "gamepad"),
-        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new KeyboardController(), "keyboard")
+        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(1), "gamepad")
     }
-    this.players.right.controller.controllerType = "keyboard";
-    this.players.right.controller.player = this.players.right;
+    //this.players.right.controller.controllerType = "keyboard";
+    //this.players.right.controller.player = this.players.right;
 
 }
 
