@@ -44,6 +44,7 @@ Lane.prototype.buildNextUnit = function(type){
 }
 
 Lane.prototype.runUnit = function(unit){
+	unit.id = this.units.length
 	this.units.push(unit);
 	this.unitsCreationQueues[unit.type].splice(0,1)
 	unit.runUnit();
@@ -55,6 +56,7 @@ Lane.prototype.createUnit = function(player, type, position){
 	unit.runUnit();
 	unit.setPosition(position)
 	unit.activate()
+	unit.id = this.units.length
 	this.units.push(unit)
 }
 
@@ -247,6 +249,7 @@ Lane.prototype.update = function(time, dt){
 	        	if (natureTarget) {
 	        		unit.setPosition(natureTarget.position)
 	        		this.waitingLine[natureTarget.index] = unit
+	        		unit.waitingLineIndex = natureTarget.index
 		        	natureTarget.index --
 		        	natureTarget.position -= 1 / 3
 	        	} else {
@@ -261,14 +264,33 @@ Lane.prototype.update = function(time, dt){
 	        	if (newYorkTarget) {
 	        		unit.setPosition(newYorkTarget.position)
 	        		this.waitingLine[newYorkTarget.index] = unit
+	        		unit.waitingLineIndex = newYorkTarget.index
 		        	newYorkTarget.index ++
-		        	newYorkTarget.position -= 1 / 3
+		        	newYorkTarget.position += 1 / 3
 	        	} else {
 	        		unit.hide()
 	        	}
 
 	        	unit.switchAnimation("wait")
 	        }
+	    } else {
+	    	// Enemy unit in sight: Attack the nearest
+	    	var direction = unit.player == "nature" ? 1 : -1
+	    	var enemyUnit
+    		for (j = unit.waitingLineIndex + direction; j < unit.waitingLineIndex + direction * 3; j += direction) {
+    			var potentialUnit = this.waitingLine[j]
+    			if (potentialUnit && potentialUnit.player != unit.player) {
+    				enemyUnit = potentialUnit
+    				break
+    			}
+    		}
+
+    		if (enemyUnit) {
+    			if (enemyUnit.hit(unit.attack)) {
+    				this.waitingLine[enemyUnit.waitingLineIndex] = null
+    				unitToRemove.push(enemyUnit.id)
+    			}
+    		}
 	    }
 
         unit.update(time, dt);

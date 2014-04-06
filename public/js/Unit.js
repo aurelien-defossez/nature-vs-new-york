@@ -13,7 +13,7 @@ function Unit(scene, player, type, loader) {
     console.log('Player ' + player + ' is creating a ' + type);
 
     var unitConfig = Game.config.units[type]
-    
+
     this.phase = "walk"
     this.scene = scene;
     this.player = player;
@@ -23,6 +23,7 @@ function Unit(scene, player, type, loader) {
     this.speed = unitConfig.speed;
     this.attack = unitConfig.attack;
     this.attackBuilding = unitConfig.attackBuilding;
+    this.cooldown = unitConfig.cooldown;
 
     if(this.player === HQ.typesEnum.NATURE) {
         this.xPosition = 0.3/2;
@@ -32,7 +33,7 @@ function Unit(scene, player, type, loader) {
 	this.pending = true
 	this.cost = Game.config.unit.cost
     this.buildDelay = unitConfig.time;
-	
+
 	this.collided = false
 	this.target = null
 	this.fightStartDate = null;
@@ -55,13 +56,13 @@ function Unit(scene, player, type, loader) {
         {
             materials[k].skinning = true
         }
-        
+
         for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
         {
             if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
                 THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
         }
-        
+
         self.animations.walk = new THREE.Animation(self.mesh, type+"_walk", THREE.AnimationHandler.CATMULLROM)
         self.animations.walk.loop = true
         self.animations.idle = new THREE.Animation(self.mesh, type+"_idle", THREE.AnimationHandler.CATMULLROM)
@@ -74,7 +75,7 @@ function Unit(scene, player, type, loader) {
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
     }
-   
+
 
 }
 
@@ -154,38 +155,15 @@ Unit.prototype.update = function(time, dt) {
     }
 }
 
+Unit.prototype.hit = function(points) {
+    this.hp -= points
+
+    if (this.hp <= 0) {
+        this.destroy()
+        return true
+    }
+}
+
 Unit.prototype.destroy = function() {
     this.scene.remove(this.mesh);
-}
-
-Unit.prototype.collides = function(unit){
-	var collides = false
-	//if (this!==unit && unit.unit.geometry.boundingBox!=null){
-		// TODO
-		//collides = this.unit.geometry.boundingBox.isIntersectionBox(unit.unit.geometry.boundingBox)
-	//}
-	return collides
-}
-
-Unit.prototype.engageFight = function(unit, time){
-	this.target = unit
-	this.lastAttackDate = time
-}
-
-Unit.prototype.attackTarget = function(time) {
-	if (time - this.lastAttackDate > this.cooldown){
-		this.target.damage(this.attack)
-		this.lastAttackDate = time
-		if (!this.target.isAlive){
-			this.target = null
-		}	
-	}
-}
-
-Unit.prototype.damage = function(points){
-	this.hp -= points
-}
-
-Unit.prototype.isAlive = function(){
-	return this.hp > 0
 }
