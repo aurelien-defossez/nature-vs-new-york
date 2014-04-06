@@ -121,7 +121,8 @@ Game.config = {
 			hp: 15,
 			speed: 0.4,
 			cost: 5,
-			time: 5
+			time: 5,
+			modelFile:"data/LumberJack.js"
 		},
 		// Policier
 		policeman: {
@@ -199,7 +200,7 @@ Game.config = {
 			cost: 20,
 			time: 20,
 			policemansDelay: 10,
-			modelFile : "data/bank.js"
+			modelFile : "data/police_station.js"
 		},
 		// Atelier
 		workshop: {
