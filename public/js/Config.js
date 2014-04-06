@@ -20,7 +20,7 @@ Game.config = {
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.5,
+    	captureSpeed: 0.05,
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
@@ -77,7 +77,8 @@ Game.config = {
 			hp: 15,
 			speed: 1.0,
 			cost: 4,
-			time: 4
+			time: 4,
+			modelFile: "data/wolf.js"
 		},
 		// Ours
 		bear: {
@@ -87,7 +88,8 @@ Game.config = {
 			hp: 5,
 			speed: 0.4,
 			cost: 8,
-			time: 6
+			time: 6,
+			modelFile: "data/bear.js"
 		},
 		// Ent
 		ent: {
@@ -108,7 +110,8 @@ Game.config = {
 			speed: 0.2,
 			cost: 20,
 			time: 10,
-			captureSpeed: 0.1
+			captureSpeed: 0.1,
+			modelFile:"data/builder.js"
 		},
 		// Bûcheron
 		lumberjack: {

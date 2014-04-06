@@ -39,35 +39,34 @@ function Unit(scene, player, type, loader) {
     this.animations = {}
     this.currentAnimation = null
     var self = this
-
-    if (type == "builder")
-    {
-         fileName = "data/builder.js"
-    loader.load(fileName, function(geometry, materials)
-    {
-        self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
-        self.mesh.castShadow = true
-        self.mesh.receiveShadow = true
-
-        var materials = self.mesh.material.materials
-        for (var k in materials)
+    fileName = Game.config.units[type].modelFile
+    if (fileName)
+    { 
+        loader.load(fileName, function(geometry, materials)
         {
-            materials[k].skinning = true
-        }
+            self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
+            self.mesh.castShadow = true
+            self.mesh.receiveShadow = true
 
-        for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
-        {
-            if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
-                THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
-        }
+            var materials = self.mesh.material.materials
+            for (var k in materials)
+            {
+                materials[k].skinning = true
+            }
 
-        self.animations.walk = new THREE.Animation(self.mesh, type+"_walk", THREE.AnimationHandler.CATMULLROM)
-        self.animations.walk.loop = true
-        self.animations.idle = new THREE.Animation(self.mesh, type+"_idle", THREE.AnimationHandler.CATMULLROM)
-        self.animations.idle.loop = true
-        self.currentAnimation = self.animations.walk
-        self.currentAnimation.play()
-    })
+            for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
+            {
+                if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
+                    THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
+            }
+
+            self.animations.walk = new THREE.Animation(self.mesh, type+"_walk", THREE.AnimationHandler.CATMULLROM)
+            self.animations.walk.loop = true
+            self.animations.idle = new THREE.Animation(self.mesh, type+"_idle", THREE.AnimationHandler.CATMULLROM)
+            self.animations.idle.loop = true
+            self.currentAnimation = self.animations.walk
+            self.currentAnimation.play()
+        })
     }else{
         this.mesh = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
         this.mesh.castShadow = true;

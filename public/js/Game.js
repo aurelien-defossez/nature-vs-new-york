@@ -62,6 +62,9 @@ function Game()
         left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0)),
         right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(1))
     }
+    this.players.right.controller.disableControl = true;
+    this.players.right.controller.player = this.players.right;
+
 }
 
 Game.prototype.update = function(time)
