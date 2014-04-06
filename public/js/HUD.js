@@ -27,37 +27,41 @@ HUD.prototype.updateMana = function(type, value) {
 	document.getElementById(type == HQ.typesEnum.NATURE ? "manaCount" : "dollarsCount").innerHTML = value
 }
 
-HUD.prototype.refreshBuildMonitor = function(queue){
+HUD.prototype.refreshBuildMonitor = function(index, queue){
 	console.log("refresh build-monitor")
-	this.buildMonitor.refreshQueue(queue)
-	for (var input in this.buildMonitor.displayedQueues.nature){
-		document.querySelector("#nature-build-queue ."+input+" .size").innerHTML = this.buildMonitor.displayedQueues.nature[input].size
+	this.buildMonitor.refreshQueue(index, queue)
+	for (var input in this.buildMonitor.displayedQueues["lane"+index].nature){
+		document.querySelector("#nature-build-queue ."+input+" .lane"+index+" .size")
+			.innerHTML = this.buildMonitor.displayedQueues["lane"+index].nature[input].size
 	}
-	for (var input in this.buildMonitor.displayedQueues.newYork){
-		document.querySelector("#newYork-build-queue ."+input+" .size").innerHTML = this.buildMonitor.displayedQueues.newYork[input].size
+	for (var input in this.buildMonitor.displayedQueues["lane"+index].newYork){
+		document.querySelector("#newYork-build-queue ."+input+" .lane"+index+" .size")
+			.innerHTML = this.buildMonitor.displayedQueues["lane"+index].newYork[input].size
 	}
 }
 
 HUD.prototype.refreshBuildMonitorProgressBar = function(time){
 	if (typeof(this.lastProgressRefreshTime) == "undefined" || this.lastProgressRefreshTime + this.buildMonitor.progressRefreshInterval > time) {
-		for (var input in this.buildMonitor.displayedQueues.nature){
-			var progress;
-			if (this.buildMonitor.displayedQueues.nature[input].unit != null) {
-				progress = this.buildMonitor.displayedQueues.nature[input].unit.getBuildPercentProgress()
-				progress = "<div style='background-color:orange;width:"+progress+"%';>&nbsp;</div>"
-			} else {
-				progress = ""
+		for (var lane in this.buildMonitor.displayedQueues) {
+			for (var input in this.buildMonitor.displayedQueues[lane].nature){
+				var progress;
+				if (this.buildMonitor.displayedQueues[lane].nature[input].unit != null) {
+					progress = this.buildMonitor.displayedQueues[lane].nature[input].unit.getBuildPercentProgress()
+					progress = "<div style='background-color:orange;width:"+progress+"%';>&nbsp;</div>"
+				} else {
+					progress = ""
+				}
+				document.querySelector("#nature-build-queue ."+input+" ."+lane+" .progress").innerHTML = progress
 			}
-			document.querySelector("#nature-build-queue ."+input+" .progress").innerHTML = progress
-		}
-		for (var input in this.buildMonitor.displayedQueues.newYork){
-			if (this.buildMonitor.displayedQueues.newYork[input].unit != null) {
-				progress = this.buildMonitor.displayedQueues.newYork[input].unit.getBuildPercentProgress()
-				progress = "<div style='background-color:orange;width:"+progress+"%';>&nbsp;</div>"
-			} else {
-				progress = ""
+			for (var input in this.buildMonitor.displayedQueues[lane].newYork){
+				if (this.buildMonitor.displayedQueues[lane].newYork[input].unit != null) {
+					progress = this.buildMonitor.displayedQueues[lane].newYork[input].unit.getBuildPercentProgress()
+					progress = "<div style='background-color:orange;width:"+progress+"%';>&nbsp;</div>"
+				} else {
+					progress = ""
+				}
+				document.querySelector("#newYork-build-queue ."+input+" ."+lane+" .progress").innerHTML = progress
 			}
-			document.querySelector("#newYork-build-queue ."+input+" .progress").innerHTML = progress
 		}
 		this.lastProgressRefreshTime = time
 	}

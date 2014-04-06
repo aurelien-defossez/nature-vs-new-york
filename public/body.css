@@ -88,10 +88,11 @@ body{
 #hud #newYork-build-queue{
   top: 230px;
   text-align: left;
-  font-size: 18px;
+  font-size: 5px;
   color: #ddd;
   padding-top: 3px;
   display: none;
+  margin-top:10px;
 }
 #hud #nature-build-queue{
   left: 60px;
@@ -105,41 +106,56 @@ body{
   padding:0;
 }
 #hud li.input0{
-	background-image: url("/data/key-x.png");
-	background-repeat: no-repeat;
-}
-#hud li.input1{
 	background-image: url("/data/key-y.png");
 	background-repeat: no-repeat;
 }
+#hud li.input1{
+	background-image: url("/data/key-b.png");
+	background-repeat: no-repeat;
+}
 #hud li.input2{
-	background-image: url("/data/key-a.png");
+	background-image: url("/data/key-x.png");
 	background-repeat: no-repeat;
 }
 #hud li.input3{
-	background-image: url("/data/key-b.png");
+	background-image: url("/data/key-a.png");
 	background-repeat: no-repeat;
 }
 #hud #nature-build-queue li, #hud #newYork-build-queue li{
 	background-size: 20px;
 	height:30px;
+	margin-top:5px;
 }
 #hud #nature-build-queue li div, #hud #newYork-build-queue li div{
 	display:inline-block;
 }
-#hud #nature-build-queue li div{
+#hud #nature-build-queue li div.input0,
+#hud #nature-build-queue li div.input1,
+#hud #nature-build-queue li div.input2,
+#hud #nature-build-queue li div.input3{
 	margin-left: 47px;
 }
 #hud #nature-build-queue li div.progress, #hud #newYork-build-queue li div.progress{
-	font-size:12px;
 	background-color:#444;
 	overflow : hidden;
 	width:50px;
-	height:3px;
+}
+#hud #nature-build-queue li .lane, 
+#hud #newYork-build-queue li .lane{
+	height:10px;
+	display:block;
+	font-size:10px;
+}
+#hud #nature-build-queue li .lane{
+	margin-left: 47px;
+} 
+#hud #newYork-build-queue li .lane{
+	margin-right: 47px;
 }
 
 #hud #nature-build-queue li div.progress{
 	margin:-4px 0 0 5px;
+	font-size:7px;
 }
 #hud #nature-build-queue li div.progress div, #hud #newYork-build-queue li div.progress div{
 	float:left;
@@ -147,11 +163,15 @@ body{
 	display:block;
 	margin:0;
 }
-#hud #newYork-build-queue li div{
+#hud #newYork-build-queue li div.input0,
+#hud #newYork-build-queue li div.input1,
+#hud #newYork-build-queue li div.input2,
+#hud #newYork-build-queue li div.input3{
 	margin-right: 47px;
 }
 #hud #newYork-build-queue li div.progress{
 	margin:-4px 5px 0 0;
+	font-size:7px;
 }
 #hud #newYork-build-queue li div.progress div{
 	float:right;
