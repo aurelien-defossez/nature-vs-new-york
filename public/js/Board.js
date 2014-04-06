@@ -162,4 +162,5 @@ Board.prototype.update = function(time, dt) {
 	
 	this.purgeAlert(HQ.typesEnum.NATURE)
 	this.purgeAlert(HQ.typesEnum.NEW_YORK)
+	this.hud.refreshBuildMonitorProgressBar()
 }

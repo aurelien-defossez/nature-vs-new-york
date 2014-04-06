@@ -124,11 +124,37 @@ body{
 	background-size: 20px;
 	height:30px;
 }
-#hud #nature-build-queue li span, #hud #newYork-build-queue li span{
+#hud #nature-build-queue li div, #hud #newYork-build-queue li div{
+	display:inline-block;
+}
+#hud #nature-build-queue li div{
 	margin-left: 47px;
 }
-#hud #newYork-build-queue li span{
+#hud #nature-build-queue li div.progress, #hud #newYork-build-queue li div.progress{
+	font-size:12px;
+	background-color:#444;
+	overflow : hidden;
+	width:50px;
+	height:3px;
+}
+
+#hud #nature-build-queue li div.progress{
+	margin:-4px 0 0 5px;
+}
+#hud #nature-build-queue li div.progress div, #hud #newYork-build-queue li div.progress div{
+	float:left;
+	height:100%;
+	display:block;
+	margin:0;
+}
+#hud #newYork-build-queue li div{
 	margin-right: 47px;
+}
+#hud #newYork-build-queue li div.progress{
+	margin:-4px 5px 0 0;
+}
+#hud #newYork-build-queue li div.progress div{
+	float:right;
 }
 #hud #newYork-build-queue li{
 	background-position:right top;

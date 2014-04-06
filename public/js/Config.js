@@ -268,6 +268,9 @@ Game.config = {
         	81: 'shoulder',	// Q
         	69: 'bumper'	// E
 		}
+	},
+	buildMonitor : {
+		progressRefreshInterval : 300 //in milliseconds
 	}
 }
 
