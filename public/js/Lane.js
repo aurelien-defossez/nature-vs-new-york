@@ -32,6 +32,8 @@ function Lane(id, board, loader) {
 			cell.setOwner("newYork")
 		}
 	}
+	
+	this.board.hud.refreshBuildMonitor(this.unitsCreationQueues)
 
 }
 
@@ -46,6 +48,7 @@ Lane.prototype.runUnit = function(unit){
 	this.units.push(unit);
 	this.unitsCreationQueues[unit.type].splice(0,1)
 	unit.runUnit();
+	this.board.hud.refreshBuildMonitor(this.unitsCreationQueues)
 	console.log("Unit ready!")
 }
 
@@ -59,6 +62,7 @@ Lane.prototype.createUnit = function(player, type, position){
 
 Lane.prototype.addUnitInQueue = function(unit){
 	this.unitsCreationQueues[unit.type].push(unit)
+	this.board.hud.refreshBuildMonitor(this.unitsCreationQueues)
 	if (this.unitsCreationQueues[unit.type].length==1) {
 		this.buildNextUnit(unit.type)
 	}
