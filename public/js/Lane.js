@@ -8,6 +8,7 @@ function Lane(id, board, loader) {
 	this.cells = [];
     this.units = [];
     this.waitingLine = [];
+    this.dyingUnits = []
 
 	this.unitsCreationQueues = {
 	    sapCarrier: [],
@@ -393,7 +394,22 @@ Lane.prototype.update = function(time, dt){
 
 	this.processCreationQueue(time, dt)
     for(i = unitToRemove.length - 1; i >= 0; i--) {
+    	this.dyingUnits.push(this.units[unitToRemove[i]]);
         this.units.splice(unitToRemove[i], 1);
+        
+    }
+
+    var realyDeadUnits = []
+    for(i = this.dyingUnits.length - 1; i >= 0; i--) {
+    	if (this.dyingUnits.deathAnimationFinished)
+    	{
+    		realyDeadUnits.push(this.dyingUnits[i]);
+    	}
+    	if (this.dyingUnits[i])
+        	this.dyingUnits[i].update(time, dt);
+    }
+    for(i = realyDeadUnits.length - 1; i >= 0; i--) {
+        this.dyingUnits.splice(realyDeadUnits[i], 1);
     }
 
 }

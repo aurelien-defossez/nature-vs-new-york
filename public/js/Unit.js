@@ -25,6 +25,7 @@ function Unit(scene, player, type, loader, hq) {
     this.buildingAttack = unitConfig.buildingAttack;
     this.cooldown = unitConfig.cooldown;
     this.cooldownTimer = 0
+    this.deathAnimationFinished = false
 
     console.log('Player ' + player + ' is creating a ' + type);
 
@@ -66,6 +67,12 @@ function Unit(scene, player, type, loader, hq) {
             self.animations.walk.loop = true
             self.animations.idle = new THREE.Animation(self.mesh, type+"_idle", THREE.AnimationHandler.CATMULLROM)
             self.animations.idle.loop = true
+            self.animations.death = new THREE.Animation(self.mesh, type+"_death", THREE.AnimationHandler.CATMULLROM)
+            self.animations.death.loop = false
+            if (self.type == "builder"){
+                self.animations.working = new THREE.Animation(self.mesh, type+"_working", THREE.AnimationHandler.CATMULLROM)
+                self.animations.working.loop = true
+            }
             self.currentAnimation = self.animations.walk
             self.currentAnimation.play()
         })
@@ -138,13 +145,16 @@ Unit.prototype.switchAnimation = function(phase){
         this.currentAnimation = this.animations.idle
         this.capturing = false
     } else if ( phase == "build"){
-        this.currentAnimation = this.animations.idle
+        this.currentAnimation = this.animations.working
         this.capturing = true
         this.hq.captureSpeed[this.lane.id] += Game.config.units.builder.captureSpeed
+    } else if ( phase == "die"){
+         this.currentAnimation = this.animations.death
+         this.capturing = false
     }
 
     if (this.currentAnimation) {
-        this.currentAnimation.play()
+        this.currentAnimation.play(0)
     }
 }
 
@@ -163,6 +173,10 @@ Unit.prototype.update = function(time, dt) {
     if (this.currentAnimation != null)
     {
         this.currentAnimation.update(dt)
+        if (this.currentAnimation.data.name == this.type+"_death" && !this.currentAnimation.isPlaying)
+        {
+            this.deathAnimationFinished = true;
+        }
     }
 }
 
@@ -179,17 +193,19 @@ Unit.prototype.hit = function(points) {
 
     if (this.hp <= 0) {
         this.destroy()
+
+        musicManager.playSfx(this.type + "Death")
         return true
     }
 }
 
 Unit.prototype.destroy = function() {
-    if (!this.capturing) {
+    if (this.capturing) {
         this.capturing = false
         this.hq.captureSpeed[this.lane.id] -= Game.config.units.builder.captureSpeed
-    }
-    
-    this.scene.remove(this.mesh);
+    } 
+    this.switchAnimation("die")
+    //this.scene.remove(this.mesh);
 }
 
 Unit.prototype.getBuildPercentProgress = function(){

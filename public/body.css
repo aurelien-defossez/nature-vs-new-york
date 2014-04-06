@@ -106,19 +106,19 @@ body{
   padding:0;
 }
 #hud li.input0{
-	background-image: url("/data/key-x.png");
-	background-repeat: no-repeat;
-}
-#hud li.input1{
 	background-image: url("/data/key-y.png");
 	background-repeat: no-repeat;
 }
+#hud li.input1{
+	background-image: url("/data/key-b.png");
+	background-repeat: no-repeat;
+}
 #hud li.input2{
-	background-image: url("/data/key-a.png");
+	background-image: url("/data/key-x.png");
 	background-repeat: no-repeat;
 }
 #hud li.input3{
-	background-image: url("/data/key-b.png");
+	background-image: url("/data/key-a.png");
 	background-repeat: no-repeat;
 }
 #hud #nature-build-queue li, #hud #newYork-build-queue li{

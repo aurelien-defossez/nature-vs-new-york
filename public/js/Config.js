@@ -24,15 +24,15 @@ Game.config = {
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
-	    		'input1' : 'protectorTree',
+	    		// 'input1' : 'protectorTree',
 	    		'input2' : 'rootTree',
-	    		'input3' : 'brambles'
+	    		// 'input3' : 'brambles'
 	    	},
 	    	units: {
-	    		'input0' : 'sapCarrier',
+	    		// 'input0' : 'sapCarrier',
 	    		'input1' : 'wolf',
 	    		'input2' : 'bear',
-	    		'input3' : 'ent'
+	    		// 'input3' : 'ent'
 	    	}
     	}
 	},
@@ -46,14 +46,14 @@ Game.config = {
     		buildings: {
 	    		'input0' : 'bank',
 	    		'input1' : 'policeStation',
-	    		'input2' : 'workShop',
-	    		'input3' : 'armedConcrete'
+	    		// 'input2' : 'workShop',
+	    		// 'input3' : 'armedConcrete'
 	    	},
 	    	units: {
 	    		'input0' : 'builder',
 	    		'input1' : 'lumberjack',
 	    		'input2' : 'policeman',
-	    		'input3' : 'mecha'
+	    		// 'input3' : 'mecha'
 	    	}
     	}
 	},
@@ -121,7 +121,8 @@ Game.config = {
 			hp: 15,
 			speed: 0.4,
 			cost: 5,
-			time: 5
+			time: 5,
+			modelFile:"data/LumberJack.js"
 		},
 		// Policier
 		policeman: {
@@ -131,7 +132,8 @@ Game.config = {
 			hp: 10,
 			speed: 0.5,
 			cost: 2,
-			time: 2
+			time: 2,
+			modelFile:"data/policeman.js"
 		},
 		// Mécha
 		mecha: {
@@ -198,7 +200,7 @@ Game.config = {
 			cost: 20,
 			time: 20,
 			policemansDelay: 10,
-			modelFile : "data/bank.js"
+			modelFile : "data/police_station.js"
 		},
 		// Atelier
 		workshop: {

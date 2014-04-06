@@ -19,45 +19,6 @@ function BuildMonitor(){
 		}
 	}
 	
-	/*this.displayedQueues = {
-		nature : {
-			input0 : {
-				size : 0,
-				unit : null
-			},
-			input1 : {
-				size : 0,
-				unit : null
-			},
-			input2 : {
-				size : 0,
-				unit : null
-			},
-			input3 : {
-				size : 0,
-				unit : null
-			}
-		},
-	    newYork : {
-			input0 : {
-				size : 0,
-				unit : null
-			},
-			input1 : {
-				size : 0,
-				unit : null
-			},
-			input2 : {
-				size : 0,
-				unit : null
-			},
-			input3 : {
-				size : 0,
-				unit : null
-			}
-		}
-	};*/
-	
 	this.availableMappings = {
 		nature : Game.config.nature.mapping.units,
 		newYork : Game.config.newYork.mapping.units
@@ -97,11 +58,13 @@ BuildMonitor.prototype.refreshQueue = function(index, queue){
 	for (var type in queue) {
 		var playerType = this.getPlayerTypeFromUnitType(type)
 		var input = this.getInputFromUnitType(type)
-		this.displayedQueues["lane"+index][playerType][input].size = queue[type].length
-		if (queue[type].length > 0) {
-			this.displayedQueues["lane"+index][playerType][input].unit = queue[type][0]
-		} else {
-			this.displayedQueues["lane"+index][playerType][input].unit = null
+		if (input) {
+			this.displayedQueues["lane"+index][playerType][input].size = queue[type].length
+			if (queue[type].length > 0) {
+				this.displayedQueues["lane"+index][playerType][input].unit = queue[type][0]
+			} else {
+				this.displayedQueues["lane"+index][playerType][input].unit = null
+			}
 		}
 	}
 }
