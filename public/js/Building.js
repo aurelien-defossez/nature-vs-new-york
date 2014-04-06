@@ -143,7 +143,7 @@ Building.prototype.update = function(time, dt){
 			this.currentAnimation = this.animations.destroy
 			this.currentAnimation.play();
 			this.ScaffoldingDestroyed = false;
-			musicManager.playSfx("mana_tree_spawn")
+			musicManager.playSfx(this.type + "Spawn")
 		}
 		this.animationTimerSetter = this.buildingProgress;
 	} else {
