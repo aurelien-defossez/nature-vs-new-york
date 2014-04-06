@@ -69,7 +69,7 @@ function Unit(scene, player, type, loader, hq) {
             self.animations.idle.loop = true
             self.animations.death = new THREE.Animation(self.mesh, type+"_death", THREE.AnimationHandler.CATMULLROM)
             self.animations.death.loop = false
-            if (this.type == "builder"){
+            if (self.type == "builder"){
                 self.animations.working = new THREE.Animation(self.mesh, type+"_working", THREE.AnimationHandler.CATMULLROM)
                 self.animations.working.loop = true
             }
@@ -145,7 +145,7 @@ Unit.prototype.switchAnimation = function(phase){
         this.currentAnimation = this.animations.idle
         this.capturing = false
     } else if ( phase == "build"){
-        this.currentAnimation = this.animations.idle
+        this.currentAnimation = this.animations.working
         this.capturing = true
         this.hq.captureSpeed[this.lane.id] += Game.config.units.builder.captureSpeed
     } else if ( phase == "die"){

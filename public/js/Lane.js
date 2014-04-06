@@ -405,8 +405,8 @@ Lane.prototype.update = function(time, dt){
     	{
     		realyDeadUnits.push(this.dyingUnits[i]);
     	}
-    	debugger;
-        this.dyingUnits[i].update(time, dt);
+    	if (this.dyingUnits[i])
+        	this.dyingUnits[i].update(time, dt);
     }
     for(i = realyDeadUnits.length - 1; i >= 0; i--) {
         this.dyingUnits.splice(realyDeadUnits[i], 1);
