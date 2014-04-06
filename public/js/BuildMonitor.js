@@ -78,11 +78,13 @@ BuildMonitor.prototype.refreshQueue = function(queue){
 	for (var type in queue) {
 		var playerType = this.getPlayerTypeFromUnitType(type)
 		var input = this.getInputFromUnitType(type)
-		this.displayedQueues[playerType][input].size = queue[type].length
-		if (queue[type].length > 0) {
-			this.displayedQueues[playerType][input].unit = queue[type][0]
-		} else {
-			this.displayedQueues[playerType][input].unit = null
+		if (input) {
+			this.displayedQueues[playerType][input].size = queue[type].length
+			if (queue[type].length > 0) {
+				this.displayedQueues[playerType][input].unit = queue[type][0]
+			} else {
+				this.displayedQueues[playerType][input].unit = null
+			}
 		}
 	}
 }

@@ -24,15 +24,15 @@ Game.config = {
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
-	    		'input1' : 'protectorTree',
+	    		// 'input1' : 'protectorTree',
 	    		'input2' : 'rootTree',
-	    		'input3' : 'brambles'
+	    		// 'input3' : 'brambles'
 	    	},
 	    	units: {
-	    		'input0' : 'sapCarrier',
+	    		// 'input0' : 'sapCarrier',
 	    		'input1' : 'wolf',
 	    		'input2' : 'bear',
-	    		'input3' : 'ent'
+	    		// 'input3' : 'ent'
 	    	}
     	}
 	},
@@ -46,14 +46,14 @@ Game.config = {
     		buildings: {
 	    		'input0' : 'bank',
 	    		'input1' : 'policeStation',
-	    		'input2' : 'workShop',
-	    		'input3' : 'armedConcrete'
+	    		// 'input2' : 'workShop',
+	    		// 'input3' : 'armedConcrete'
 	    	},
 	    	units: {
 	    		'input0' : 'builder',
 	    		'input1' : 'lumberjack',
 	    		'input2' : 'policeman',
-	    		'input3' : 'mecha'
+	    		// 'input3' : 'mecha'
 	    	}
     	}
 	},
