@@ -125,8 +125,8 @@ MusicManager.prototype.update = function(time, dt, playerHeight)
 	{
 		var layer = soundData.musicLayers[i]
 		
-		var fadeSpeed = 0.001 / layer.fadeTime
-		var gainValue = layer.gain.gain.value
+		var fadeSpeed = 1.0 / layer.fadeTime
+		var gainValue = layer.gain.gain.value / soundData.musicGain
 		if ((playerHeight >= layer.heightRange[0]) && (playerHeight < layer.heightRange[1]))
 		{
 			gainValue += fadeSpeed * dt

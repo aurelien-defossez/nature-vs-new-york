@@ -1,9 +1,9 @@
 var soundData = {
 	"musicLayers": [
 		{
-			file: "data/music_layer_folk.wav",
-			heightRange: [0, 25],
-			fadeTime: 3,
+			file: "data/nature-vs-new-york.mp3",
+			heightRange: [0, 1],
+			fadeTime: 5,
 		}
 	],
 	
