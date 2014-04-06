@@ -26,7 +26,7 @@ Game.config = {
 	    		'input0' : 'manaTree',
 	    		'input1' : 'protectorTree',
 	    		'input2' : 'rootTree',
-	    		'input3' : 'bramble'
+	    		'input3' : 'brambles'
 	    	},
 	    	units: {
 	    		'input0' : 'sapCarrier',
@@ -37,7 +37,7 @@ Game.config = {
     	}
 	},
 	newYork : {
-		initOwnedCells : 1,
+		initOwnedCells : 4,
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
@@ -163,20 +163,23 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			attack: 9
+			attack: 9,
+			modelFile : "data/tree_protector.js"
 		},
 		// Arbre à Racines
 		rootTree: {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			captureSpeed: 0.05
+			captureSpeed: 0.05,
+			modelFile : "data/tree_root.js"
 		},
 		// Ronces
 		brambles: {
 			cost: 10,
 			time: 10,
-			attack: 2
+			attack: 2,
+			modelFile : "data/bank.js"
 		},
 		// Banque
 		bank: {
@@ -191,14 +194,16 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			policemansDelay: 10
+			policemansDelay: 10,
+			modelFile : "data/bank.js"
 		},
 		// Atelier
 		workshop: {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			productionBonus: 0.2
+			productionBonus: 0.2,
+			modelFile : "data/bank.js"
 		},
 		// Béton Armé
 		armedConcrete: {

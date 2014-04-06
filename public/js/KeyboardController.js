@@ -12,6 +12,16 @@ function KeyboardController(player) {
         down: 0,
         r: 0
     }
+
+    this.buttonSaveState = {
+        a: 0,
+        b: 0,
+        x: 0,
+        y: 0,
+        up: 0,
+        down: 0,
+        r: 0
+    }
 }
 
 KeyboardController.prototype.pressKey = function(key) {
@@ -28,7 +38,7 @@ KeyboardController.prototype.updateKey = function(key, value) {
     console.log("key : "+key+", value : "+value);
     switch(key) {
         case 'input0':
-            this.buttons.a = value; 
+            this.buttons.arrowAction = value; 
             break;
         case 'input1':
             this.buttons.b = value;
@@ -62,12 +72,16 @@ KeyboardController.prototype.updateKey = function(key, value) {
 KeyboardController.prototype.performAction = function() {
 
     if(this.buttons.a) {
+        //if (this.buttonSaveState)
         this.arrowAction('A')
-    } else if(this.buttons.b) {
+    }
+    if(this.buttons.b) {
         this.arrowAction('B')
-    } else if(this.buttons.x) {
+    }
+    if(this.buttons.x) {
         this.arrowAction('X')
-    } else if(this.buttons.y) {
+    }
+    if(this.buttons.y) {
         this.arrowAction('Y')
     }
 }

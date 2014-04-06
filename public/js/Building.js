@@ -43,7 +43,6 @@ function Building(scene, loader, button, player, hq, lane, cell){
 	this.currentAnimation = null
 	var self = this
 
-	fileName = "data/bank.js"
 	loader.load(fileName, function(geometry, materials)
 	{
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
