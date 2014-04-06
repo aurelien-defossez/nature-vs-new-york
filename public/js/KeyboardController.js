@@ -35,10 +35,10 @@ KeyboardController.prototype.releaseKey = function(key) {
 }
 
 KeyboardController.prototype.updateKey = function(key, value) {
-    console.log("key : "+key+", value : "+value);
+    
     switch(key) {
         case 'input0':
-            this.buttons.arrowAction = value; 
+            this.buttons.a = value; 
             break;
         case 'input1':
             this.buttons.b = value;
@@ -72,17 +72,32 @@ KeyboardController.prototype.updateKey = function(key, value) {
 KeyboardController.prototype.performAction = function() {
 
     if(this.buttons.a) {
-        //if (this.buttonSaveState)
-        this.arrowAction('A')
+        if (this.buttonSaveState.a != this.buttons.a ){
+            console.log("key : A");
+            this.arrowAction('A')
+            this.buttonSaveState.a = this.buttons.a
+        }
     }
     if(this.buttons.b) {
-        this.arrowAction('B')
+        if (this.buttonSaveState.b != this.buttons.b ){
+            console.log("key : B");
+            this.arrowAction('B')
+            this.buttonSaveState.b = this.buttons.b
+        }
     }
     if(this.buttons.x) {
-        this.arrowAction('X')
+        if (this.buttonSaveState.x != this.buttons.x){
+            console.log("key : X");
+            this.arrowAction('X')
+            this.buttonSaveState.x = this.buttons.x
+        }
     }
     if(this.buttons.y) {
-        this.arrowAction('Y')
+        if (this.buttonSaveState.y != this.buttons.y){
+            console.log("key : Y");
+            this.arrowAction('Y')
+            this.buttonSaveState.y = this.buttons.y
+        }
     }
 }
 

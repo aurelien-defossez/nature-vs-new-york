@@ -30,12 +30,12 @@ function onDocumentKeyDown( event ) {
 
     keyboardAction = Game.config.controls.keyboard1[event.keyCode];
     if(keyboardAction) {
-        console.log('Player 1 is doing ' + keyboardAction);
+        //console.log('Player 1 is doing ' + keyboardAction);
         game.players.left.keyboardController.pressKey(keyboardAction);
     } else {
         keyboardAction = Game.config.controls.keyboard2[event.keyCode];
         if(keyboardAction) {
-            console.log('Player 2 is doing ' + keyboardAction);
+            //console.log('Player 2 is doing ' + keyboardAction);
             game.players.right.keyboardController.pressKey(keyboardAction);
         }
     }

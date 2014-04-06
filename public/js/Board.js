@@ -32,14 +32,14 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	var hasEmptyCell = false;
 	if (playerName == HQ.typesEnum.NATURE){
 		for (var i = 0; i <= lane.cells.length -1; i++){
-			if (lane.cells[i].building == null && lane.cells[i].owner == playerName){
+			if (lane.cells[i].building == null && lane.cells[i].owner == playerName && lane.cells[i].captureProgress == 1){
 				hasEmptyCell = true;
 				break;
 			}
 		}
 	} else {
 		for (var i = lane.cells.length -1 ; i >= 0; i--){
-			if (lane.cells[i].building == null && lane.cells[i].owner == playerName){
+			if (lane.cells[i].building == null && lane.cells[i].owner == playerName && lane.cells[i].captureProgress == -1){
 				lane.cells[i].build(button, playerName, hq)
 				hasEmptyCell = true;
 				break;

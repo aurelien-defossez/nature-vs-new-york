@@ -20,7 +20,7 @@ Game.config = {
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.05,
+    	captureSpeed: 0.5,
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
@@ -156,7 +156,7 @@ Game.config = {
 			cost: 20,
 			time: 20,
 			manaPerSecond: 1.0,
-			modelFile : "data/manaTree.js"
+			modelFile : "data/tree_mana.js"
 		},
 		// Arbre Protecteur
 		protectorTree: {
