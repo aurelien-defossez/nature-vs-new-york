@@ -68,7 +68,7 @@ Game.prototype.update = function(time)
 {
     var dt = 0
     if (this.currentTime != null) {
-        dt = Math.min(time - this.currentTime,  1000 / 25)
+        dt = Math.min(time - this.currentTime,  1 / 25)
     }
     this.currentTime = time
 
