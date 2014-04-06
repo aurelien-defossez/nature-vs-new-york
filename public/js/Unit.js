@@ -10,7 +10,6 @@ var colors = {
 }
 
 function Unit(scene, player, type, loader) {
-    console.log('Player ' + player + ' is creating a ' + type);
 
     var unitConfig = Game.config.units[type]
 
@@ -22,8 +21,10 @@ function Unit(scene, player, type, loader) {
     this.hp = unitConfig.hp;
     this.speed = unitConfig.speed;
     this.attack = unitConfig.attack;
-    this.attackBuilding = unitConfig.attackBuilding;
+    this.buildingAttack = unitConfig.buildingAttack;
     this.cooldown = unitConfig.cooldown;
+
+    console.log('Player ' + player + ' is creating a ' + type, this);
 
     if(this.player === HQ.typesEnum.NATURE) {
         this.xPosition = 0.3/2;

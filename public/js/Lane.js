@@ -276,19 +276,40 @@ Lane.prototype.update = function(time, dt){
 	    } else {
 	    	// Enemy unit in sight: Attack the nearest
 	    	var direction = unit.player == "nature" ? 1 : -1
-	    	var enemyUnit
+	    	var attacked = false
     		for (j = unit.waitingLineIndex + direction; j < unit.waitingLineIndex + direction * 3; j += direction) {
     			var potentialUnit = this.waitingLine[j]
     			if (potentialUnit && potentialUnit.player != unit.player) {
-    				enemyUnit = potentialUnit
+    				attacked = true
+    				if (potentialUnit.hit(unit.attack)) {
+	    				this.waitingLine[potentialUnit.waitingLineIndex] = null
+	    				unitToRemove.push(potentialUnit.id)
+	    			}
     				break
     			}
     		}
 
-    		if (enemyUnit) {
-    			if (enemyUnit.hit(unit.attack)) {
-    				this.waitingLine[enemyUnit.waitingLineIndex] = null
-    				unitToRemove.push(enemyUnit.id)
+    		if (!attacked) {
+    			// Enemy building on the cell: Attack it
+    			var cellId = Math.floor(unit.waitingLineIndex / 3)
+    			var cell = this.cells[cellId]
+    			var hurt = false
+    			if (cell.building && cell.building.player != unit.player) {
+    				attacked = true
+    				if (cell.building.hit(unit.buildingAttack)) {
+    					cell.building = null
+    				}
+    			}
+    		}
+
+			if (!attacked) {
+				// Enemy building on next cell: Attack it
+				cellId += direction
+				cell = this.cells[cellId]
+				if (cell.building && cell.building.player != unit.player) {
+					if (cell.building.hit(unit.buildingAttack)) {
+						cell.building = null
+					}
     			}
     		}
 	    }
