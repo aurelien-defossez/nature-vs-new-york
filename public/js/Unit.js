@@ -193,6 +193,8 @@ Unit.prototype.hit = function(points) {
 
     if (this.hp <= 0) {
         this.destroy()
+
+        musicManager.playSfx(this.type + "Death")
         return true
     }
 }
