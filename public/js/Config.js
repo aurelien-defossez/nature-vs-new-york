@@ -109,7 +109,7 @@ Game.config = {
 			hp: 5,
 			speed: 0.2,
 			cost: 20,
-			time: 1,
+			time: 10,
 			captureSpeed: 0.1
 		},
 		// Bûcheron

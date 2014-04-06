@@ -32,7 +32,7 @@ function Lane(id, board, loader) {
 			cell.setOwner("newYork")
 		}
 	}
-	
+
 	this.alerts = []
 }
 
@@ -141,8 +141,8 @@ Lane.prototype.update = function(time, dt){
 	var i,
         unit,
         unitToRemove = [];
-   
-   	// Define targets for units
+
+   	// Define targets for units using buildings and waiting line
    	var natureTarget
    	var newYorkTarget
     for (i = this.cells.length - 1; i >= 0; --i) {
@@ -150,15 +150,9 @@ Lane.prototype.update = function(time, dt){
 
     	// Find first neutral or enemy empty cell
     	if (!cell.owner || cell.owner == "newYork" && !cell.building) {
-    		for (j = (i + 1) * 3 - 1; j >= 0; --j) {
-				if (!this.waitingLine[j]) {
-					natureTarget = {
-						index: j,
-						position: j / 3 + 1 / 6
-					}
-					break
-				}
-			}
+    		natureTarget = {
+    			index: (i + 1) * 3 - 1
+    		}
 
 			break
     	}
@@ -169,20 +163,76 @@ Lane.prototype.update = function(time, dt){
 
     	// Find first neutral or enemy empty cell
     	if (!cell.owner || cell.owner == "nature" && !cell.building) {
-    		for (j = i * 3; j < this.cells.length * 3; j++) {
-				if (!this.waitingLine[j]) {
-					newYorkTarget = {
-						index: j,
-						position: j / 3 + 1 / 6
-					}
-					break
-				}
+    		newYorkTarget = {
+				index: i * 3
 			}
 
 			break
     	}
 	}
 
+	// Find farthest units
+	var farthestUnit = {
+		nature: null,
+		newYork: null
+	}
+    for (i = 0; i < this.units.length; i++) {
+    	var unit = this.units[i]
+    	var localBest = farthestUnit[unit.player]
+
+    	if (!localBest
+    	|| (unit.player == "nature" && unit.xPosition > localBest.xPosition)
+    	|| (unit.player == "newYork" && unit.xPosition < localBest.xPosition)) {
+    		farthestUnit[unit.player] = unit
+    	}
+    }
+
+    // Correct targets using farthest units
+    if (natureTarget && farthestUnit.newYork && farthestUnit.newYork.xPosition < natureTarget.index / 3 + 1 / 6) {
+    	var index = Math.floor(farthestUnit.newYork.xPosition * 3)
+    	natureTarget = {
+    		index: index
+    	}
+    }
+
+    if (newYorkTarget && farthestUnit.nature && farthestUnit.nature.xPosition > newYorkTarget.index / 3 + 1 / 6) {
+    	var index = Math.ceil(farthestUnit.nature.xPosition * 3)
+    	newYorkTarget = {
+    		index: index
+    	}
+    }
+
+    // Find next available spot
+    if (natureTarget) {
+		for (j = natureTarget.index; j >= 0; --j) {
+			if (!this.waitingLine[j]) {
+				natureTarget = {
+					index: j
+				}
+				break
+			}
+		}
+	}
+
+	if (newYorkTarget) {
+		for (j = newYorkTarget.index; j < this.cells.length * 3; j++) {
+			if (!this.waitingLine[j]) {
+				newYorkTarget = {
+					index: j
+				}
+				break
+			}
+		}
+	}
+
+    // Compute target positions
+    if (natureTarget) {
+    	natureTarget.position = natureTarget.index / 3 + 1 / 6
+    }
+
+    if (newYorkTarget) {
+    	newYorkTarget.position = newYorkTarget.index / 3 + 1 / 6
+    }
 
     for (i = 0; i < this.cells.length; i++) {
 		this.cells[i].update(time, dt);
@@ -203,7 +253,6 @@ Lane.prototype.update = function(time, dt){
 	        		unit.hide()
 	        	}
 
-	        	
 	        	unit.switchAnimation("wait")
 	        }
 
@@ -224,11 +273,11 @@ Lane.prototype.update = function(time, dt){
 
         unit.update(time, dt);
 	}
-	
+
 	this.processCreationQueue(time, dt)
     for(i = unitToRemove.length - 1; i >= 0; i--) {
         this.units.splice(unitToRemove[i], 1);
     }
-	
+
 	this.purgeAlerts()
 }
