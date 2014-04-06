@@ -272,7 +272,7 @@ Lane.prototype.update = function(time, dt){
 		var opponent = unit.player == "nature" ? "newYork" : "nature"
 
 		if (unit.phase == "walk") {
-	        if (unit.type == "builder" && unit.xPosition > builderTarget.position - 1/3) {
+	        if (unit.type == "builder" && unit.xPosition > builderTarget.position) {
 	        	if (builderTarget.index < 0 || unit.xPosition < builderTarget.position) {
 		        	if (builderTarget) {
 		        		unit.setPosition(builderTarget.position)
@@ -356,6 +356,7 @@ Lane.prototype.update = function(time, dt){
 						}
 					}
 				} else {
+					actionDone = true
 					this.board.hqs[opponent].hit(unit.buildingAttack)
 					unit.hit(unit.hp)
     				this.waitingLine[unit.waitingLineIndex] = null
