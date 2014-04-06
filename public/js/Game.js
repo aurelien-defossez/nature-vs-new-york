@@ -73,7 +73,7 @@ Game.prototype.update = function(time)
     this.currentTime = time
 
     this.board.update(time, dt)
-    this.musicManager.update(time, dt, 0)
+    this.musicManager.update(time, dt, 0.5)
 
     this.players.left.controlAction()
     this.players.right.controlAction()
