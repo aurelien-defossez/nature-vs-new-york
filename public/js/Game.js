@@ -56,7 +56,7 @@ function Game()
     //var light = new THREE.PointLight(0xffffff, 2, 0)
     //this.scene.add(light)
 
-    musicManager = new MusicManager()
+    this.musicManager = new MusicManager()
 
     this.players = {
         left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0), "gamepad"),
@@ -76,7 +76,7 @@ Game.prototype.update = function(time)
     this.currentTime = time
 
     this.board.update(time, dt)
-    musicManager.update(time, dt, 0.5)
+    this.musicManager.update(time, dt, 0.5)
 
     this.players.left.controlAction()
     this.players.right.controlAction()

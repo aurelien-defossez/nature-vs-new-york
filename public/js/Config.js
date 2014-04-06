@@ -1,8 +1,12 @@
 Game.config = {
     board : {
-      height: 720,
-      width:1280
+      height: 590,
+      width:1050
     },
+    /*board : {
+      height: 450,
+      width:800
+    },*/
 	antialiasing : true,
 	lane : {
 		cellNumber : 7,
