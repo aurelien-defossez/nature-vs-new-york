@@ -100,19 +100,21 @@ MusicManager.prototype.startMusic = function()
 MusicManager.prototype.playSfx = function(name)
 {
 	var sfx = soundData.effects[name]
-	var buffer = sfx.buffers[Math.floor(Math.random() * sfx.buffers.length)]
-	
-	var source = this.context.createBufferSource()
-	source.buffer = buffer
-	source.playbackRate.value = sfx.pitch + Math.random() * sfx.pitchRandomization
-	
-	var gain = this.context.createGain()
-	gain.gain.value = sfx.gain
-	
-	source.connect(gain)
-	gain.connect(this.context.destination)
-	
-	source.start()
+	if (sfx) {
+		var buffer = sfx.buffers[Math.floor(Math.random() * sfx.buffers.length)]
+		
+		var source = this.context.createBufferSource()
+		source.buffer = buffer
+		source.playbackRate.value = sfx.pitch + Math.random() * sfx.pitchRandomization
+		
+		var gain = this.context.createGain()
+		gain.gain.value = sfx.gain
+		
+		source.connect(gain)
+		gain.connect(this.context.destination)
+		
+		source.start()
+	}
 }
 
 MusicManager.prototype.update = function(time, dt, playerHeight)

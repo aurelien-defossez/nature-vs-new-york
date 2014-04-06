@@ -47,6 +47,7 @@ function Building(scene, loader, button, player, hq, lane, cell){
 	{
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
+		self.mesh.receiveShadow = true
 		//self.parentScene.add(self.mesh)
 		console.log(Game.config.buildings[buildingType].modelFile)
 		if (Game.config.buildings[buildingType].modelFile == "data/tree_mana.js")
@@ -71,6 +72,7 @@ function Building(scene, loader, button, player, hq, lane, cell){
 	{
 		self.scaffoldingMesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.scaffoldingMesh.castShadow = true
+		self.scaffoldingMesh.receiveShadow = true
 		self.parentScene.add(self.scaffoldingMesh)
 
 		var materials = self.scaffoldingMesh.material.materials
@@ -128,6 +130,26 @@ Building.prototype.applyEffect = function()
 	}
 }
 
+Building.prototype.removeEffect = function(){
+	switch(this.type) {
+		// Mana ++
+		case 'manaTree':
+		case 'bank':
+			this.hq.manaPerSecond -= Game.config.buildings[this.type].manaPerSecond
+		break
+
+		// Capture ++
+		case 'rootTree':
+			this.hq.captureSpeed[this.lane.id] -= Game.config.buildings[this.type].captureSpeed
+		break
+
+		case 'protectorTree':
+		case 'policeStation':
+			// Nothing to do
+		break
+	}
+}
+
 Building.prototype.update = function(time, dt){
 	if (!this.built)
 	{
@@ -143,7 +165,7 @@ Building.prototype.update = function(time, dt){
 			this.currentAnimation = this.animations.destroy
 			this.currentAnimation.play();
 			this.ScaffoldingDestroyed = false;
-			musicManager.playSfx("mana_tree_spawn")
+			musicManager.playSfx(this.type + "Spawn")
 		}
 		this.animationTimerSetter = this.buildingProgress;
 	} else {
@@ -192,6 +214,7 @@ Building.prototype.hit = function(points){
 	this.currentHP -= points
 
 	if (this.currentHP <= 0) {
+		this.removeEffect()
 		this.destroy()
 		return true
 	}

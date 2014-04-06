@@ -22,7 +22,7 @@ function Lane(id, board, loader) {
 
 	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
-		var cell = new Cell(this.scene, loader, this.id);
+		var cell = new Cell(this.scene, loader, this, i);
 		cell.scene.translateX( i )
 		this.cells.push(cell)
 
@@ -85,15 +85,15 @@ Lane.prototype.processCreationQueue = function(time, dt){
 
 Lane.prototype.popBuilding = function(button, playerName, hq){
 	if (playerName == HQ.typesEnum.NATURE){
-		for (var i = 0; i <= this.cells.length -1; i++){
-			if (this.cells[i].building == null && this.cells[i].owner == playerName){
+		for (var i = 0; i < this.cells.length; i++){
+			if (this.cells[i].building == null && this.cells[i].captureProgress == 1){
 				this.cells[i].build(button, playerName, hq)
 				break;
 			}
 		}
 	} else {
-		for (var i = this.cells.length -1 ; i >= 0; i--){
-			if (this.cells[i].building == null && this.cells[i].owner == playerName){
+		for (var i = this.cells.length - 1 ; i >= 0; i--){
+			if (this.cells[i].building == null && this.cells[i].captureProgress == -1){
 				this.cells[i].build(button, playerName, hq)
 				break;
 			}
@@ -106,13 +106,34 @@ Lane.prototype.capture = function(type, value){
 	if (type == HQ.typesEnum.NATURE) {
 		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
 			var cell = this.cells[i]
+			var hasBuilderOnCell = false;
+			for (var j = 0; j< this.units.length; j++)
+			{
+				var unit = this.units[j];
+				if (unit.type == "builder"){
+					var index = Math.floor(unit.xPosition);
+					
+					if (index == i || (index == i+1 )) 
+					{
+						//console.log("STOP")
+						hasBuilderOnCell = true;
+					}	
+
+				}
+			}
+			if (hasBuilderOnCell)
+				break;
+
+			
 			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
 				remaining = cell.capture(value)
 			}
+
 		}
 	} else {
 		for (var i = Game.config.lane.cellNumber - 1; i >= 0; --i) {
 			var cell = this.cells[i]
+			
 			if (remaining > 0 && cell.captureProgress > -1 && cell.building == null) {
 				remaining = -cell.capture(-value)
 			}
@@ -170,11 +191,10 @@ Lane.prototype.update = function(time, dt){
     for (i = this.cells.length - 1; i >= 0; --i) {
     	var cell = this.cells[i]
 
-    	if (!cell.owner || cell.owner == "newYork" && cell.captureProgress > -1) {
+    	if (!cell.owner || cell.owner == "nature" && cell.captureProgress > -1 ) {
     		builderTarget = {
     			index: (i + 1) * 3
     		}
-
     		break
     	}
 	}

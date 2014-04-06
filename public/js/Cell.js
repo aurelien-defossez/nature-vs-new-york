@@ -53,7 +53,6 @@ Cell.prototype.build = function(button, player, hq){
 	if (this.building) {
 		this.building.destroy()
 	}
-
 	this.building = new Building(this.scene, this.loader, button, player, hq, this.lane, this);
 }
 
@@ -80,6 +79,7 @@ Cell.prototype.loadMesh = function(loader, name) {
 		}
 		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
 		self.mesh.castShadow = true
+		self.mesh.receiveShadow = true
 		self.scene.add(self.mesh)
 		
 		var materials = self.mesh.material.materials

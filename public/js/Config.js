@@ -5,7 +5,7 @@ Game.config = {
     },
 	antialiasing : true,
 	lane : {
-		cellNumber : 8,
+		cellNumber : 7,
 		spacing : 2,
 		marginLeft : 2,
 		marginRight : 2,
@@ -109,8 +109,8 @@ Game.config = {
 			hp: 5,
 			speed: 0.2,
 			cost: 20,
-			time: 10,
-			captureSpeed: 0.1,
+			time: 2,
+			captureSpeed: 1,
 			modelFile:"data/builder.js"
 		},
 		// Bûcheron
