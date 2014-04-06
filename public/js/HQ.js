@@ -12,18 +12,18 @@ function HQ(scene, hud, lanes, type, loader)
 	this.newYorkHQColor = 0x0000ff
 	this.scene = new THREE.Object3D()
 	scene.add(this.scene)
-	
+
 	var healthBarFill = new THREE.MeshBasicMaterial( { color: 0xff0000})
 	var healthBarGeometry = new THREE.PlaneGeometry(0.297, 0.018)
 	this.healthBar = new THREE.Mesh( healthBarGeometry,  healthBarFill )
 	this.hud.scene.add(this.healthBar)
-	
+
 	var healthBarBackground = THREE.ImageUtils.loadTexture('data/HealthBar.png')
 	var healthBarMaterialBackground = new THREE.MeshLambertMaterial( { map: healthBarBackground } )
 	var healthBarGeometryBackground = new THREE.PlaneGeometry(0.3, 0.02)
 	this.healthBarBackground = new THREE.Mesh( healthBarGeometryBackground,  healthBarMaterialBackground )
 	this.hud.scene.add(this.healthBarBackground)
-	
+
 	var color
 	if (type == HQ.typesEnum.NATURE){
 		color = this.natureHQColor
@@ -48,7 +48,7 @@ function HQ(scene, hud, lanes, type, loader)
 	this.hqCube.castShadow = true
 	this.hqCube.receiveShadow = true
 	this.scene.add(this.hqCube)
-	
+
 	var hqConfig = Game.config[type == HQ.typesEnum.NATURE ? "nature" : "newYork"]
 	this.hp = hqConfig.hp
 	this.mana = hqConfig.startMana
@@ -99,7 +99,7 @@ HQ.prototype.updateHealthBar = function(){
 			this.healthBar.position.x -= (widthOld - this.healthBar.geometry.width * scaleX)/2
 			break;
 	}
-    
+
     if(this.health <= 0) {
         menu.show(100);
     }
@@ -107,7 +107,7 @@ HQ.prototype.updateHealthBar = function(){
 
 HQ.prototype.update = function(time, dt) {
 	this.addMana(dt * this.manaPerSecond)
-	
+
 	if(this.isAlive()) {
 		this.updateHealthBar();
 
@@ -117,9 +117,13 @@ HQ.prototype.update = function(time, dt) {
 	}
 }
 
-HQ.prototype.removeHealth = function(value) {
-	this.health -= value
+HQ.prototype.hit = function(points) {
+	this.health -= points
 	this.updateHealthBar()
+
+	if (this.health <= 0) {
+		// TODO: Game over
+	}
 }
 
 HQ.prototype.addMana = function(value) {

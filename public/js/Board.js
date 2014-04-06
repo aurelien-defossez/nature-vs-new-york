@@ -21,7 +21,7 @@ function Board(scene, loader, hud)
 
 	this.loadLanes(loader)
 	this.loadHQs(hud)
-	
+
 	this.alerts = []
 }
 
@@ -59,7 +59,7 @@ Board.prototype.popBuilding = function(button, laneIndex, playerName){
 	}else{
 		console.log("Not Enought Cells")
 	}
-	
+
 }
 
 Board.prototype.popMonster = function(button, laneIndex, playerName){
@@ -84,7 +84,7 @@ Board.prototype.loadHQs = function(hud){
 	this.hqs[HQ.typesEnum.NATURE].scene.translateZ(- (Game.config.lane.marginBottom))
 	this.hqs[HQ.typesEnum.NEW_YORK].scene.translateZ(- (Game.config.lane.marginBottom))
 	this.hqs[HQ.typesEnum.NEW_YORK].scene.translateX( this.boardWidth - Game.config.lane.marginRight  )
-	
+
 	this.scene.add(this.hqs[HQ.typesEnum.NATURE].scene)
 	this.scene.add(this.hqs[HQ.typesEnum.NEW_YORK].scene)
 }
@@ -106,8 +106,4 @@ Board.prototype.update = function(time, dt) {
 	for (var i = 0; i < 3; i++) {
 		this.lanes[i].update(time, dt)
 	}
-}
-
-Board.prototype.hitEnemy = function(player) {
-	this.hqs[player == "nature" ? "newYork" : "nature"].removeHealth(1);
 }

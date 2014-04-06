@@ -25,7 +25,7 @@ function Unit(scene, player, type, loader) {
     this.cooldown = unitConfig.cooldown;
     this.cooldownTimer = 0
 
-    console.log('Player ' + player + ' is creating a ' + type, this);
+    console.log('Player ' + player + ' is creating a ' + type);
 
     if(this.player === HQ.typesEnum.NATURE) {
         this.xPosition = 0.3/2;

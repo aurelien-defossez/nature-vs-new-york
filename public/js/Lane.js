@@ -3,11 +3,11 @@ function Lane(id, board, loader) {
     this.id = id
     this.loader = loader
 	this.scene = new THREE.Object3D()
+	this.board = board
 	board.scene.add(this.scene)
 	this.cells = [];
     this.units = [];
     this.waitingLine = [];
-
 
 	this.unitsCreationQueues = {
 	    sapCarrier: [],
@@ -242,6 +242,7 @@ Lane.prototype.update = function(time, dt){
 
     for (i = 0; i < this.units.length; i++) {
 		unit = this.units[i];
+		var opponent = unit.player == "nature" ? "newYork" : "nature"
 
 		if (unit.phase == "walk") {
 	        if (unit.player == "nature"
@@ -276,11 +277,11 @@ Lane.prototype.update = function(time, dt){
 	    } else if (unit.isReady()) {
 	    	// Enemy unit in sight: Attack the nearest
 	    	var direction = unit.player == "nature" ? 1 : -1
-	    	var attacked = false
+	    	var actionDone = false
     		for (j = unit.waitingLineIndex + direction; j < unit.waitingLineIndex + direction * 3; j += direction) {
     			var potentialUnit = this.waitingLine[j]
     			if (potentialUnit && potentialUnit.player != unit.player) {
-    				attacked = true
+    				actionDone = true
     				if (potentialUnit.hit(unit.attack)) {
 	    				this.waitingLine[potentialUnit.waitingLineIndex] = null
 	    				unitToRemove.push(potentialUnit.id)
@@ -289,32 +290,52 @@ Lane.prototype.update = function(time, dt){
     			}
     		}
 
-    		if (!attacked) {
+    		if (!actionDone) {
     			// Enemy building on the cell: Attack it
     			var cellId = Math.floor(unit.waitingLineIndex / 3)
     			var cell = this.cells[cellId]
     			var hurt = false
-    			if (cell.building && cell.building.player != unit.player) {
-    				attacked = true
+    			if (cell && cell.building && cell.building.player != unit.player) {
+    				actionDone = true
     				if (cell.building.hit(unit.buildingAttack)) {
     					cell.building = null
     				}
     			}
     		}
 
-			if (!attacked) {
-				// Enemy building on next cell: Attack it
+			if (!actionDone) {
+				// Enemy building OR the big building on next cell: Attack it
 				cellId += direction
 				cell = this.cells[cellId]
+				if (cell) {
 				if (cell.building && cell.building.player != unit.player) {
-    				attacked = true
+	    				actionDone = true
 					if (cell.building.hit(unit.buildingAttack)) {
 						cell.building = null
 					}
     			}
-    		}
+				} else {
+					this.board.hqs[opponent].hit(unit.buildingAttack)
+					unit.hit(unit.hp)
+    				this.waitingLine[unit.waitingLineIndex] = null
+    				unitToRemove.push(unit.id)
+				}
+			}
 
-			if (attacked) {
+			if (!actionDone) {
+				// Next spot is free: Move
+				if (!this.waitingLine[unit.waitingLineIndex + direction]
+				&& (!farthestUnit[opponent] || Math.abs(farthestUnit[opponent].xPosition - unit.xPosition) < 1 / 5)) {
+					actionDone = true
+					unit.switchAnimation("walk")
+    		}
+			}
+
+			// Wait
+			// Nothing special to code, woopy!
+
+			// Something has been done: Start cooldown
+			if (actionDone) {
 				unit.startCooldown()
 			}
 	    }
