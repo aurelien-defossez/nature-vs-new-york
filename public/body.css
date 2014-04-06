@@ -32,10 +32,10 @@ body{
 
 #hud {
   position: relative;
-  width: 1280px;
-  height: 720px;
+  width: 800px;
+  height: 600px;
   margin: 0px auto;
-  margin-top: -720px
+  margin-top: -520px
 }
 
 #hud #mana,
@@ -55,7 +55,7 @@ body{
 }
 
 #hud #mana {
-  left: 60px;
+  left: 10px;
   text-align: right;
   background-image: url("/data/mana.png");
   background-repeat: no-repeat;
@@ -67,7 +67,7 @@ body{
 }
 
 #hud #dollars {
-  left: 1100px;
+  left: 700px;
   text-align: left;
   background-image: url("/data/dolars.png");
   background-repeat: no-repeat;
@@ -95,10 +95,10 @@ body{
   margin-top:10px;
 }
 #hud #nature-build-queue{
-  left: 60px;
+  left: 10px;
 }
 #hud #newYork-build-queue{
-	left: 1100px;
+	left: 700px;
 	text-align: right;
 }
 #hud #nature-build-queue ul, #hud #newYork-build-queue ul{
