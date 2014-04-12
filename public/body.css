@@ -59,7 +59,7 @@ body{
   text-align: right;
   background-image: url("/data/mana.png");
   background-repeat: no-repeat;
-  display: none;
+  /*display: none;*/
 }
 
 #manaCount{
@@ -71,7 +71,7 @@ body{
   text-align: left;
   background-image: url("/data/dolars.png");
   background-repeat: no-repeat;
-  display: none;
+  /*display: none;*/
 }
 
 #dollarsCount{
@@ -91,7 +91,7 @@ body{
   font-size: 5px;
   color: #ddd;
   padding-top: 3px;
-  display: none;
+  /*display: none;*/
   margin-top:10px;
 }
 #hud #nature-build-queue{
