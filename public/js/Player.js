@@ -5,6 +5,8 @@ function Player(name, board, controller, type) {
     this.controller = controller;
     this.controllerType = type;
     disableControl = false;
+	
+	this.controller.player = this
 
 }
 

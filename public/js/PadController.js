@@ -1,3 +1,6 @@
+ControllerType = typeof(ControllerType) !== "undefined" ? ControllerType : {}
+ControllerType.GAMEPAD = "gamepad"
+
 /**
  * Actions on Gamepad:
  *

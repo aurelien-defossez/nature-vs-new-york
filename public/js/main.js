@@ -29,12 +29,12 @@ function onDocumentKeyDown( event ) {
     var keyboardAction; 
     keyboardAction = Game.config.controls.keyboard1[event.keyCode];
     if(keyboardAction) {
-        if (game.players.left.controller.controllerType=="keyboard")
+        if (game.players.left.controllerType=="keyboard")
             game.players.left.controller.pressKey(keyboardAction);
     } else {
         keyboardAction = Game.config.controls.keyboard2[event.keyCode];
         if(keyboardAction) {
-            if (game.players.right.controller.controllerType=="keyboard")
+            if (game.players.right.controllerType=="keyboard")
                 game.players.right.controller.pressKey(keyboardAction);
         }
     }
@@ -46,12 +46,12 @@ function onDocumentKeyUp( event ) {
 
     keyboardAction = Game.config.controls.keyboard1[event.keyCode];
     if(keyboardAction) {
-        if (game.players.left.controller.controllerType=="keyboard")
+        if (game.players.left.controllerType=="keyboard")
             game.players.left.controller.releaseKey(keyboardAction);
     } else {
         keyboardAction = Game.config.controls.keyboard2[event.keyCode];
         if(keyboardAction) {
-            if (game.players.right.controller.controllerType=="keyboard")
+            if (game.players.right.controllerType=="keyboard")
                 game.players.right.controller.releaseKey(keyboardAction);
         }
     }

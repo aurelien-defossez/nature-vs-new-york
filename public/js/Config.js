@@ -275,6 +275,7 @@ Game.config = {
         	69: 'bumper'	// E
 		}
 	},
+	controllerType : 'keyboard',
 	buildMonitor : {
 		progressRefreshInterval : 300 //in milliseconds
 	}

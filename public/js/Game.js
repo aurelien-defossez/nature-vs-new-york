@@ -58,12 +58,18 @@ function Game()
 
     musicManager = new MusicManager()
 
-    this.players = {
-        left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0), "gamepad"),
-        right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(1), "gamepad")
-    }
-    //this.players.right.controller.controllerType = "keyboard";
-    //this.players.right.controller.player = this.players.right;
+	if (Game.config.controllerType == ControllerType.KEYBOARD) {
+    	this.players = {
+    		left: new Player(HQ.typesEnum.NATURE, this.board, new KeyboardController(), ControllerType.KEYBOARD),
+    		right: new Player(HQ.typesEnum.NEW_YORK, this.board, new KeyboardController(), ControllerType.KEYBOARD)
+    	}
+	}
+	else if (Game.config.controllerType == ControllerType.GAMEPAD){
+		this.players = {
+			left: new Player(HQ.typesEnum.NATURE, this.board, new PadController(0), ControllerType.GAMEPAD),
+			right: new Player(HQ.typesEnum.NEW_YORK, this.board, new PadController(1), ControllerType.GAMEPAD)
+		}
+	}
 
 }
 

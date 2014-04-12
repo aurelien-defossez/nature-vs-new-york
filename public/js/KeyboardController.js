@@ -1,3 +1,7 @@
+ControllerType = typeof(ControllerType) !== "undefined" ? ControllerType : {}
+ControllerType.KEYBOARD = "keyboard"
+
+
 
 function KeyboardController() {
     this.player
