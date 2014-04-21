@@ -10,7 +10,6 @@ var colors = {
 }
 
 function Unit(scene, player, type, loader, hq) {
-
     var unitConfig = Game.config.units[type]
 
     this.phase = "walk"
@@ -23,6 +22,7 @@ function Unit(scene, player, type, loader, hq) {
     this.speed = unitConfig.speed;
     this.attack = unitConfig.attack;
     this.buildingAttack = unitConfig.buildingAttack;
+    this.width = unitConfig.width;
     this.cooldown = unitConfig.cooldown;
     this.cooldownTimer = 0
     this.deathAnimationFinished = false
@@ -77,12 +77,11 @@ function Unit(scene, player, type, loader, hq) {
             self.currentAnimation.play()
         })
     }else{
-        this.mesh = new THREE.Mesh( new THREE.CubeGeometry(0.3,0.3,0.3),  new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
+        this.mesh = new THREE.Mesh( new THREE.CubeGeometry(this.width, this.width, this.width),
+            new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
     }
-
-
 }
 
 Unit.prototype.startBuild = function(){
@@ -162,25 +161,25 @@ Unit.prototype.switchAnimation = function(phase){
     }
 }
 
-Unit.prototype.update = function(time, dt) {
-    if (this.isBuilt()){
-        if (this.phase == "walk") {
-            if (this.mesh) {
-                this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
-                this.xPosition = this.mesh.position.x
-            }
-        } else if (this.cooldownTimer > 0) {
-            this.cooldownTimer -= dt
-        }
-    } else if (!this.pending) {
-        this.buildDelay -= dt
-    }
+Unit.prototype.willCollideWith = function(bounds, dt) {
+    var unitBounds = this.getBounds(this.speed * this.direction * dt)
 
-    if (this.currentAnimation != null)
-    {
+    return this.direction > 0 && unitBounds.right > bounds.left && unitBounds.right < bounds.right
+        || this.direction < 0 && unitBounds.left > bounds.left && unitBounds.left < bounds.right
+}
+
+Unit.prototype.getBounds = function(offset) {
+    offset = offset || 0
+    return {
+        left: this.xPosition - this.width * 0.5 + offset,
+        right: this.xPosition + this.width * 0.5 + offset
+    }
+}
+
+Unit.prototype.update = function(time, dt) {
+    if (this.currentAnimation != null) {
         this.currentAnimation.update(dt)
-        if (this.currentAnimation.data.name == this.type+"_death" && !this.currentAnimation.isPlaying)
-        {
+        if (this.currentAnimation.data.name == this.type+"_death" && !this.currentAnimation.isPlaying) {
             this.deathAnimationFinished = true;
         }
     }
@@ -202,6 +201,13 @@ Unit.prototype.hit = function(points) {
 
         musicManager.playSfx(this.type + "Death")
         return true
+    }
+}
+
+Unit.prototype.move = function(dt) {
+    if (this.mesh) {
+        this.mesh.position.x = this.mesh.position.x + this.speed * this.direction * dt
+        this.xPosition = this.mesh.position.x
     }
 }
 

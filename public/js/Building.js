@@ -150,6 +150,13 @@ Building.prototype.removeEffect = function(){
 	}
 }
 
+Building.prototype.getBounds = function(){
+	return {
+		left: this.cell.id,
+		right: this.cell.id + 1
+	}
+}
+
 Building.prototype.update = function(time, dt){
 	if (!this.built)
 	{

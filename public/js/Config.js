@@ -71,7 +71,8 @@ Game.config = {
 			speed: 0.2,
 			cost: 10,
 			time: 10,
-			repairSpeed: 2
+			repairSpeed: 2,
+			width: 0.3
 		},
 		// Loup
 		wolf: {
@@ -82,7 +83,8 @@ Game.config = {
 			speed: 1.0,
 			cost: 4,
 			time: 4,
-			modelFile: "data/wolf.js"
+			modelFile: "data/wolf.js",
+			width: 0.5
 		},
 		// Ours
 		bear: {
@@ -93,7 +95,8 @@ Game.config = {
 			speed: 0.4,
 			cost: 8,
 			time: 6,
-			modelFile: "data/bear.js"
+			modelFile: "data/bear.js",
+			width: 0.5
 		},
 		// Ent
 		ent: {
@@ -103,7 +106,8 @@ Game.config = {
 			hp: 50,
 			speed: 0.2,
 			cost: 20,
-			time: 20
+			time: 20,
+			width: 0.5
 		},
 		// Constructeur
 		builder: {
@@ -115,7 +119,8 @@ Game.config = {
 			cost: 20,
 			time: 2,
 			captureSpeed: 0.1,
-			modelFile:"data/builder.js"
+			modelFile:"data/builder.js",
+			width: 0.3
 		},
 		// Bûcheron
 		lumberjack: {
@@ -126,7 +131,8 @@ Game.config = {
 			speed: 0.4,
 			cost: 5,
 			time: 5,
-			modelFile:"data/LumberJack.js"
+			modelFile:"data/LumberJack.js",
+			width: 0.3
 		},
 		// Policier
 		policeman: {
@@ -137,7 +143,8 @@ Game.config = {
 			speed: 0.5,
 			cost: 2,
 			time: 2,
-			modelFile:"data/policeman.js"
+			modelFile:"data/policeman.js",
+			width: 0.3
 		},
 		// Mécha
 		mecha: {
@@ -147,7 +154,8 @@ Game.config = {
 			hp: 50,
 			speed: 0.25,
 			cost: 20,
-			time: 20
+			time: 20,
+			width: 0.5
 		}
 	},
 	buildings: {

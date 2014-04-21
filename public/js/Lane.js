@@ -1,27 +1,25 @@
 function Lane(id, board, loader) {
-    this.board = board;
-    this.id = id
-    this.loader = loader
+	this.board = board;
+	this.id = id
+	this.loader = loader
 	this.scene = new THREE.Object3D()
 	this.board = board
 	board.scene.add(this.scene)
 	this.cells = [];
-    this.units = [];
-    this.waitingLine = [];
-    this.dyingUnits = []
+	this.units = [];
+	this.dyingUnits = []
 
 	this.unitsCreationQueues = {
-	    sapCarrier: [],
-	    wolf: [],
-	    bear: [],
-	    ent: [],
-	    builder: [],
-	    lumberjack: [],
-	    policeman: [],
-	    mecha: []
+		sapCarrier: [],
+		wolf: [],
+		bear: [],
+		ent: [],
+		builder: [],
+		lumberjack: [],
+		policeman: [],
+		mecha: []
 	};
 
-	//this.position = position
 	for (var i = 0; i < Game.config.lane.cellNumber; i++ ){
 		var cell = new Cell(this.scene, loader, this, i);
 		cell.scene.translateX( i )
@@ -35,7 +33,6 @@ function Lane(id, board, loader) {
 	}
 	
 	this.board.hud.refreshBuildMonitor(this.id, this.unitsCreationQueues)
-
 }
 
 Lane.prototype.buildNextUnit = function(type){
@@ -73,10 +70,12 @@ Lane.prototype.addUnitInQueue = function(unit){
 
 Lane.prototype.processCreationQueue = function(time, dt){
 	for (var type in this.unitsCreationQueues) {
-		for (var i = 0; i < this.unitsCreationQueues[type].length; i++){
-			var unit = this.unitsCreationQueues[type][i]
-			unit.update(time, dt)
-			if (i==0 && unit.isBuilt()){
+		var unit = this.unitsCreationQueues[type][0]
+
+		if (unit) {
+			unit.buildDelay -= dt
+
+			if (unit.isBuilt()) {
 				this.runUnit(unit)
 				this.buildNextUnit(unit.type)
 			}
@@ -107,29 +106,24 @@ Lane.prototype.capture = function(type, value){
 	if (type == HQ.typesEnum.NATURE) {
 		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
 			var cell = this.cells[i]
-			var hasBuilderOnCell = false;
-			for (var j = 0; j< this.units.length; j++)
-			{
-				var unit = this.units[j];
-				if (unit.type == "builder"){
-					var index = Math.floor(unit.xPosition);
-					
-					if (index == i || (index == i+1 )) 
-					{
-						//console.log("STOP")
-						hasBuilderOnCell = true;
-					}	
 
+			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
+				var hasBuilderOnCell = false;
+				for (var j = 0; j < this.units.length; j++) {
+					var unit = this.units[j];
+					if (unit.type == "builder") {
+						var index = Math.floor(unit.xPosition);
+						
+						if (index <= i) {
+							hasBuilderOnCell = true;
+						}	
+					}
+				}
+
+				if (!hasBuilderOnCell) {
+					remaining = cell.capture(value)
 				}
 			}
-			if (hasBuilderOnCell)
-				break;
-
-			
-			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
-				remaining = cell.capture(value)
-			}
-
 		}
 	} else {
 		for (var i = Game.config.lane.cellNumber - 1; i >= 0; --i) {
@@ -143,272 +137,177 @@ Lane.prototype.capture = function(type, value){
 }
 
 Lane.prototype.update = function(time, dt){
-	var i,
-        unit,
-        unitToRemove = [];
+	var i, j
+	var unitToRemove = []
 
-   	// Define targets for units using buildings and waiting line
-   	var natureTarget
-   	var newYorkTarget
-   	var builderTarget
-    for (i = this.cells.length - 1; i >= 0; --i) {
-    	var cell = this.cells[i]
-
-    	// Find first neutral or enemy empty cell
-    	if (!cell.owner || cell.owner == "newYork" && !cell.building) {
-    		natureTarget = {
-    			index: (i + 1) * 3 - 1
-    		}
-
-			break
-    	}
+	for (i = 0; i < this.cells.length; i++) {
+		this.cells[i].update(time, dt)
 	}
 
-	if (!natureTarget) {
-		natureTarget = {
-			index: (this.cells.length + 1) * 3 - 1
-		}
-	}
+	for (i = 0; i < this.units.length; i++) {
+		var unit = this.units[i];
+		unit.i = i
 
-    for (i = 0; i < this.cells.length; i++) {
-    	var cell = this.cells[i]
-
-    	// Find first neutral or enemy empty cell
-    	if (!cell.owner || cell.owner == "nature" && !cell.building) {
-    		newYorkTarget = {
-				index: i * 3
+		if (unit.hp > 0) {
+			// Cooldown
+			if (unit.cooldownTimer > 0) {
+				unit.cooldownTimer -= dt
 			}
 
-			break
-    	}
-	}
+			// Attack or Move
+			if (unit.cooldownTimer <= 0) {
+				var actionDone = false
+				var blockedByFriend = false
 
-	if (!newYorkTarget) {
-		newYorkTarget = {
-			index: 0
-		}
-	}
+				// Detect collisions with other units
+				for (j = 0; j < this.units.length; j++) {
+					if (i != j && !actionDone) {
+						var otherUnit = this.units[j]
 
-    for (i = this.cells.length - 1; i >= 0; --i) {
-    	var cell = this.cells[i]
+						if (otherUnit.hp > 0 && unit.willCollideWith(otherUnit.getBounds(), dt)) {
+							// Collision with enemy: Attack
+							if (unit.player != otherUnit.player) {
+								if (otherUnit.hit(unit.attack)) {
+									unitToRemove.push(otherUnit)
+								}
 
-    	if (!cell.owner || cell.captureProgress > -1 ) {
-    		builderTarget = {
-    			index: (i + 1) * 3
-    		}
-    		break
-    	}
-	}
+								actionDone = true
+								unit.switchAnimation("wait")
+								unit.startCooldown()
+							}
+							// Collision with friend: Stop if friend is also stopped
+							else {
+								if (!blockedByFriend && otherUnit.phase == "wait") {
+									blockedByFriend = true
+									unit.switchAnimation("wait")
+								}
+							}
+						}	
+					}
+				}
 
-	// Find farthest units
-	var farthestUnit = {}
-	this.farthestUnit = farthestUnit
-    for (i = 0; i < this.units.length; i++) {
-    	var unit = this.units[i]
-    	var localBest = farthestUnit[unit.player]
+				if (blockedByFriend && !actionDone) {
+					// Detect collisions with other units (farther)
+					for (j = 0; j < this.units.length; j++) {
+						if (i != j && !actionDone) {
+							var otherUnit = this.units[j]
+							var bounds = otherUnit.getBounds()
+							bounds.left --
+							bounds.right ++
 
-    	if (!localBest
-    	|| (unit.player == "nature" && unit.xPosition > localBest.xPosition)
-    	|| (unit.player == "newYork" && unit.xPosition < localBest.xPosition)) {
-    		farthestUnit[unit.player] = unit
-    	}
-    }
+							if (otherUnit.hp > 0 && unit.willCollideWith(bounds, dt)) {
+								// Collision with enemy: Attack
+								if (unit.player != otherUnit.player) {
+									if (otherUnit.hit(unit.attack)) {
+										unitToRemove.push(otherUnit)
+									}
 
-    // Correct targets using farthest units
-    if (farthestUnit.newYork && farthestUnit.newYork.xPosition - 1 / 6 < natureTarget.index / 3) {
-    	natureTarget = {
-    		index: Math.floor(farthestUnit.newYork.xPosition * 3) - 1
-    	}
-    }
-
-    if (newYorkTarget && farthestUnit.nature && farthestUnit.nature.xPosition > newYorkTarget.index / 3) {
-    	newYorkTarget = {
-    		index: Math.ceil(farthestUnit.nature.xPosition * 3)
-    	}
-    }
-
-    // Find next available spot
-	for (j = natureTarget.index; j >= 0; --j) {
-		if (!this.waitingLine[j]) {
-			natureTarget = {
-				index: j
-			}
-			break
-		}
-	}
-
-	for (j = newYorkTarget.index; j < this.cells.length * 3; j++) {
-		if (!this.waitingLine[j]) {
-			newYorkTarget = {
-				index: j
-			}
-			break
-		}
-	}
-
-	if (!builderTarget) {
-		builderTarget = {
-			index: newYorkTarget.index
-		}
-	} else if (newYorkTarget.index > builderTarget.index) {
-		builderTarget.index = newYorkTarget.index
-	}
-
-    // Compute target positions
-    natureTarget.position = natureTarget.index / 3 + 1 / 6
-    newYorkTarget.position = newYorkTarget.index / 3 + 1 / 6
-   	builderTarget.position = builderTarget.index / 3 + 1 / 6
-
-    for (i = 0; i < this.cells.length; i++) {
-		this.cells[i].update(time, dt);
-	}
-
-    for (i = 0; i < this.units.length; i++) {
-    	this.units[i].index = i
-    }
-
-    for (i = 0; i < this.units.length; i++) {
-		unit = this.units[i];
-		var opponent = unit.player == "nature" ? "newYork" : "nature"
-
-		if (unit.phase == "walk") {
-	        if (unit.type == "builder" && unit.xPosition > builderTarget.position && unit.xPosition < builderTarget.position + 1/6) {
-	        	if (builderTarget) {
-	        		unit.setPosition(builderTarget.position)
-	        		this.waitingLine[builderTarget.index] = unit
-	        		unit.waitingLineIndex = builderTarget.index
-		        	builderTarget.index ++
-		        	builderTarget.position += 1 / 3
-	        	} else {
-	        		unit.hide()
-	        	}
-
-	        	unit.switchAnimation("build")
-	        } else if (unit.player == "nature") {
-	        	if (natureTarget.index < 0 || unit.xPosition > natureTarget.position) {
-		        	if (natureTarget) {
-		        		unit.setPosition(natureTarget.position)
-		        		this.waitingLine[natureTarget.index] = unit
-		        		unit.waitingLineIndex = natureTarget.index
-			        	natureTarget.index --
-			        	natureTarget.position -= 1 / 3
-		        	} else {
-		        		unit.hide()
-		        	}
-
-		        	unit.switchAnimation("wait")
-		        }
-	        } else if (unit.player == "newYork") {
-	        	if (!newYorkTarget || newYorkTarget.index < 0 || unit.xPosition < newYorkTarget.position) {
-		        	if (newYorkTarget) {
-		        		unit.setPosition(newYorkTarget.position)
-		        		this.waitingLine[newYorkTarget.index] = unit
-		        		unit.waitingLineIndex = newYorkTarget.index
-			        	newYorkTarget.index ++
-			        	newYorkTarget.position += 1 / 3
-		        	} else {
-		        		unit.hide()
-		        	}
-
-	        		unit.switchAnimation("wait")
-	        	}
-	        }
-	    } else if (unit.isReady()) {
-	    	// Enemy unit in sight: Attack the nearest
-	    	var direction = unit.player == "nature" ? 1 : -1
-	    	var actionDone = false
-    		for (j = unit.waitingLineIndex + direction; j > unit.waitingLineIndex - 3 && j < unit.waitingLineIndex + 3; j += direction) {
-    			var potentialUnit = this.waitingLine[j]
-    			if (potentialUnit && potentialUnit.player != unit.player) {
-    				actionDone = true
-    				if (potentialUnit.hit(unit.attack)) {
-	    				this.waitingLine[potentialUnit.waitingLineIndex] = null
-	    				unitToRemove.push(potentialUnit.index)
-	    			}
-    				break
-    			}
-    		}
-
-    		if (!actionDone) {
-    			// Enemy building on the cell: Attack it
-    			var cellId = Math.floor(unit.waitingLineIndex / 3)
-    			var cell = this.cells[cellId]
-    			var hurt = false
-    			if (cell && cell.building && cell.building.player != unit.player) {
-    				actionDone = true
-    				if (cell.building.hit(unit.buildingAttack)) {
-    					cell.building = null
-    				}
-    			}
-    		}
-
-			if (!actionDone) {
-				// Enemy building OR the big building on next cell: Attack it
-				cellId += direction
-				cell = this.cells[cellId]
-				if (cell) {
-					if (cell.building && cell.building.player != unit.player) {
-	    				actionDone = true
-						if (cell.building.hit(unit.buildingAttack)) {
-							cell.building = null
+									actionDone = true
+									unit.switchAnimation("wait")
+									unit.startCooldown()
+								}
+							}	
 						}
 					}
-				} else {
-					actionDone = true
-					this.board.hqs[opponent].hit(unit.buildingAttack)
-					unit.hit(unit.hp)
-    				this.waitingLine[unit.waitingLineIndex] = null
-    				unitToRemove.push(i)
+
+					if (!actionDone) {
+						// Detect collisions with buildings (farther)
+						for (j = 0; j < this.cells.length; j++) {
+							var building = this.cells[j].building
+
+							if (building
+							&& building.currentHP > 0
+							&& building.player != unit.player) {
+								var bounds = building.getBounds()
+								bounds.left --
+								bounds.right ++
+
+								if (unit.willCollideWith(bounds, dt)) {
+									building.hit(unit.buildingAttack)
+									actionDone = true
+									unit.switchAnimation("wait")
+									unit.startCooldown()
+								}
+							}
+						}
+					}
+				}
+
+				if (!actionDone && !blockedByFriend) {
+					// Detect collisions with buildings
+					for (j = 0; j < this.cells.length; j++) {
+						var building = this.cells[j].building
+
+						if (building
+						&& building.currentHP > 0
+						&& building.player != unit.player
+						&& unit.willCollideWith(building.getBounds(), dt)) {
+							building.hit(unit.buildingAttack)
+							actionDone = true
+							unit.switchAnimation("wait")
+							unit.startCooldown()
+						}
+					}
+
+					if (!actionDone) {
+						var walk = true
+
+						if (unit.type == "builder") {
+							var cell = this.cells[Math.floor(unit.xPosition)]
+							if (cell.captureProgress > -1) {
+								walk = false
+
+								// Build
+								if (unit.phase != "build") {
+									unit.switchAnimation("build")
+								}
+							}
+						}
+
+						if (walk) {
+							// Walk
+							if (unit.phase != "walk") {
+								unit.switchAnimation("walk")
+							}
+
+							unit.move(dt)
+
+							// Hit fortress
+							if (unit.direction > 0 && unit.xPosition > this.cells.length
+							|| unit.direction < 0 && unit.xPosition < 0) {
+								var opponent = unit.player == "nature" ? "newYork" : "nature"
+								this.board.hqs[opponent].hit(unit.buildingAttack)
+								unit.hit(unit.hp)
+								unitToRemove.push(unit)
+							}
+						}
+					}
 				}
 			}
+		}
 
-			if (!actionDone) {
-				// Next spot is free: Move
-				if (!this.waitingLine[unit.waitingLineIndex + direction]
-				&& (!farthestUnit[opponent] || Math.abs(farthestUnit[opponent].xPosition - unit.xPosition) > 1 / 2)) {
-					actionDone = true
-    				this.waitingLine[unit.waitingLineIndex] = null
-    				unit.waitingLineIndex = null
-					unit.switchAnimation("walk")
-				}
-			}
-
-			// Wait
-			// Nothing special to code, woopy!
-
-			// Something has been done: Start cooldown
-			if (actionDone) {
-				unit.startCooldown()
-			}
-	    } else if (unit.phase == "build") {
-	    	var cellId = Math.floor(unit.waitingLineIndex / 3) - 1
-
-	    	if (cellId >= 0 && this.cells[cellId].captureProgress == -1) {
-	    		unit.switchAnimation("walk")
-	    	}
-	    }
-
-        unit.update(time, dt);
+		unit.update(time, dt)
 	}
 
 	this.processCreationQueue(time, dt)
-    for(i = unitToRemove.length - 1; i >= 0; i--) {
-    	this.dyingUnits.push(this.units[unitToRemove[i]]);
-        this.units.splice(unitToRemove[i], 1);
-        
-    }
+	for(i = unitToRemove.length - 1; i >= 0; i--) {
+		this.dyingUnits.push(this.units[unitToRemove[i].i]);
+		this.units.splice(unitToRemove[i].i, 1);
+	}
 
-    var realyDeadUnits = []
-    for(i = this.dyingUnits.length - 1; i >= 0; i--) {
-    	if (this.dyingUnits.deathAnimationFinished)
-    	{
-    		realyDeadUnits.push(this.dyingUnits[i]);
-    	}
-    	if (this.dyingUnits[i])
-        	this.dyingUnits[i].update(time, dt);
-    }
-    for(i = realyDeadUnits.length - 1; i >= 0; i--) {
-        this.dyingUnits.splice(realyDeadUnits[i], 1);
-    }
+	var reallyDeadUnits = []
+	for(i = this.dyingUnits.length - 1; i >= 0; i--) {
+		if (this.dyingUnits.deathAnimationFinished) {
+			reallyDeadUnits.push(this.dyingUnits[i]);
+		}
+
+		if (this.dyingUnits[i]) {
+			this.dyingUnits[i].update(time, dt);
+		}
+	}
+
+	for(i = reallyDeadUnits.length - 1; i >= 0; i--) {
+		this.dyingUnits.splice(reallyDeadUnits[i], 1);
+	}
 
 }
