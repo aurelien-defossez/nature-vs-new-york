@@ -156,38 +156,31 @@ Lane.prototype.update = function(time, dt){
 
 			// Attack or Move
 			if (unit.cooldownTimer <= 0) {
-				var collisions = []
 				var actionDone = false
 				var blockedByFriend = false
 
-				// Detect collisions
+				// Detect collisions with other units
 				for (j = 0; j < this.units.length; j++) {
-					if (i != j) {
+					if (i != j && !actionDone) {
 						var otherUnit = this.units[j]
 
 						if (otherUnit.hp > 0 && unit.willCollideWithNextUnit(otherUnit, dt)) {
-							collisions.push(otherUnit)
+							// Collision with enemy: Attack
+							if (unit.player != otherUnit.player) {
+								if (otherUnit.hit(unit.attack)) {
+									unitToRemove.push(otherUnit)
+								}
+
+								actionDone = true
+								unit.startCooldown()
+							}
+							// Collision with friend: Stop if friend is also stopped
+							else {
+								if (otherUnit.phase == "wait") {
+									blockedByFriend = true
+								}
+							}
 						}	
-					}
-				}
-
-				for (j = 0; j < collisions.length; j++) {
-					var otherUnit = collisions[j]
-
-					// Collision with enemy: Attack
-					if (unit.player != otherUnit.player) {
-						if (otherUnit.hit(unit.attack)) {
-							unitToRemove.push(otherUnit)
-						}
-
-						actionDone = true
-						unit.startCooldown()
-					}
-					// Collision with friend: Stop if friend is also stopped
-					else {
-						if (otherUnit.phase == "wait") {
-							blockedByFriend = true
-						}
 					}
 				}
 
