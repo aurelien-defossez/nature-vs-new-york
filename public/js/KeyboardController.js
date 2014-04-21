@@ -67,11 +67,12 @@ KeyboardController.prototype.updateKey = function(key, value) {
             this.displayMana = value;
             break;
     }
-    if (this.displayMana){
-        this.player.displayManaCount()
-    }else{
-        this.player.hideManaCount()
-    }
+    
+    // if (this.displayMana){
+    //     this.player.displayManaCount()
+    // }else{
+    //     this.player.hideManaCount()
+    // }
 }
 
 KeyboardController.prototype.performAction = function() {
