@@ -186,6 +186,53 @@ Lane.prototype.update = function(time, dt){
 					}
 				}
 
+				if (blockedByFriend && !actionDone) {
+					// Detect collisions with other units (farther)
+					for (j = 0; j < this.units.length; j++) {
+						if (i != j && !actionDone) {
+							var otherUnit = this.units[j]
+							var bounds = otherUnit.getBounds()
+							bounds.left --
+							bounds.right ++
+
+							if (otherUnit.hp > 0 && unit.willCollideWith(bounds, dt)) {
+								// Collision with enemy: Attack
+								if (unit.player != otherUnit.player) {
+									if (otherUnit.hit(unit.attack)) {
+										unitToRemove.push(otherUnit)
+									}
+
+									actionDone = true
+									unit.switchAnimation("wait")
+									unit.startCooldown()
+								}
+							}	
+						}
+					}
+
+					if (!actionDone) {
+						// Detect collisions with buildings (farther)
+						for (j = 0; j < this.cells.length; j++) {
+							var building = this.cells[j].building
+
+							if (building
+							&& building.currentHP > 0
+							&& building.player != unit.player) {
+								var bounds = building.getBounds()
+								bounds.left --
+								bounds.right ++
+
+								if (unit.willCollideWith(bounds, dt)) {
+									building.hit(unit.buildingAttack)
+									actionDone = true
+									unit.switchAnimation("wait")
+									unit.startCooldown()
+								}
+							}
+						}
+					}
+				}
+
 				if (!actionDone && !blockedByFriend) {
 					// Detect collisions with buildings
 					for (j = 0; j < this.cells.length; j++) {
@@ -194,7 +241,7 @@ Lane.prototype.update = function(time, dt){
 						if (building
 						&& building.currentHP > 0
 						&& building.player != unit.player
-						&& unit.willCollideWith(building.getBounds())) {
+						&& unit.willCollideWith(building.getBounds(), dt)) {
 							building.hit(unit.buildingAttack)
 							actionDone = true
 							unit.switchAnimation("wait")
@@ -225,6 +272,7 @@ Lane.prototype.update = function(time, dt){
 
 							unit.move(dt)
 
+							// Hit fortress
 							if (unit.direction > 0 && unit.xPosition > this.cells.length
 							|| unit.direction < 0 && unit.xPosition < 0) {
 								var opponent = unit.player == "nature" ? "newYork" : "nature"
