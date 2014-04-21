@@ -106,29 +106,24 @@ Lane.prototype.capture = function(type, value){
 	if (type == HQ.typesEnum.NATURE) {
 		for (var i = 0; i < Game.config.lane.cellNumber; i++) {
 			var cell = this.cells[i]
-			var hasBuilderOnCell = false;
-			for (var j = 0; j< this.units.length; j++)
-			{
-				var unit = this.units[j];
-				if (unit.type == "builder"){
-					var index = Math.floor(unit.xPosition);
-					
-					if (index == i || (index == i+1 )) 
-					{
-						//console.log("STOP")
-						hasBuilderOnCell = true;
-					}	
 
+			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
+				var hasBuilderOnCell = false;
+				for (var j = 0; j < this.units.length; j++) {
+					var unit = this.units[j];
+					if (unit.type == "builder") {
+						var index = Math.floor(unit.xPosition);
+						
+						if (index <= i) {
+							hasBuilderOnCell = true;
+						}	
+					}
+				}
+
+				if (!hasBuilderOnCell) {
+					remaining = cell.capture(value)
 				}
 			}
-			if (hasBuilderOnCell)
-				break;
-
-			
-			if (remaining > 0 && cell.captureProgress < 1 && cell.building == null) {
-				remaining = cell.capture(value)
-			}
-
 		}
 	} else {
 		for (var i = Game.config.lane.cellNumber - 1; i >= 0; --i) {
@@ -144,6 +139,10 @@ Lane.prototype.capture = function(type, value){
 Lane.prototype.update = function(time, dt){
 	var i, j
 	var unitToRemove = []
+
+	for (i = 0; i < this.cells.length; i++) {
+		this.cells[i].update(time, dt)
+	}
 
 	for (i = 0; i < this.units.length; i++) {
 		var unit = this.units[i];
@@ -192,21 +191,37 @@ Lane.prototype.update = function(time, dt){
 					}
 				}
 
-				// Wait
 				if (actionDone || blockedByFriend) {
+					// Wait
 					unit.switchAnimation("wait")
 				}
-				// Move
 				else {
-					if (unit.phase == "wait") {
-						unit.switchAnimation("walk")
+					var walk = true
+
+					if (unit.type == "builder") {
+						var cell = this.cells[Math.floor(unit.xPosition)]
+						if (cell.captureProgress > -1) {
+							walk = false
+
+							// Build
+							if (unit.phase != "build") {
+								unit.switchAnimation("build")
+							}
+						}
 					}
 
-					unit.move(dt)
+					if (walk) {
+						// Walk
+						if (unit.phase != "walk") {
+							unit.switchAnimation("walk")
+						}
+
+						unit.move(dt)
+					}
 				}
 			}
 		}
-		
+
 		unit.update(time, dt)
 	}
 
