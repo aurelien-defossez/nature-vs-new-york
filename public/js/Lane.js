@@ -224,6 +224,14 @@ Lane.prototype.update = function(time, dt){
 							}
 
 							unit.move(dt)
+
+							if (unit.direction > 0 && unit.xPosition > this.cells.length
+							|| unit.direction < 0 && unit.xPosition < 0) {
+								var opponent = unit.player == "nature" ? "newYork" : "nature"
+								this.board.hqs[opponent].hit(unit.buildingAttack)
+								unit.hit(unit.hp)
+								unitToRemove.push(unit)
+							}
 						}
 					}
 				}
