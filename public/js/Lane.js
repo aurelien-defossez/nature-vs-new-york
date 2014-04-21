@@ -164,7 +164,7 @@ Lane.prototype.update = function(time, dt){
 					if (i != j && !actionDone) {
 						var otherUnit = this.units[j]
 
-						if (otherUnit.hp > 0 && unit.willCollideWithNextUnit(otherUnit, dt)) {
+						if (otherUnit.hp > 0 && unit.willCollideWith(otherUnit.getBounds(), dt)) {
 							// Collision with enemy: Attack
 							if (unit.player != otherUnit.player) {
 								if (otherUnit.hit(unit.attack)) {
@@ -172,44 +172,59 @@ Lane.prototype.update = function(time, dt){
 								}
 
 								actionDone = true
+								unit.switchAnimation("wait")
 								unit.startCooldown()
 							}
 							// Collision with friend: Stop if friend is also stopped
 							else {
-								if (otherUnit.phase == "wait") {
+								if (!blockedByFriend && otherUnit.phase == "wait") {
 									blockedByFriend = true
+									unit.switchAnimation("wait")
 								}
 							}
 						}	
 					}
 				}
 
-				if (actionDone || blockedByFriend) {
-					// Wait
-					unit.switchAnimation("wait")
-				}
-				else {
-					var walk = true
+				if (!actionDone && !blockedByFriend) {
+					// Detect collisions with buildings
+					for (j = 0; j < this.cells.length; j++) {
+						var building = this.cells[j].building
 
-					if (unit.type == "builder") {
-						var cell = this.cells[Math.floor(unit.xPosition)]
-						if (cell.captureProgress > -1) {
-							walk = false
-
-							// Build
-							if (unit.phase != "build") {
-								unit.switchAnimation("build")
-							}
+						if (building
+						&& building.currentHP > 0
+						&& building.player != unit.player
+						&& unit.willCollideWith(building.getBounds())) {
+							building.hit(unit.buildingAttack)
+							actionDone = true
+							unit.switchAnimation("wait")
+							unit.startCooldown()
 						}
 					}
 
-					if (walk) {
-						// Walk
-						if (unit.phase != "walk") {
-							unit.switchAnimation("walk")
+					if (!actionDone) {
+						var walk = true
+
+						if (unit.type == "builder") {
+							var cell = this.cells[Math.floor(unit.xPosition)]
+							if (cell.captureProgress > -1) {
+								walk = false
+
+								// Build
+								if (unit.phase != "build") {
+									unit.switchAnimation("build")
+								}
+							}
 						}
 
-						unit.move(dt)
+						if (walk) {
+							// Walk
+							if (unit.phase != "walk") {
+								unit.switchAnimation("walk")
+							}
+
+							unit.move(dt)
+						}
 					}
 				}
 			}

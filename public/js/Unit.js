@@ -161,12 +161,11 @@ Unit.prototype.switchAnimation = function(phase){
     }
 }
 
-Unit.prototype.willCollideWithNextUnit = function(unit, dt) {
+Unit.prototype.willCollideWith = function(bounds, dt) {
     var unitBounds = this.getBounds(this.speed * this.direction * dt)
-    var otherBounds = unit.getBounds()
 
-    return this.direction > 0 && unitBounds.right > otherBounds.left && unitBounds.right < otherBounds.right
-        || this.direction < 0 && unitBounds.left > otherBounds.left && unitBounds.left < otherBounds.right
+    return this.direction > 0 && unitBounds.right > bounds.left && unitBounds.right < bounds.right
+        || this.direction < 0 && unitBounds.left > bounds.left && unitBounds.left < bounds.right
 }
 
 Unit.prototype.getBounds = function(offset) {
