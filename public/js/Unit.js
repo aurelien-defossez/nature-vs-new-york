@@ -41,47 +41,70 @@ function Unit(scene, player, type, loader, hq) {
 
     this.animations = {}
     this.currentAnimation = null
-    var self = this
+
     fileName = Game.config.units[type].modelFile
+
     if (fileName)
     { 
-        loader.load(fileName, function(geometry, materials)
-        {
-            self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
-            self.mesh.castShadow = true
-            self.mesh.receiveShadow = true
-
-            var materials = self.mesh.material.materials
-            for (var k in materials)
-            {
-                materials[k].skinning = true
-            }
-
-            for (var i = 0; i < self.mesh.geometry.animations.length; ++i)
-            {
-                if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
-                    THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
-            }
-
-            self.animations.walk = new THREE.Animation(self.mesh, type+"_walk", THREE.AnimationHandler.CATMULLROM)
-            self.animations.walk.loop = true
-            self.animations.idle = new THREE.Animation(self.mesh, type+"_idle", THREE.AnimationHandler.CATMULLROM)
-            self.animations.idle.loop = true
-            self.animations.death = new THREE.Animation(self.mesh, type+"_death", THREE.AnimationHandler.CATMULLROM)
-            self.animations.death.loop = false
-            if (self.type == "builder"){
-                self.animations.working = new THREE.Animation(self.mesh, type+"_working", THREE.AnimationHandler.CATMULLROM)
-                self.animations.working.loop = true
-            }
-            self.currentAnimation = self.animations.walk
-            self.currentAnimation.play()
-        })
+        this.loadUnit(loader, this.type, fileName)
     }else{
         this.mesh = new THREE.Mesh( new THREE.CubeGeometry(this.width, this.width, this.width),
-            new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
+        new THREE.MeshBasicMaterial( { color: colors[this.type] } ) );
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
     }
+}
+
+Unit.prototype.loadUnit = function(loader, name, fileName)
+{
+    var self = this
+    if (!window.getModel(name))
+    {
+
+        loader.load(fileName, function(geometry, materials) {
+            window.models.push({name:self.type, geometry:geometry, materials:materials})
+            self.unitLoaded(self.type)
+        })
+    } else 
+    {
+        this.unitLoaded(name)
+    }
+
+}
+
+Unit.prototype.unitLoaded = function(name)
+{
+    var model = window.getModel(name)
+
+    this.mesh = new THREE.SkinnedMesh(model.geometry, new THREE.MeshFaceMaterial(model.materials))
+    this.mesh.castShadow = true
+    this.mesh.receiveShadow = true
+
+    var materials = this.mesh.material.materials
+    for (var k in materials)
+    {
+        materials[k].skinning = true
+    }
+
+    for (var i = 0; i < this.mesh.geometry.animations.length; ++i)
+    {
+        if (THREE.AnimationHandler.get(this.mesh.geometry.animations[i].name) == null)
+            THREE.AnimationHandler.add(this.mesh.geometry.animations[i])
+    }
+
+    this.animations.walk = new THREE.Animation(this.mesh, this.type+"_walk", THREE.AnimationHandler.CATMULLROM)
+    this.animations.walk.loop = true
+    this.animations.idle = new THREE.Animation(this.mesh, this.type+"_idle", THREE.AnimationHandler.CATMULLROM)
+    this.animations.idle.loop = true
+    this.animations.death = new THREE.Animation(this.mesh, this.type+"_death", THREE.AnimationHandler.CATMULLROM)
+    this.animations.death.loop = false
+    if (this.type == "builder"){
+        this.animations.working = new THREE.Animation(this.mesh, this.type+"_working", THREE.AnimationHandler.CATMULLROM)
+        this.animations.working.loop = true
+    }
+    this.currentAnimation = this.animations.walk
+    this.currentAnimation.play()
+
 }
 
 Unit.prototype.startBuild = function(){
