@@ -73,30 +73,47 @@ Cell.prototype.update = function(time, dt){
 Cell.prototype.loadMesh = function(loader, name) {
 	var self = this
 	var fileName = Game.config.buildings[name].modelFile
-	loader.load(fileName, function(geometry, materials) {
-		if (self.mesh) {
-			self.scene.remove(self.mesh)
-		}
-		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
-		self.mesh.castShadow = true
-		self.mesh.receiveShadow = true
-		self.scene.add(self.mesh)
-		
-		var materials = self.mesh.material.materials
-		for (var k in materials) {
-			materials[k].skinning = true
-		}
-		
-		for (var i = 0; i < self.mesh.geometry.animations.length; ++i) {
-			if (THREE.AnimationHandler.get(self.mesh.geometry.animations[i].name) == null)
-				THREE.AnimationHandler.add(self.mesh.geometry.animations[i])
-		}
-		
-		self.animations.create = new THREE.Animation(self.mesh, name + "_create", THREE.AnimationHandler.CATMULLROM)
 
-		self.animations.create.loop = false
-		self.currentAnimation = self.animations.create
-		self.animationTime = self.currentAnimation.data.length;
-		self.currentAnimation.play()
-	})
+	if (self.mesh) {
+		self.scene.remove(self.mesh)
+	}
+	if (!window.getModel(name))
+	{
+
+		loader.load(fileName, function(geometry, materials) {
+			window.models.push({name:self.owner+"Cell", geometry:geometry, materials:materials})
+			self.meshLoaded(self.owner+"Cell")
+		})
+	} else 
+	{
+		this.meshLoaded(name)
+	}
+
+
+}
+
+Cell.prototype.meshLoaded = function(name)
+{
+	model = window.getModel(name)
+	this.mesh = new THREE.SkinnedMesh(model.geometry, new THREE.MeshFaceMaterial(model.materials))
+	this.mesh.castShadow = true
+	this.mesh.receiveShadow = true
+	this.scene.add(this.mesh)
+	
+	var materials = this.mesh.material.materials
+	for (var k in materials) {
+		materials[k].skinning = true
+	}
+	
+	for (var i = 0; i < this.mesh.geometry.animations.length; ++i) {
+		if (THREE.AnimationHandler.get(this.mesh.geometry.animations[i].name) == null)
+			THREE.AnimationHandler.add(this.mesh.geometry.animations[i])
+	}
+	
+	this.animations.create = new THREE.Animation(this.mesh, name + "_create", THREE.AnimationHandler.CATMULLROM)
+
+	this.animations.create.loop = false
+	this.currentAnimation = this.animations.create
+	this.animationTime = this.currentAnimation.data.length;
+	this.currentAnimation.play()
 }

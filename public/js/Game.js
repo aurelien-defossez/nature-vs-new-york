@@ -2,6 +2,7 @@ function Game()
 {
     this.currentTime = null
 	this.isStartup = true
+    window.models = []
 
     var gameDiv = document.getElementById("game")
 
@@ -88,4 +89,14 @@ Game.prototype.update = function(time)
     this.players.right.controlAction()
 
     this.renderer.render(this.scene, this.camera)
+}
+
+
+window.getModel = function(name)
+{
+    for (var i =0; i<window.models.length; i++)
+    {
+        if (name == window.models[i].name)
+            return window.models[i]
+    }
 }
