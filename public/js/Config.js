@@ -28,14 +28,14 @@ Game.config = {
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
-	    		// 'input1' : 'protectorTree',
-	    		'input2' : 'rootTree',
+	    		'input1' : 'rootTree',
+	    		// 'input2' : 'protectorTree',
 	    		// 'input3' : 'brambles'
 	    	},
 	    	units: {
-	    		// 'input0' : 'sapCarrier',
-	    		'input1' : 'wolf',
-	    		'input2' : 'bear',
+	    		'input0' : 'wolf',
+	    		'input1' : 'bear',
+	    		// 'input2' : 'sapCarrier',
 	    		// 'input3' : 'ent'
 	    	}
     	}
@@ -54,9 +54,9 @@ Game.config = {
 	    		// 'input3' : 'armedConcrete'
 	    	},
 	    	units: {
-	    		'input0' : 'builder',
+	    		'input0' : 'policeman',
 	    		'input1' : 'lumberjack',
-	    		'input2' : 'policeman',
+	    		'input2' : 'builder',
 	    		// 'input3' : 'mecha'
 	    	}
     	}
@@ -116,7 +116,7 @@ Game.config = {
 			cooldown: 1,
 			hp: 5,
 			speed: 0.2,
-			cost: 20,
+			cost: 15,
 			time: 5,
 			captureSpeed: 0.1,
 			modelFile:"data/builder.js",
@@ -210,8 +210,8 @@ Game.config = {
 		policeStation: {
 			hp: 100,
 			cost: 20,
-			time: 2,
-			policemansDelay: 2,
+			time: 20,
+			policemansDelay: 10,
 			modelFile : "data/police_station.js"
 		},
 		// Atelier
