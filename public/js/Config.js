@@ -24,7 +24,7 @@ Game.config = {
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
-    	captureSpeed: 0.05,
+    	captureSpeed: 0.025,
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
@@ -41,7 +41,7 @@ Game.config = {
     	}
 	},
 	newYork : {
-		initOwnedCells : 1,
+		initOwnedCells : 2,
     	hp: 200,
     	startMana: 50,
     	manaPerSecond: 2,
@@ -76,8 +76,8 @@ Game.config = {
 		},
 		// Loup
 		wolf: {
-			attack: 1.5,
-			buildingAttack: 1,
+			attack: 1.0,
+			buildingAttack: 0.75,
 			cooldown: 0.5,
 			hp: 15,
 			speed: 1.0,
@@ -129,7 +129,7 @@ Game.config = {
 			cooldown: 1,
 			hp: 15,
 			speed: 0.4,
-			cost: 5,
+			cost: 10,
 			time: 5,
 			modelFile:"data/LumberJack.js",
 			width: 0.3
@@ -141,7 +141,7 @@ Game.config = {
 			cooldown: 1,
 			hp: 10,
 			speed: 0.5,
-			cost: 2,
+			cost: 3,
 			time: 2,
 			modelFile:"data/policeman.js",
 			width: 0.3
@@ -172,7 +172,7 @@ Game.config = {
 			hp: 50,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 1.0,
+			manaPerSecond: 0.25,
 			modelFile : "data/tree_mana.js"
 		},
 		// Arbre Protecteur
@@ -188,7 +188,7 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			captureSpeed: 0.05,
+			captureSpeed: 0.025,
 			modelFile : "data/tree_root.js"
 		},
 		// Ronces
@@ -203,7 +203,7 @@ Game.config = {
 			hp: 50,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 1.0,
+			manaPerSecond: 0.25,
 			modelFile : "data/bank.js"
 		},
 		// Station de Police
@@ -283,7 +283,7 @@ Game.config = {
         	69: 'bumper'	// E
 		}
 	},
-	controllerType : 'keyboard',
+	controllerType : 'gamepad',
 	buildMonitor : {
 		progressRefreshInterval : 300 //in milliseconds
 	}

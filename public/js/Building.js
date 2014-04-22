@@ -264,6 +264,7 @@ Building.prototype.hit = function(points){
 }
 
 Building.prototype.destroy = function(){
+	this.cell.building = null
 	this.parentScene.remove(this.mesh)
 	this.parentScene.remove(this.healthBarBackground);
 	this.parentScene.remove(this.healthBar);
