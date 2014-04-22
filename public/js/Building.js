@@ -41,61 +41,97 @@ function Building(scene, loader, button, player, hq, lane, cell){
 
 	this.animations = {}
 	this.currentAnimation = null
-	var self = this
 
-	loader.load(fileName, function(geometry, materials)
-	{
-		self.mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
-		self.mesh.castShadow = true
-		self.mesh.receiveShadow = true
-		//self.parentScene.add(self.mesh)
-		console.log(Game.config.buildings[buildingType].modelFile)
-		if (Game.config.buildings[buildingType].modelFile == "data/tree_mana.js")
-		{
-			materials[1].alphaTest = 0.5;
-		}
+	this.loadBuilding(loader, this.type, fileName)
 
-
-	})
 	var name
 	if (this.player == "newYork"){
 		fileName = Game.config.buildings.scaffolding.modelFile
-		name = "scaffolding"
+		this.name = "scaffolding"
 	}
 
 	else{
 		fileName = Game.config.buildings.tree.modelFile
-		name = "tree"
+		this.name = "tree"
+	}
+	this.loadScaffolding(loader, name, fileName)
+
+}
+
+Building.prototype.loadBuilding = function(loader, name, fileName) {
+	var self = this
+	if (!window.getModel(name))
+	{
+
+		loader.load(fileName, function(geometry, materials) {
+			window.models.push({name:self.type, geometry:geometry, materials:materials})
+			self.buildingLoaded(self.type)
+		})
+	} else 
+	{
+		this.buildingLoaded(name)
 	}
 
-	loader.load(fileName, function(geometry, materials)
+}
+
+Building.prototype.buildingLoaded = function(name)
+{
+	model = window.getModel(name)
+	this.mesh = new THREE.SkinnedMesh(model.geometry, new THREE.MeshFaceMaterial(model.materials))
+	this.mesh.castShadow = true
+	this.mesh.receiveShadow = true
+	console.log(Game.config.buildings[name].modelFile)
+	if (Game.config.buildings[name].modelFile == "data/tree_mana.js")
 	{
-		self.scaffoldingMesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials))
-		self.scaffoldingMesh.castShadow = true
-		self.scaffoldingMesh.receiveShadow = true
-		self.parentScene.add(self.scaffoldingMesh)
+		materials[1].alphaTest = 0.5;
+	}
 
-		var materials = self.scaffoldingMesh.material.materials
-		for (var k in materials)
-		{
-			materials[k].skinning = true
-		}
+}
 
-		for (var i = 0; i < self.scaffoldingMesh.geometry.animations.length; ++i)
-		{
-			if (THREE.AnimationHandler.get(self.scaffoldingMesh.geometry.animations[i].name) == null)
-				THREE.AnimationHandler.add(self.scaffoldingMesh.geometry.animations[i])
-		}
 
-		self.animations.create = new THREE.Animation(self.scaffoldingMesh, name+"_create", THREE.AnimationHandler.CATMULLROM)
-		self.animations.create.loop = false
-		self.animations.destroy = new THREE.Animation(self.scaffoldingMesh, name+"_destroy", THREE.AnimationHandler.CATMULLROM)
-		self.animations.destroy.loop = false
-		self.currentAnimation = self.animations.create
-		self.animationTime = self.currentAnimation.data.length;
-		self.currentAnimation.play()
-	})
 
+Building.prototype.loadScaffolding = function(loader, name, fileName) {
+	var self = this
+
+	if (!window.getModel(name))
+	{
+
+		loader.load(fileName, function(geometry, materials) {
+			window.models.push({name:self.name, geometry:geometry, materials:materials})
+			self.scaffoldingLoaded(self.name)
+		})
+	} else 
+	{
+		this.scaffoldingLoaded(name)
+	}
+}
+Building.prototype.scaffoldingLoaded = function(name)
+{
+	model = window.getModel(name)
+	this.scaffoldingMesh = new THREE.SkinnedMesh(model.geometry, new THREE.MeshFaceMaterial(model.materials))
+	this.scaffoldingMesh.castShadow = true
+	this.scaffoldingMesh.receiveShadow = true
+	this.parentScene.add(this.scaffoldingMesh)
+
+	var materials = this.scaffoldingMesh.material.materials
+	for (var k in materials)
+	{
+		materials[k].skinning = true
+	}
+
+	for (var i = 0; i < this.scaffoldingMesh.geometry.animations.length; ++i)
+	{
+		if (THREE.AnimationHandler.get(this.scaffoldingMesh.geometry.animations[i].name) == null)
+			THREE.AnimationHandler.add(this.scaffoldingMesh.geometry.animations[i])
+	}
+
+	this.animations.create = new THREE.Animation(this.scaffoldingMesh, name+"_create", THREE.AnimationHandler.CATMULLROM)
+	this.animations.create.loop = false
+	this.animations.destroy = new THREE.Animation(this.scaffoldingMesh, name+"_destroy", THREE.AnimationHandler.CATMULLROM)
+	this.animations.destroy.loop = false
+	this.currentAnimation = this.animations.create
+	this.animationTime = this.currentAnimation.data.length;
+	this.currentAnimation.play()
 }
 
 
