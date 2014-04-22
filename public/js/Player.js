@@ -34,12 +34,12 @@ Player.prototype.displayManaCount = function(){
 }
 
 Player.prototype.hideManaCount = function(){
-    if (this.name == "nature")
-    {
-		document.getElementById("mana").style.display="none"
-    }else{
-        document.getElementById("dollars").style.display="none"    
-    }
-	document.getElementById(this.name+"-build-queue").style.display="none"
+ //    if (this.name == "nature")
+ //    {
+	// 	document.getElementById("mana").style.display="none"
+ //    }else{
+ //        document.getElementById("dollars").style.display="none"    
+ //    }
+	// document.getElementById(this.name+"-build-queue").style.display="none"
 }
 

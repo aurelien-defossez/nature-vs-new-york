@@ -23,7 +23,7 @@ Game.config = {
 		initOwnedCells : 1,
     	hp: 200,
     	startMana: 50,
-    	manaPerSecond: 2,
+    	manaPerSecond: 1,
     	captureSpeed: 0.025,
     	mapping : {
     		buildings: {
@@ -44,7 +44,7 @@ Game.config = {
 		initOwnedCells : 2,
     	hp: 200,
     	startMana: 50,
-    	manaPerSecond: 2,
+    	manaPerSecond: 1,
     	captureSpeed: 0,
     	mapping : {
     		buildings: {
@@ -79,10 +79,10 @@ Game.config = {
 			attack: 1.0,
 			buildingAttack: 0.75,
 			cooldown: 0.5,
-			hp: 15,
+			hp: 12,
 			speed: 1.0,
 			cost: 4,
-			time: 4,
+			time: 3,
 			modelFile: "data/wolf.js",
 			width: 0.5
 		},
@@ -91,10 +91,10 @@ Game.config = {
 			attack: 5,
 			buildingAttack: 5,
 			cooldown: 1,
-			hp: 5,
+			hp: 20,
 			speed: 0.4,
-			cost: 8,
-			time: 6,
+			cost: 10,
+			time: 5,
 			modelFile: "data/bear.js",
 			width: 0.5
 		},
@@ -117,14 +117,14 @@ Game.config = {
 			hp: 5,
 			speed: 0.2,
 			cost: 20,
-			time: 2,
+			time: 5,
 			captureSpeed: 0.1,
 			modelFile:"data/builder.js",
 			width: 0.3
 		},
 		// Bûcheron
 		lumberjack: {
-			attack: 2,
+			attack: 5,
 			buildingAttack: 10,
 			cooldown: 1,
 			hp: 15,
@@ -136,7 +136,7 @@ Game.config = {
 		},
 		// Policier
 		policeman: {
-			attack: 2,
+			attack: 1,
 			buildingAttack: 1,
 			cooldown: 1,
 			hp: 10,
@@ -172,7 +172,7 @@ Game.config = {
 			hp: 50,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 0.25,
+			manaPerSecond: 0.2,
 			modelFile : "data/tree_mana.js"
 		},
 		// Arbre Protecteur
@@ -203,15 +203,15 @@ Game.config = {
 			hp: 50,
 			cost: 20,
 			time: 20,
-			manaPerSecond: 0.25,
+			manaPerSecond: 0.2,
 			modelFile : "data/bank.js"
 		},
 		// Station de Police
 		policeStation: {
 			hp: 100,
 			cost: 20,
-			time: 20,
-			policemansDelay: 10,
+			time: 2,
+			policemansDelay: 2,
 			modelFile : "data/police_station.js"
 		},
 		// Atelier
