@@ -83,7 +83,7 @@ Building.prototype.buildingLoaded = function(name)
 	console.log(Game.config.buildings[name].modelFile)
 	if (Game.config.buildings[name].modelFile == "data/tree_mana.js")
 	{
-		materials[1].alphaTest = 0.5;
+		model.materials[1].alphaTest = 0.5;
 	}
 
 }
