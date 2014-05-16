@@ -1,4 +1,4 @@
-Game.config = {
+﻿Game.config = {
     board : {
       height: 565,
       width:1000
@@ -20,11 +20,11 @@ Game.config = {
 		ttl : 1 // in seconds
 	},
     nature : {
-		initOwnedCells : 1,
-    	hp: 200,
+		initOwnedCells : 2,
+    	hp: 75,
     	startMana: 50,
     	manaPerSecond: 1,
-    	captureSpeed: 0.025,
+    	captureSpeed: 0.01,
     	mapping : {
     		buildings: {
 	    		'input0' : 'manaTree',
@@ -42,7 +42,7 @@ Game.config = {
 	},
 	newYork : {
 		initOwnedCells : 2,
-    	hp: 200,
+    	hp: 75,
     	startMana: 50,
     	manaPerSecond: 1,
     	captureSpeed: 0,
@@ -78,11 +78,11 @@ Game.config = {
 		wolf: {
 			attack: 1.0,
 			buildingAttack: 0.75,
-			cooldown: 0.5,
+			cooldown: 0.6,
 			hp: 12,
 			speed: 1.0,
 			cost: 4,
-			time: 3,
+			time: 5,
 			modelFile: "data/wolf.js",
 			width: 0.5
 		},
@@ -94,7 +94,7 @@ Game.config = {
 			hp: 20,
 			speed: 0.4,
 			cost: 10,
-			time: 5,
+			time: 8,
 			modelFile: "data/bear.js",
 			width: 0.5
 		},
@@ -138,8 +138,8 @@ Game.config = {
 		policeman: {
 			attack: 1,
 			buildingAttack: 1,
-			cooldown: 1,
-			hp: 10,
+			cooldown: 1.0,
+			hp: 12,
 			speed: 0.5,
 			cost: 3,
 			time: 2,
@@ -188,7 +188,7 @@ Game.config = {
 			hp: 100,
 			cost: 20,
 			time: 20,
-			captureSpeed: 0.025,
+			captureSpeed: 0.05,
 			modelFile : "data/tree_root.js"
 		},
 		// Ronces
